@@ -39,4 +39,43 @@ jobs:
             -DBUILD_TESTING=OFF
           cmake --build build-codeql --parallel
       - name: Analyze
+        id: codeql
         uses: github/codeql-action/analyze@v4
+        with:
+          output: ${{ runner.temp }}/codeql-results
+          # Private staging has no Code Scanning entitlement. Keep executing
+          # queries and retain SARIF below; public runs use Code Scanning.
+          upload: ${{ github.event.repository.private && 'never' || 'always' }}
+          upload-database: ${{ !github.event.repository.private }}
+      - name: Retain private CodeQL SARIF for review
+        if: ${{ always() && github.event.repository.private && steps.codeql.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif-${{ github.sha }}
+          path: ${{ runner.temp }}/codeql-results/*.sarif
+          if-no-files-found: error
+          retention-days: 30
+      - name: Summarize private CodeQL results
+        if: ${{ always() && github.event.repository.private && steps.codeql.outcome == 'success' }}
+        env:
+          SARIF_DIRECTORY: ${{ runner.temp }}/codeql-results
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          files = sorted(Path(os.environ['SARIF_DIRECTORY']).glob('*.sarif'))
+          results = sum(
+              len(run.get('results', []))
+              for path in files
+              for run in json.loads(path.read_text(encoding='utf-8')).get('runs', [])
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write('## Private CodeQL analysis\n\n')
+              summary.write(f'Generated {len(files)} SARIF file(s) with {results} result(s).\n\n')
+              summary.write('Review the `codeql-sarif` workflow artifact. ')
+              summary.write('Private staging does not publish alerts to the Security tab. ')
+              summary.write('A successful job confirms analysis execution and artifact retention, ')
+              summary.write('not the absence of findings.\n')
+          PY

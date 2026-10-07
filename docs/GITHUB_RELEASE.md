@@ -3,9 +3,9 @@
 
 # GitHub publication and release procedure
 
-This document covers the public repository at
-`https://github.com/KomorebiP/polyphase-float`. Polyphase Float remains a
-pre-1.0 research release.
+This document covers publication of the canonical repository at
+`https://github.com/KomorebiP/polyphase-float`. The repository is staged privately
+before public launch. Polyphase Float remains a pre-1.0 research release.
 
 ## Initial publication
 
@@ -41,6 +41,22 @@ names, require the principal CI and ABI-governance checks before merging.
 The repository includes `.github/CODEOWNERS`, issue forms, a private-security
 contact link, pull-request guidance, CI, ABI governance, CodeQL, extended
 validation, and Dependabot configuration.
+
+## Private staging and CodeQL results
+
+The current private repository does not have GitHub Code Scanning enabled.
+The CodeQL workflow still builds the independent core and executes its C/C++
+queries. For private runs it omits uploads to Code Scanning and retains the
+generated SARIF as a `codeql-sarif-<commit>` workflow artifact for 30 days.
+The job summary reports the number of SARIF files and results. Download and
+review that artifact from the workflow run; private-stage findings are not
+published as Security-tab alerts or pull-request annotations.
+
+A successful CodeQL job confirms that analysis completed and SARIF retention
+succeeded. It does not assert that there are no findings. Query failures and
+missing SARIF artifacts still fail the workflow. Once the repository is public,
+the workflow automatically uploads results and databases to GitHub Code Scanning.
+Enable Code Scanning as part of the public repository setup above.
 
 ## Release assets
 
