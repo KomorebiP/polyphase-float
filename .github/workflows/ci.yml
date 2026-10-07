@@ -94,20 +94,20 @@ jobs:
           sudo apt-get install -y cmake ninja-build pkg-config libgmp-dev python3
       - name: Configure and build
         run: |
-          cmake -S . -B build-core -G Ninja \
+          cmake -S . -B "$RUNNER_TEMP/polyphase-core" -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DPPF_OPENMP=OFF \
             -DPPF_MPFR_SUPPORT=OFF \
             -DPPF_BUILD_EXAMPLES=ON \
             -DPPF_BUILD_BENCHMARKS=OFF \
             -DPPF_WARNINGS_AS_ERRORS=ON
-          cmake --build build-core --parallel
+          cmake --build "$RUNNER_TEMP/polyphase-core" --parallel
       - name: Core tests and independence audit
         run: |
-          ctest --test-dir build-core -L 'fast|hardening' --output-on-failure
-          cmake --build build-core --target semantic-contract-audit
-          python3 tools/release_audit.py --library build-core/libpolyphase_float.so
-          ! ldd build-core/libpolyphase_float.so | grep -E 'libgomp|libomp'
+          ctest --test-dir "$RUNNER_TEMP/polyphase-core" -L 'fast|hardening' --output-on-failure
+          cmake --build "$RUNNER_TEMP/polyphase-core" --target semantic-contract-audit
+          python3 tools/release_audit.py --library "$RUNNER_TEMP/polyphase-core/libpolyphase_float.so"
+          ! ldd "$RUNNER_TEMP/polyphase-core/libpolyphase_float.so" | grep -E 'libgomp|libomp'
 
   thread-sanitizer:
     name: ThreadSanitizer and cache lifecycle

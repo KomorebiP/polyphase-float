@@ -31,6 +31,8 @@
 
 #define CHECK(c) do { if(!(c)){fprintf(stderr,"CHECK FAILED %s:%d: %s\n",__FILE__,__LINE__,#c);exit(1);} } while(0)
 
+#if (PPF_HAVE_FLOAT128 && PPF_MPFR_HAVE_FLOAT128_API) || \
+    (PPF_HAVE_DECIMAL_FLOAT && PPF_MPFR_HAVE_DECIMAL_API)
 static int same(mpfr_srcptr a,mpfr_srcptr b){
     if(mpfr_nan_p(a)||mpfr_nan_p(b))return mpfr_nan_p(a)&&mpfr_nan_p(b);
     if(mpfr_zero_p(a)||mpfr_zero_p(b))return mpfr_zero_p(a)&&mpfr_zero_p(b)&&mpfr_signbit(a)==mpfr_signbit(b);
@@ -43,6 +45,7 @@ static void make_random(gmp_randstate_t rs,mpfr_ptr m,mpfr_prec_t p){
     mpz_init(z);mpz_urandomb(z,rs,bits);if(mpz_sgn(z)==0)mpz_set_ui(z,1);if(gmp_urandomb_ui(rs,1))mpz_neg(z,z);
     mpfr_set_prec(m,p);mpfr_set_z_2exp(m,z,e,MPFR_RNDN);mpz_clear(z);
 }
+#endif
 
 #if PPF_HAVE_FLOAT128 && PPF_MPFR_HAVE_FLOAT128_API
 static void test_float128(void){
