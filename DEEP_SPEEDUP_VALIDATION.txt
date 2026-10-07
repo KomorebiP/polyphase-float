@@ -1,0 +1,30 @@
+POLYPHASE INDEPENDENT FLOATING DEEP SPEEDUP VALIDATION
+
+Completed in the development container:
+
+- optimized warning-clean C11 Make build
+- complete Make differential suite
+- 304,045 exhaustive normal-range rounding cases
+- 34,125 constrained-range cases
+- independent arithmetic, assignment, conversion, utilities, remainder,
+  range, root, reusable-division, and constant suites
+- new large reciprocal-square-root differential tests
+- all five ordinary rounding modes
+- one-thread and three-channel reciprocal square root
+- odd-exponent ternary-resolution case
+- destination/input aliasing
+- one-million-bit reciprocal-square-root case
+- exact value and ternary agreement with MPFR
+- binary independence audit: no mpfr_* imports in the production library
+- CMake release build
+- 17 of 17 CTest targets passed
+- AddressSanitizer
+- UndefinedBehaviorSanitizer
+- leak detection
+- GCC static analyzer on the changed production and test files
+- correctness-gated paired benchmark
+- equal-worker MPFR and Polyphase outer-thread benchmark
+
+The production library performs implemented arithmetic independently. MPFR is
+used only by the optional adapter and by tests and benchmarks as an external
+reference.

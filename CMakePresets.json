@@ -1,0 +1,161 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 23,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Debug development build",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PPF_MPFR_SUPPORT": "AUTO",
+        "PPF_BUILD_EXAMPLES": "ON",
+        "PPF_BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Portable independent release build",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "PPF_MPFR_SUPPORT": "OFF",
+        "PPF_BUILD_EXAMPLES": "ON",
+        "PPF_BUILD_BENCHMARKS": "OFF",
+        "PPF_ENABLE_NATIVE_OPTIMIZATIONS": "OFF"
+      }
+    },
+    {
+      "name": "hardening",
+      "displayName": "Independent release build with distribution hardening",
+      "binaryDir": "${sourceDir}/build/hardening",
+      "environment": {
+        "CFLAGS": "-O2 -fstack-protector-strong -Wformat -Werror=format-security"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "PPF_MPFR_SUPPORT": "OFF",
+        "PPF_BUILD_EXAMPLES": "ON",
+        "PPF_BUILD_BENCHMARKS": "OFF",
+        "PPF_ENABLE_NATIVE_OPTIMIZATIONS": "OFF",
+        "PPF_WARNINGS_AS_ERRORS": "ON"
+      }
+    },
+    {
+      "name": "validation",
+      "displayName": "Full MPFR differential validation build",
+      "binaryDir": "${sourceDir}/build/validation",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "PPF_MPFR_SUPPORT": "ON",
+        "PPF_BUILD_EXAMPLES": "ON",
+        "PPF_BUILD_BENCHMARKS": "ON",
+        "PPF_WARNINGS_AS_ERRORS": "ON"
+      }
+    },
+    {
+      "name": "tsan",
+      "displayName": "Serial ThreadSanitizer validation build",
+      "binaryDir": "${sourceDir}/build/tsan",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PPF_MPFR_SUPPORT": "OFF",
+        "PPF_OPENMP": "OFF",
+        "PPF_BUILD_SHARED": "OFF",
+        "PPF_BUILD_STATIC": "ON",
+        "PPF_BUILD_EXAMPLES": "OFF",
+        "PPF_BUILD_BENCHMARKS": "OFF",
+        "PPF_ENABLE_THREAD_SANITIZER": "ON",
+        "PPF_WARNINGS_AS_ERRORS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "hardening",
+      "configurePreset": "hardening"
+    },
+    {
+      "name": "validation",
+      "configurePreset": "validation"
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "hardening",
+      "configurePreset": "hardening",
+      "output": {
+        "outputOnFailure": true
+      },
+      "filter": {
+        "include": {
+          "label": "fast"
+        }
+      }
+    },
+    {
+      "name": "fast",
+      "configurePreset": "validation",
+      "output": {
+        "outputOnFailure": true
+      },
+      "filter": {
+        "include": {
+          "label": "fast"
+        }
+      }
+    },
+    {
+      "name": "extended",
+      "configurePreset": "validation",
+      "output": {
+        "outputOnFailure": true
+      },
+      "filter": {
+        "include": {
+          "label": "extended"
+        }
+      }
+    },
+    {
+      "name": "smoke",
+      "configurePreset": "validation",
+      "output": {
+        "outputOnFailure": true
+      },
+      "filter": {
+        "include": {
+          "label": "smoke"
+        }
+      }
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan",
+      "output": {
+        "outputOnFailure": true
+      },
+      "filter": {
+        "include": {
+          "label": "threading"
+        }
+      }
+    }
+  ]
+}

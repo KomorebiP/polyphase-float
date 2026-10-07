@@ -1,0 +1,2866 @@
+{
+  "abi_epoch": 1,
+  "abi_revision": 0,
+  "constants": {
+    "PPF_ABI_EPOCH": "1",
+    "PPF_ABI_INFO_VERSION": "1",
+    "PPF_ABI_REVISION": "0",
+    "PPF_ABI_TAG": "\"polyphase-float-abi-1\"",
+    "PPF_EMAX_DEFAULT": "((ppf_exp_t) 1073741823)",
+    "PPF_EMAX_MAX": "((ppf_exp_t)(INT64_MAX / 4))",
+    "PPF_EMIN_DEFAULT": "((ppf_exp_t)-1073741823)",
+    "PPF_EMIN_MIN": "((ppf_exp_t)(INT64_MIN / 4))",
+    "PPF_PREC_DEFAULT": "((ppf_prec_t)53)",
+    "PPF_SEMANTIC_CONTRACT_SHA256": "\"1ffb5d09df0dec769326da2cd1384f1ad0b7dc1dc0dbb3d962e73a8c4ae05870\"",
+    "PPF_SEMANTIC_CONTRACT_VERSION": "1",
+    "PPF_TERNARY_ERROR": "INT_MIN"
+  },
+  "contract_sha256": "ba5b2e23a9df8d16919187051ef9bf374d72e9e19ac707aca114c49937455bd7",
+  "enums": {
+    "anonymous:PPF_ABI_ENDIAN_UNKNOWN": [
+      "PPF_ABI_ENDIAN_UNKNOWN = 0",
+      "PPF_ABI_ENDIAN_LITTLE = 1",
+      "PPF_ABI_ENDIAN_BIG = 2"
+    ],
+    "anonymous:PPF_ABI_FEATURE_FLOAT128": [
+      "PPF_ABI_FEATURE_FLOAT128 = 1u << 0",
+      "PPF_ABI_FEATURE_DECIMAL_FLOAT = 1u << 1",
+      "PPF_ABI_FEATURE_TLS = 1u << 2",
+      "PPF_ABI_FEATURE_THREAD_EXIT_CLEANUP = 1u << 3"
+    ],
+    "anonymous:PPF_FLAG_UNDERFLOW": [
+      "PPF_FLAG_UNDERFLOW = 1u << 0",
+      "PPF_FLAG_OVERFLOW = 1u << 1",
+      "PPF_FLAG_DIVBY0 = 1u << 2",
+      "PPF_FLAG_NAN = 1u << 3",
+      "PPF_FLAG_INEXACT = 1u << 4",
+      "PPF_FLAG_ERANGE = 1u << 5",
+      "PPF_FLAG_ALLOC = 1u << 6",
+      "PPF_FLAGS_ALL = (1u << 7) - 1u"
+    ],
+    "anonymous:PPF_NAN_KIND": [
+      "PPF_NAN_KIND = 0",
+      "PPF_INF_KIND = 1",
+      "PPF_ZERO_KIND = 2",
+      "PPF_REGULAR_KIND = 3"
+    ],
+    "anonymous:PPF_PREC_MIN": [
+      "PPF_PREC_MIN = 2"
+    ],
+    "anonymous:PPF_STORAGE_OWNED": [
+      "PPF_STORAGE_OWNED = 0u",
+      "PPF_STORAGE_EXTERNAL = 1u << 0"
+    ],
+    "ppf_constant_id_t": [
+      "PPF_CONSTANT_PI = 1",
+      "PPF_CONSTANT_LOG2 = 2",
+      "PPF_CONSTANT_EULER = 3",
+      "PPF_CONSTANT_CATALAN = 4"
+    ],
+    "ppf_free_cache_t": [
+      "PPF_FREE_LOCAL_CACHE = 1u << 0",
+      "PPF_FREE_GLOBAL_CACHE = 1u << 1"
+    ],
+    "ppf_interval_status_t": [
+      "PPF_INTERVAL_ERROR = -1",
+      "PPF_INTERVAL_UNDECIDED = 0",
+      "PPF_INTERVAL_DECIDED = 1"
+    ],
+    "ppf_kind_t": [
+      "PPF_KIND_REGULAR = 0",
+      "PPF_KIND_ZERO = 1",
+      "PPF_KIND_INF = 2",
+      "PPF_KIND_NAN = 3"
+    ],
+    "ppf_product_algorithm_t": [
+      "PPF_PRODUCT_AUTO = 0",
+      "PPF_PRODUCT_FULL = 1",
+      "PPF_PRODUCT_KARATSUBA3 = 2",
+      "PPF_PRODUCT_TOOM3 = 3",
+      "PPF_PRODUCT_WINDOW = 4"
+    ],
+    "ppf_product_operation_t": [
+      "PPF_PRODUCT_OP_MULTIPLY = 1",
+      "PPF_PRODUCT_OP_SQUARE = 2",
+      "PPF_PRODUCT_OP_FMA = 3",
+      "PPF_PRODUCT_OP_REC_SQRT = 4"
+    ],
+    "ppf_rnd_t": [
+      "PPF_RND_DEFAULT = -1",
+      "PPF_RNDN = 0",
+      "PPF_RNDZ = 1",
+      "PPF_RNDU = 2",
+      "PPF_RNDD = 3",
+      "PPF_RNDA = 4",
+      "PPF_RNDF = 5"
+    ]
+  },
+  "functions": [
+    {
+      "condition": "",
+      "declaration": "const char *ppf_abi_contract_sha256(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abi_contract_sha256"
+    },
+    {
+      "condition": "",
+      "declaration": "uint32_t ppf_abi_epoch(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abi_epoch"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_abi_info_size(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abi_info_size"
+    },
+    {
+      "condition": "",
+      "declaration": "uint32_t ppf_abi_revision(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abi_revision"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_abi_tag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abi_tag"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_abs(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_abs"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_acos(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_acos"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_acosh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_acosh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_acospi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_acospi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_acosu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_acosu"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add_d(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add_q(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add_si(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add_ui(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_add_z(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_add_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_agm(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_agm"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ai(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ai"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_allocflag_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_allocflag_p"
+    },
+    {
+      "condition": "",
+      "declaration": "void *ppf_arena_alloc(ppf_context_t *ctx, size_t bytes, size_t alignment);",
+      "header": "polyphase_float.h",
+      "name": "ppf_arena_alloc"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_arena_mark_t ppf_arena_mark(const ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_arena_mark"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_arena_release(ppf_context_t *ctx, ppf_arena_mark_t mark);",
+      "header": "polyphase_float.h",
+      "name": "ppf_arena_release"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_arena_reset(ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_arena_reset"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_asin(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_asin"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_asinh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_asinh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_asinpi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_asinpi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_asinu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_asinu"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_asprintf(char **text, const char *format, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_asprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atan(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atan"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atan2(ppf_t *rop, const ppf_t *y, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atan2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atan2pi(ppf_t *rop, const ppf_t *y, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atan2pi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atan2u(ppf_t *rop, const ppf_t *y, const ppf_t *x, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atan2u"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atanh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atanh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atanpi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atanpi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_atanu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_atanu"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_beta(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_beta"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_decimal_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_decimal_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_float128_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_float128_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_gmpinternals_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_gmpinternals_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_sharedcache_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_sharedcache_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_thread_cleanup_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_thread_cleanup_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_buildopt_tls_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_tls_p"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_buildopt_tune_case(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_buildopt_tune_case"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_can_round(const ppf_t *approximation, ppf_exp_t error_bits, ppf_rnd_t source_rounding, ppf_rnd_t target_rounding, ppf_prec_t target_precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_can_round"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cbrt(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cbrt"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ceil(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ceil"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_check_range(ppf_t *x, int ternary, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_check_range"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear(ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_allocflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_allocflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_constant_cache(ppf_constant_id_t id);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_constant_cache"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_divby0(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_divby0"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_erangeflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_erangeflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_flags(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_flags"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_inexflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_inexflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_nanflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_nanflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_overflow(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_overflow"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clear_underflow(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clear_underflow"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_clears(ppf_t *first, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_clears"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp(const ppf_t *a, const ppf_t *b, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_d(const ppf_t *op, double value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_f(const ppf_t *op, mpf_srcptr value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_f"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_ld(const ppf_t *op, long double value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_ld"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_q(const ppf_t *op, mpq_srcptr value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_si(const ppf_t *op, long value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_si_2exp(const ppf_t *op, long value, ppf_exp_t exponent, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_si_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_ui(const ppf_t *op, unsigned long value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_ui_2exp(const ppf_t *op, unsigned long value, ppf_exp_t exponent, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_ui_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmp_z(const ppf_t *op, mpz_srcptr value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmp_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmpabs(const ppf_t *a, const ppf_t *b, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmpabs"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cmpabs_ui(const ppf_t *op, unsigned long value, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cmpabs_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_commit_regular(ppf_t *x, int sign, ppf_exp_t exponent, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_commit_regular"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_compound_si(ppf_t *rop, const ppf_t *op, long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_compound_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_catalan(ppf_t *rop, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_catalan"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_catalan_threads(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_catalan_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_catalan_uncached(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_catalan_uncached"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_euler(ppf_t *rop, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_euler"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_euler_threads(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_euler_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_euler_uncached(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_euler_uncached"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_log2(ppf_t *rop, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_log2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_log2_threads(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_log2_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_log2_uncached(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_log2_uncached"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_pi(ppf_t *rop, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_pi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_pi_threads(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_pi_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_const_pi_uncached(ppf_t *rop, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_const_pi_uncached"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_prec_t ppf_constant_cache_precision(ppf_constant_id_t id);",
+      "header": "polyphase_float.h",
+      "name": "ppf_constant_cache_precision"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_context_clear(ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_clear"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_clone(ppf_context_t *dst, const ppf_context_t *src);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_clone"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_flags_t ppf_context_flags(const ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_flags"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_context_flags_clear(ppf_context_t *ctx, ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_flags_clear"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_context_flags_restore(ppf_context_t *ctx, ppf_flags_t flags, ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_flags_restore"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_flags_t ppf_context_flags_save(const ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_flags_save"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_context_flags_set(ppf_context_t *ctx, ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_flags_set"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_init(ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_init"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_init_custom(ppf_context_t *ctx, const ppf_allocator_t *allocator);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_init_custom"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_set_default_precision(ppf_context_t *ctx, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_set_default_precision"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_set_range(ppf_context_t *ctx, ppf_exp_t emin, ppf_exp_t emax);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_set_range"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_context_set_rounding(ppf_context_t *ctx, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_context_set_rounding"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_copysign(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_copysign"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cos(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cos"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cosh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cosh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cospi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cospi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cosu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cosu"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_cot(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_cot"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_coth(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_coth"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_csc(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_csc"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_csch(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_csch"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_custom_get_exp(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_get_exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_custom_get_kind(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_get_kind"
+    },
+    {
+      "condition": "",
+      "declaration": "void *ppf_custom_get_significand(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_get_significand"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_custom_get_size(ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_get_size"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_custom_init(void *significand, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_init"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_custom_init_set(ppf_t *x, int kind, ppf_exp_t exponent, ppf_prec_t precision, void *significand);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_init_set"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_custom_move(ppf_t *x, void *new_position);",
+      "header": "polyphase_float.h",
+      "name": "ppf_custom_move"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_d_div(ppf_t *rop, double value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_d_div"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_d_sub(ppf_t *rop, double value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_d_sub"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_allocator_t ppf_default_allocator(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_default_allocator"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_context_t *ppf_default_context(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_default_context"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_default_context_cleanup(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_default_context_cleanup"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_digamma(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_digamma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_dim(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_dim"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_2exp(ppf_t *rop, const ppf_t *op, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_2si(ppf_t *rop, const ppf_t *a, long shift, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_2si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_2ui(ppf_t *rop, const ppf_t *a, unsigned long shift, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_2ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_d(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_q(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_si(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_ui(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_with_plan( ppf_t *rop, const ppf_t *numerator, const ppf_divisor_plan_t *plan, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_with_plan"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_with_plan_many( ppf_t *outputs[], const ppf_t *const numerators[], size_t length, const ppf_divisor_plan_t *plan, ppf_rnd_t rnd, unsigned long workers, int ternaries[], ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_with_plan_many"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_div_z(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_div_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_divby0_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divby0_p"
+    },
+    {
+      "condition": "",
+      "declaration": "unsigned long ppf_divisor_plan_applications( const ppf_divisor_plan_t *plan);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divisor_plan_applications"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_divisor_plan_create( ppf_divisor_plan_t **out, const ppf_t *denominator, ppf_prec_t destination_precision, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divisor_plan_create"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_divisor_plan_create_ex( ppf_divisor_plan_t **out, const ppf_t *denominator, ppf_prec_t destination_precision, unsigned long expected_applications, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divisor_plan_create_ex"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_divisor_plan_destroy(ppf_divisor_plan_t *plan);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divisor_plan_destroy"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_prec_t ppf_divisor_plan_precision( const ppf_divisor_plan_t *plan);",
+      "header": "polyphase_float.h",
+      "name": "ppf_divisor_plan_precision"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_dot(ppf_t *rop, const ppf_t *const a[], const ppf_t *const b[], size_t length, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_dot"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_dot_threads(ppf_t *rop, const ppf_t *const a[], const ppf_t *const b[], size_t length, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_dot_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_dump(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_dump"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_dump_file(FILE *stream, const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_dump_file"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_eint(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_eint"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_eq(const ppf_t *op1, const ppf_t *op2, unsigned long bits);",
+      "header": "polyphase_float.h",
+      "name": "ppf_eq"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_equal_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_equal_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_erandom(ppf_t *rop, gmp_randstate_t state, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_erandom"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_erangeflag_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_erangeflag_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_erf(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_erf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_erfc(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_erfc"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_exp(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_exp10(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_exp10"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_exp10m1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_exp10m1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_exp2(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_exp2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_exp2m1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_exp2m1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_expm1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_expm1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fac_ui(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fac_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_intmax_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_intmax_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_sint_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_sint_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_slong_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_slong_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_sshort_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_sshort_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_uint_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_uint_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_uintmax_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_uintmax_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_ulong_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_ulong_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fits_ushort_p(const ppf_t *op, ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fits_ushort_p"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_flags_clear(ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_flags_clear"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_flags_restore(ppf_flags_t flags, ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_flags_restore"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_flags_t ppf_flags_save(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_flags_save"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_flags_set(ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_flags_set"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_flags_t ppf_flags_test(ppf_flags_t mask);",
+      "header": "polyphase_float.h",
+      "name": "ppf_flags_test"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_floor(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_floor"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fma(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fma_algorithm_threads( ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fma_algorithm_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fma_threads(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fma_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fmma(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, const ppf_t *d, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fmma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fmms(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, const ppf_t *d, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fmms"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fmod(ppf_t *rop, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fmod"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fmod_ui(ppf_t *rop, const ppf_t *x, unsigned long y, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fmod_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fmodquo(ppf_t *rop, long *quotient_bits, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fmodquo"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fms(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fms"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fms_algorithm_threads( ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fms_algorithm_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fms_threads(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fms_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fpif_export(FILE *stream, const ppf_t *op);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fpif_export"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fpif_import"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_fprintf(FILE *stream, const char *format, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_fprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_frac(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_frac"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_free_cache(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_free_cache"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_free_cache2(ppf_free_cache_t way);",
+      "header": "polyphase_float.h",
+      "name": "ppf_free_cache2"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_free_constant_caches(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_free_constant_caches"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_free_pool(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_free_pool"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_free_str(char *text);",
+      "header": "polyphase_float.h",
+      "name": "ppf_free_str"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_frexp(ppf_exp_t *exponent, ppf_t *mantissa, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_frexp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_gamma(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_gamma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_gamma_inc(ppf_t *rop, const ppf_t *op, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_gamma_inc"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_abi_info(ppf_abi_info_t *info, size_t info_size);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_abi_info"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_constant_interval(ppf_constant_id_t id, mpz_ptr lower, mpz_ptr upper, ppf_exp_t *exponent, ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_constant_interval"
+    },
+    {
+      "condition": "",
+      "declaration": "unsigned long ppf_get_constant_threads(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_constant_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "double ppf_get_d(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_d"
+    },
+    {
+      "condition": "",
+      "declaration": "double ppf_get_d_2exp(long *exponent, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_d_2exp"
+    },
+    {
+      "condition": "PPF_HAVE_DECIMAL_FLOAT",
+      "declaration": "ppf_decimal128_t ppf_get_decimal128(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_decimal128"
+    },
+    {
+      "condition": "PPF_HAVE_DECIMAL_FLOAT",
+      "declaration": "ppf_decimal64_t ppf_get_decimal64(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_decimal64"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_prec_t ppf_get_default_prec(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_default_prec"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_rnd_t ppf_get_default_rounding_mode(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_default_rounding_mode"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emax(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emax"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emax_max(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emax_max"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emax_min(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emax_min"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emin(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emin"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emin_max(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emin_max"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_emin_min(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_emin_min"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_exp(const ppf_t *x, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_f(mpf_ptr value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_f"
+    },
+    {
+      "condition": "PPF_HAVE_FLOAT128",
+      "declaration": "ppf_float128_t ppf_get_float128(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_float128"
+    },
+    {
+      "condition": "",
+      "declaration": "float ppf_get_flt(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_flt"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_last_constant_stats(ppf_constant_stats_t *out);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_last_constant_stats"
+    },
+    {
+      "condition": "",
+      "declaration": "long double ppf_get_ld(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_ld"
+    },
+    {
+      "condition": "",
+      "declaration": "long double ppf_get_ld_2exp(long *exponent, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_ld_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_mpfr(mpfr_ptr rop, const ppf_t *op, mpfr_rnd_t rnd);",
+      "header": "polyphase_float_mpfr.h",
+      "name": "ppf_get_mpfr"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_get_patches(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_patches"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_prec_t ppf_get_prec(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_prec"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_get_q(mpq_ptr value, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_q"
+    },
+    {
+      "condition": "",
+      "declaration": "long ppf_get_si(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_si"
+    },
+    {
+      "condition": "",
+      "declaration": "intmax_t ppf_get_sj(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_sj"
+    },
+    {
+      "condition": "",
+      "declaration": "char *ppf_get_str(char *buffer, ppf_exp_t *exponent, int base, size_t digits, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_str"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_get_str_ndigits(int base, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_str_ndigits"
+    },
+    {
+      "condition": "",
+      "declaration": "unsigned long ppf_get_trig_threads(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_trig_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "unsigned long ppf_get_ui(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "uintmax_t ppf_get_uj(const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_uj"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_get_version(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_version"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_get_z(mpz_ptr value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_z"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_exp_t ppf_get_z_2exp(mpz_ptr value, const ppf_t *op);",
+      "header": "polyphase_float.h",
+      "name": "ppf_get_z_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_grandom(ppf_t *rop1, ppf_t *rop2, gmp_randstate_t state, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_grandom"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_greater_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_greater_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_greaterequal_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_greaterequal_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_hypot(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_hypot"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_import_mpfr_exact(ppf_t *rop, mpfr_srcptr op, ppf_context_t *ctx);",
+      "header": "polyphase_float_mpfr.h",
+      "name": "ppf_import_mpfr_exact"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_inexflag_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_inexflag_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_inf_p(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_inf_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init(ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init2(ppf_t *x, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init2_ctx(ppf_t *x, ppf_prec_t precision, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init2_ctx"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_d(ppf_t *rop, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_f(ppf_t *rop, mpf_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_f"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_flt(ppf_t *rop, float value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_flt"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_ld(ppf_t *rop, long double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_ld"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_q(ppf_t *rop, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_si(ppf_t *rop, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_sj(ppf_t *rop, intmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_sj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_str(ppf_t *rop, const char *text, int base, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_str"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_ui(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_uj(ppf_t *rop, uintmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_uj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_init_set_z(ppf_t *rop, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_init_set_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_inits(ppf_t *first, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_inits"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_inits2(ppf_prec_t precision, ppf_t *first, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_inits2"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_inp_str(ppf_t *rop, FILE *stream, int base, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_inp_str"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_integer_p(const ppf_t *op);",
+      "header": "polyphase_float.h",
+      "name": "ppf_integer_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_j0(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_j0"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_j1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_j1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_jn(ppf_t *rop, long n, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_jn"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_kind_name(ppf_kind_t kind);",
+      "header": "polyphase_float.h",
+      "name": "ppf_kind_name"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_less_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_less_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_lessequal_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_lessequal_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_lessgreater_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_lessgreater_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_lgamma(ppf_t *rop, int *signp, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_lgamma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_li2(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_li2"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_limb_count(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_limb_count"
+    },
+    {
+      "condition": "",
+      "declaration": "const mp_limb_t *ppf_limbs_read(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_limbs_read"
+    },
+    {
+      "condition": "",
+      "declaration": "mp_limb_t *ppf_limbs_write(ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_limbs_write"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_lngamma(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_lngamma"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log10(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log10"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log10p1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log10p1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log1p(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log1p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log2(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log2p1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log2p1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_log_ui(ppf_t *rop, unsigned long op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_log_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_max(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_max"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_min(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_min"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_prec_t ppf_min_prec(const ppf_t *op);",
+      "header": "polyphase_float.h",
+      "name": "ppf_min_prec"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_modf(ppf_t *integer_part, ppf_t *fractional_part, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_modf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mp_memory_cleanup(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mp_memory_cleanup"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_2exp(ppf_t *rop, const ppf_t *op, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_2si(ppf_t *rop, const ppf_t *a, long shift, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_2si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_2ui(ppf_t *rop, const ppf_t *a, unsigned long shift, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_2ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_algorithm_threads( ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_algorithm_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_d(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_q(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_si(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_threads(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_ui(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_mul_z(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_mul_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_nan_p(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nan_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_nanflag_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nanflag_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_neg(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_neg"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_nextabove(ppf_t *x, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nextabove"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_nextbelow(ppf_t *x, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nextbelow"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_nexttoward(ppf_t *x, const ppf_t *y, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nexttoward"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_nrandom(ppf_t *rop, gmp_randstate_t state, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_nrandom"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_number_p(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_number_p"
+    },
+    {
+      "condition": "",
+      "declaration": "size_t ppf_out_str(FILE *stream, int base, size_t digits, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_out_str"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_overflow_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_overflow_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_plan_product( ppf_product_plan_t *plan, const ppf_t *a, const ppf_t *b, ppf_product_operation_t operation, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_plan_product"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_product_algorithm_t ppf_plan_product_algorithm( const ppf_t *a, const ppf_t *b, int square, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_plan_product_algorithm"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow(ppf_t *rop, const ppf_t *base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow_si(ppf_t *rop, const ppf_t *base, long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow_sj(ppf_t *rop, const ppf_t *base, intmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow_sj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow_ui(ppf_t *rop, const ppf_t *base, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow_uj(ppf_t *rop, const ppf_t *base, uintmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow_uj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pow_z(ppf_t *rop, const ppf_t *base, mpz_srcptr exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pow_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_pown(ppf_t *rop, const ppf_t *base, intmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_pown"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_powr(ppf_t *rop, const ppf_t *base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_powr"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_prec_round(ppf_t *x, ppf_prec_t precision, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_prec_round"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_precompute_catalan(ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_precompute_catalan"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_precompute_constant(ppf_constant_id_t id, ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_precompute_constant"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_precompute_euler(ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_precompute_euler"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_precompute_log2(ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_precompute_log2"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_precompute_pi(ppf_prec_t precision, unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_precompute_pi"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_print_rnd_mode(ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_print_rnd_mode"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_printf(const char *format, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_printf"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_product_profile_name(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_product_profile_name"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_product_profile_sha256(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_product_profile_sha256"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rec_sqrt(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rec_sqrt"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rec_sqrt_algorithm_threads( ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rec_sqrt_algorithm_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rec_sqrt_threads(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rec_sqrt_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_regular_p(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_regular_p"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_reldiff(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_reldiff"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_remainder(ppf_t *rop, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_remainder"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_remquo(ppf_t *rop, long *quotient_bits, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_remquo"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_reserve(ppf_t *x, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_reserve"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint_ceil(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint_ceil"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint_floor(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint_floor"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint_round(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint_round"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint_roundeven(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint_roundeven"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rint_trunc(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rint_trunc"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_root(ppf_t *rop, const ppf_t *a, unsigned long degree, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_root"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rootn_si(ppf_t *rop, const ppf_t *a, long degree, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rootn_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_rootn_ui(ppf_t *rop, const ppf_t *a, unsigned long degree, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rootn_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_round(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_round"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_round_nearest_away_finish(ppf_t *rop, const ppf_t *extended_result, int extended_ternary, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_round_nearest_away_finish"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_roundeven(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_roundeven"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_rnd_t ppf_rounding_from_mpfr(mpfr_rnd_t rnd);",
+      "header": "polyphase_float_mpfr.h",
+      "name": "ppf_rounding_from_mpfr"
+    },
+    {
+      "condition": "",
+      "declaration": "const char *ppf_rounding_name(ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_rounding_name"
+    },
+    {
+      "condition": "",
+      "declaration": "mpfr_rnd_t ppf_rounding_to_mpfr(ppf_rnd_t rnd);",
+      "header": "polyphase_float_mpfr.h",
+      "name": "ppf_rounding_to_mpfr"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sec(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sec"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sech(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sech"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_allocflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_allocflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_constant_threads(unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_constant_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_d(ppf_t *rop, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_d"
+    },
+    {
+      "condition": "PPF_HAVE_DECIMAL_FLOAT",
+      "declaration": "int ppf_set_decimal128(ppf_t *rop, ppf_decimal128_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_decimal128"
+    },
+    {
+      "condition": "PPF_HAVE_DECIMAL_FLOAT",
+      "declaration": "int ppf_set_decimal64(ppf_t *rop, ppf_decimal64_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_decimal64"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_default_prec(ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_default_prec"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_default_rounding_mode(ppf_rnd_t rnd);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_default_rounding_mode"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_divby0(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_divby0"
+    },
+    {
+      "condition": "",
+      "declaration": "ppf_interval_status_t ppf_set_dyadic_interval( ppf_t *rop, mpz_srcptr lower, mpz_srcptr upper, ppf_exp_t exponent, ppf_rnd_t rnd, int *ternary, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_dyadic_interval"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_emax(ppf_exp_t exponent);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_emax"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_emin(ppf_exp_t exponent);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_emin"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_erangeflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_erangeflag"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_exp(ppf_t *x, ppf_exp_t exponent, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_f(ppf_t *rop, mpf_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_f"
+    },
+    {
+      "condition": "PPF_HAVE_FLOAT128",
+      "declaration": "int ppf_set_float128(ppf_t *rop, ppf_float128_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_float128"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_flt(ppf_t *rop, float value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_flt"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_inexflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_inexflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_inf(ppf_t *x, int sign);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_inf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_ld(ppf_t *rop, long double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_ld"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_mpfr(ppf_t *rop, mpfr_srcptr op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float_mpfr.h",
+      "name": "ppf_set_mpfr"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_nan(ppf_t *x, int sign);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_nan"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_nanflag(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_nanflag"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_overflow(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_overflow"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_prec(ppf_t *x, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_prec"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_prec_raw(ppf_t *x, ppf_prec_t precision);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_prec_raw"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_q(ppf_t *rop, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_si(ppf_t *rop, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_si_2exp(ppf_t *rop, long value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_si_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_sj(ppf_t *rop, intmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_sj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_sj_2exp(ppf_t *rop, intmax_t value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_sj_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_str(ppf_t *rop, const char *text, int base, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_str"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_trig_threads(unsigned long workers);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_trig_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_ui(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_ui_2exp(ppf_t *rop, unsigned long value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_ui_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_uj(ppf_t *rop, uintmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_uj"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_uj_2exp(ppf_t *rop, uintmax_t value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_uj_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_underflow(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_underflow"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_z(ppf_t *rop, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_set_z_2exp(ppf_t *rop, mpz_srcptr value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_z_2exp"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_set_zero(ppf_t *x, int sign);",
+      "header": "polyphase_float.h",
+      "name": "ppf_set_zero"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_setsign(ppf_t *rop, const ppf_t *op, int signbit, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_setsign"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sgn(const ppf_t *x, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sgn"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_si_div(ppf_t *rop, long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_si_div"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_si_sub(ppf_t *rop, long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_si_sub"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_signbit(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_signbit"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sin(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sin"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sin_cos(ppf_t *sop, ppf_t *cop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sin_cos"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sinh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sinh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sinh_cosh(ppf_t *sop, ppf_t *cop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sinh_cosh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sinpi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sinpi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sinu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sinu"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_snprintf(char *buffer, size_t size, const char *format, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_snprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sprintf(char *buffer, const char *format, ...);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sqr(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sqr"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sqr_algorithm_threads( ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sqr_algorithm_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sqr_threads(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sqr_threads"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sqrt(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sqrt"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sqrt_ui(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sqrt_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_strtofr(ppf_t *rop, const char *text, char **endptr, int base, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_strtofr"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub_d(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub_d"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub_q(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub_q"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub_si(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub_si"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub_ui(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sub_z(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sub_z"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_subnormalize(ppf_t *x, int ternary, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_subnormalize"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_sum(ppf_t *rop, const ppf_t *const values[], size_t length, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_sum"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_swap(ppf_t *a, ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_swap"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_tan(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_tan"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_tanh(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_tanh"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_tanpi(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_tanpi"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_tanu(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_tanu"
+    },
+    {
+      "condition": "",
+      "declaration": "void ppf_thread_cleanup(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_thread_cleanup"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_total_order_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_total_order_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_trunc(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_trunc"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ui_div(ppf_t *rop, unsigned long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ui_div"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ui_pow(ppf_t *rop, unsigned long base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ui_pow"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ui_pow_ui(ppf_t *rop, unsigned long base, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ui_pow_ui"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_ui_sub(ppf_t *rop, unsigned long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_ui_sub"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_underflow_p(void);",
+      "header": "polyphase_float.h",
+      "name": "ppf_underflow_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_unordered_p(const ppf_t *a, const ppf_t *b);",
+      "header": "polyphase_float.h",
+      "name": "ppf_unordered_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_urandom(ppf_t *rop, gmp_randstate_t state, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_urandom"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_urandomb(ppf_t *rop, gmp_randstate_t state);",
+      "header": "polyphase_float.h",
+      "name": "ppf_urandomb"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_validate(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_validate"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_vasprintf(char **text, const char *format, va_list ap);",
+      "header": "polyphase_float.h",
+      "name": "ppf_vasprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_vfprintf(FILE *stream, const char *format, va_list ap);",
+      "header": "polyphase_float.h",
+      "name": "ppf_vfprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_vprintf(const char *format, va_list ap);",
+      "header": "polyphase_float.h",
+      "name": "ppf_vprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_vsnprintf(char *buffer, size_t size, const char *format, va_list ap);",
+      "header": "polyphase_float.h",
+      "name": "ppf_vsnprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_vsprintf(char *buffer, const char *format, va_list ap);",
+      "header": "polyphase_float.h",
+      "name": "ppf_vsprintf"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_y0(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_y0"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_y1(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_y1"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_yn(ppf_t *rop, long n, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_yn"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_z_sub(ppf_t *rop, mpz_srcptr value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_z_sub"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_zero_p(const ppf_t *x);",
+      "header": "polyphase_float.h",
+      "name": "ppf_zero_p"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_zeta(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_zeta"
+    },
+    {
+      "condition": "",
+      "declaration": "int ppf_zeta_ui(ppf_t *rop, unsigned long op, ppf_rnd_t rnd, ppf_context_t *ctx);",
+      "header": "polyphase_float.h",
+      "name": "ppf_zeta_ui"
+    }
+  ],
+  "library": "Polyphase Float",
+  "release_version": "0.13.0",
+  "schema_version": 1,
+  "structs": {
+    "ppf_abi_info_t": [
+      "uint32_t struct_size;",
+      "uint32_t info_version;",
+      "uint32_t abi_epoch;",
+      "uint32_t abi_revision;",
+      "uint32_t endian;",
+      "uint32_t pointer_bits;",
+      "uint32_t size_t_bits;",
+      "uint32_t limb_bits;",
+      "uint32_t feature_flags;",
+      "uint32_t reserved32[7];",
+      "uint64_t sizeof_ppf_allocator_t;",
+      "uint64_t alignof_ppf_allocator_t;",
+      "uint64_t sizeof_ppf_arena_mark_t;",
+      "uint64_t alignof_ppf_arena_mark_t;",
+      "uint64_t sizeof_ppf_context_t;",
+      "uint64_t alignof_ppf_context_t;",
+      "uint64_t sizeof_ppf_t;",
+      "uint64_t alignof_ppf_t;",
+      "uint64_t sizeof_ppf_product_plan_t;",
+      "uint64_t alignof_ppf_product_plan_t;",
+      "uint64_t sizeof_ppf_constant_stats_t;",
+      "uint64_t alignof_ppf_constant_stats_t;",
+      "uint64_t sizeof_ppf_abi_info_t;",
+      "uint64_t alignof_ppf_abi_info_t;",
+      "uint64_t offsetof_context_default_precision;",
+      "uint64_t offsetof_context_emin;",
+      "uint64_t offsetof_context_emax;",
+      "uint64_t offsetof_context_default_rounding;",
+      "uint64_t offsetof_context_flags;",
+      "uint64_t offsetof_context_allocator;",
+      "uint64_t offsetof_context_arena_head;",
+      "uint64_t offsetof_context_arena_current;",
+      "uint64_t offsetof_context_arena_block_bytes;",
+      "uint64_t offsetof_number_limbs;",
+      "uint64_t offsetof_number_allocated_limbs;",
+      "uint64_t offsetof_number_used_limbs;",
+      "uint64_t offsetof_number_precision;",
+      "uint64_t offsetof_number_exponent;",
+      "uint64_t offsetof_number_sign;",
+      "uint64_t offsetof_number_kind;",
+      "uint64_t offsetof_number_allocator;",
+      "uint64_t offsetof_number_storage_flags;",
+      "uint64_t reserved64[8];"
+    ],
+    "ppf_allocator_t": [
+      "ppf_malloc_fn malloc_fn;",
+      "ppf_realloc_fn realloc_fn;",
+      "ppf_free_fn free_fn;",
+      "void *opaque;"
+    ],
+    "ppf_arena_mark_t": [
+      "void *block;",
+      "size_t used;"
+    ],
+    "ppf_constant_stats_t": [
+      "ppf_constant_id_t constant_id;",
+      "ppf_prec_t requested_precision;",
+      "ppf_prec_t computed_precision;",
+      "ppf_prec_t cached_precision;",
+      "unsigned long workers;",
+      "unsigned long attempts;",
+      "unsigned long terms;",
+      "unsigned long packets;",
+      "unsigned long guard_bits;",
+      "unsigned long interval_width_bits;",
+      "ppf_exp_t interval_exponent;",
+      "int cache_hit;",
+      "int ternary;",
+      "double compute_seconds;",
+      "double rounding_seconds;",
+      "double total_seconds;"
+    ],
+    "ppf_context_t": [
+      "ppf_prec_t default_precision;",
+      "ppf_exp_t emin;",
+      "ppf_exp_t emax;",
+      "ppf_rnd_t default_rounding;",
+      "ppf_flags_t flags;",
+      "ppf_allocator_t allocator;",
+      "void *arena_head;",
+      "void *arena_current;",
+      "size_t arena_block_bytes;"
+    ],
+    "ppf_product_plan_t": [
+      "ppf_product_algorithm_t algorithm;",
+      "unsigned long requested_workers;",
+      "unsigned long effective_workers;",
+      "int profile_rule_matched;"
+    ],
+    "ppf_t": [
+      "mp_limb_t *limbs;",
+      "size_t allocated_limbs;",
+      "size_t used_limbs;",
+      "ppf_prec_t precision;",
+      "ppf_exp_t exponent;",
+      "int sign;",
+      "ppf_kind_t kind;",
+      "ppf_allocator_t allocator;",
+      "uint32_t storage_flags;"
+    ]
+  },
+  "typedefs": {
+    "ppf_decimal128_t": "_Decimal128",
+    "ppf_decimal64_t": "_Decimal64",
+    "ppf_exp_t": "int64_t",
+    "ppf_flags_t": "uint32_t",
+    "ppf_float128_t": "__float128",
+    "ppf_prec_t": "uint64_t"
+  }
+}

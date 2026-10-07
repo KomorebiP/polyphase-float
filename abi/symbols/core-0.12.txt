@@ -1,0 +1,6 @@
+ppf_abi_contract_sha256
+ppf_abi_epoch
+ppf_abi_info_size
+ppf_abi_revision
+ppf_abi_tag
+ppf_get_abi_info

@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: polyphase-float-mpfr
+Description: Optional MPFR interoperability adapter for Polyphase Float
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -lpolyphase_float_mpfr
+Cflags: -I${includedir}
+Requires: polyphase-float mpfr

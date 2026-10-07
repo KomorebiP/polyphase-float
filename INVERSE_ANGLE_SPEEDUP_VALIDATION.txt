@@ -1,0 +1,26 @@
+Independent inverse-angle speed refinement validation
+
+Build and correctness
+- warning-clean optimized C11 Make build: PASS
+- complete inherited Make differential suite: PASS
+- exhaustive normal-range cases: 304045 PASS
+- constrained-range cases: 34125 PASS
+- trigonometric ordinary suite: PASS
+- trigonometric special-value suite: PASS
+- trigonometric randomized suite: PASS
+- trigonometric large-precision suite: PASS
+- trigonometric alias suite: PASS
+- CMake release build: PASS
+- CTest: 31/31 PASS
+
+Safety and independence
+- AddressSanitizer: PASS
+- UndefinedBehaviorSanitizer: PASS
+- leak detection: PASS
+- production library MPFR import audit: PASS
+
+Performance methodology
+- prior and refined packages rebuilt on the same host
+- identical compiler flags and GMP/MPFR installation
+- five alternating-order measurements per reported row
+- result value and ternary direction checked before timing was retained

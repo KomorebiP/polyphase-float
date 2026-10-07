@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: ABI governance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-elf:
+    name: Linux ELF ABI (${{ matrix.compiler }}, versions=${{ matrix.versions }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc
+            versions: "ON"
+          - compiler: clang
+            versions: "ON"
+          - compiler: gcc
+            versions: "OFF"
+    env:
+      CC: ${{ matrix.compiler }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgmp-dev libmpfr-dev python3 binutils
+      - name: Configure and build
+        run: >-
+          cmake -S . -B build -G Ninja
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DPPF_OPENMP=OFF
+          -DPPF_MPFR_SUPPORT=ON
+          -DPPF_BUILD_EXAMPLES=OFF
+          -DPPF_BUILD_BENCHMARKS=OFF
+          -DPPF_WARNINGS_AS_ERRORS=ON
+          -DPPF_ELF_SYMBOL_VERSIONING=${{ matrix.versions }}
+      - name: Build
+        run: cmake --build build --parallel
+      - name: Contract and layout tests
+        run: |
+          ctest --test-dir build -R '^abi_' --output-on-failure
+          cmake --build build --target abi-contract-audit
+      - name: Export audit
+        shell: bash
+        run: |
+          args=(--root . --core-library build/libpolyphase_float.so --adapter-library build/libpolyphase_float_mpfr.so)
+          if [[ "${{ matrix.versions }}" == "ON" ]]; then args+=(--require-versions); fi
+          python3 tools/abi_exports.py "${args[@]}"
+      - name: Public release audit
+        run: python3 tools/release_audit.py --library build/libpolyphase_float.so
+      - name: Install ABI documentation and package
+        run: |
+          cmake --install build --prefix "$PWD/stage/prefix"
+          test -f stage/prefix/share/doc/PolyphaseFloat/ABI_POLICY.md
+          test -f stage/prefix/share/doc/PolyphaseFloat/abi/contract-v1.json

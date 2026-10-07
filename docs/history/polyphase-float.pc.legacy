@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: polyphase-float
+Description: Independent arbitrary-precision binary floating-point arithmetic
+Version: 0.10.0
+Libs: -L${libdir} -lpolyphase_float
+Cflags: -I${includedir}
+Requires.private: gmp

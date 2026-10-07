@@ -1,0 +1,119 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+function(ppf_configure_test_target target)
+  target_compile_features(${target} PRIVATE c_std_11)
+  set_target_properties(${target} PROPERTIES C_EXTENSIONS OFF)
+  target_include_directories(${target} PRIVATE
+    "${PROJECT_SOURCE_DIR}/include"
+    "${GMP_INCLUDE_DIR}")
+  ppf_apply_project_warnings(${target})
+  if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    target_compile_options(${target} PRIVATE -UNDEBUG)
+  elseif(MSVC)
+    target_compile_options(${target} PRIVATE /UNDEBUG)
+  endif()
+endfunction()
+
+function(ppf_add_core_test target source test_name label timeout)
+  add_executable(${target} "${PROJECT_SOURCE_DIR}/${source}")
+  ppf_configure_test_target(${target})
+  target_link_libraries(${target} PRIVATE ${PPF_CORE_TEST_TARGET})
+  add_test(NAME ${test_name} COMMAND ${target})
+  set_tests_properties(${test_name} PROPERTIES
+    LABELS "${label}"
+    TIMEOUT "${timeout}")
+endfunction()
+
+function(ppf_add_mpfr_test target source test_name label timeout)
+  if(NOT PPF_ADAPTER_TEST_TARGET)
+    return()
+  endif()
+  add_executable(${target} "${PROJECT_SOURCE_DIR}/${source}")
+  ppf_configure_test_target(${target})
+  if(NOT MPFR_HAS_HEADER)
+    target_include_directories(${target} PRIVATE "${PROJECT_SOURCE_DIR}/compat")
+    target_compile_definitions(${target} PRIVATE PPF_USE_MINIMAL_MPFR_ABI)
+  endif()
+  target_link_libraries(${target} PRIVATE
+    ${PPF_ADAPTER_TEST_TARGET}
+    ${PPF_CORE_TEST_TARGET}
+    MPFR::MPFR
+    m)
+  add_test(NAME ${test_name} COMMAND ${target})
+  set_tests_properties(${test_name} PROPERTIES
+    LABELS "${label}"
+    TIMEOUT "${timeout}")
+endfunction()
+
+ppf_add_core_test(test_object tests/test_object.c object_model fast 180)
+ppf_add_core_test(test_allocation_failure tests/test_allocation_failure.c allocation_failure hardening 900)
+ppf_add_core_test(test_io_allocation_failure tests/test_io_allocation_failure.c io_allocation_failure "hardening;semantic" 900)
+ppf_add_core_test(test_constant_allocation_failure tests/test_constant_allocation_failure.c constant_allocation_failure "hardening;semantic" 900)
+ppf_add_core_test(test_transcendental_special_allocation_failure tests/test_transcendental_special_allocation_failure.c transcendental_special_allocation_failure "hardening;semantic" 3600)
+ppf_add_core_test(test_arithmetic_root_allocation_failure tests/test_arithmetic_root_allocation_failure.c arithmetic_root_allocation_failure "hardening;semantic" 3600)
+ppf_add_core_test(test_thread_safety tests/test_thread_safety.c thread_safety "threading;hardening" 1200)
+set_tests_properties(thread_safety PROPERTIES RUN_SERIAL TRUE)
+if(NOT WIN32)
+  target_link_libraries(test_thread_safety PRIVATE m)
+endif()
+if(PPF_ENABLE_THREAD_SANITIZER)
+  set_tests_properties(thread_safety PROPERTIES
+    ENVIRONMENT "PPF_THREAD_STRESS_MULTIPLIER=4")
+endif()
+ppf_add_core_test(test_format_errno tests/test_format_errno.c format_errno fast 180)
+ppf_add_core_test(test_product_profile tests/test_product_profile.c product_profile fast 180)
+ppf_add_core_test(test_abi_runtime tests/test_abi_runtime.c abi_runtime "fast;hardening" 180)
+ppf_add_core_test(test_semantic_surface tests/test_semantic_surface.c semantic_surface "fast;semantic" 600)
+ppf_add_core_test(test_aliasing_matrix tests/test_aliasing_matrix.c aliasing_matrix "fast;hardening;semantic" 3600)
+
+add_executable(abi_layout_probe "${PROJECT_SOURCE_DIR}/tools/abi_layout_probe.c")
+ppf_configure_test_target(abi_layout_probe)
+
+if(PPF_ADAPTER_TEST_TARGET)
+  ppf_add_mpfr_test(test_mpfr_adapter tests/test_mpfr_adapter.c mpfr_adapter fast 180)
+  ppf_add_mpfr_test(test_mpfr_type_model tests/test_mpfr_type_model.c mpfr_type_model fast 180)
+  ppf_add_mpfr_test(test_arithmetic_range tests/test_arithmetic_range.c arithmetic_range fast 300)
+  ppf_add_mpfr_test(test_arithmetic_special tests/test_arithmetic_special.c arithmetic_special fast 300)
+  ppf_add_mpfr_test(test_arithmetic tests/test_arithmetic.c arithmetic fast 300)
+  ppf_add_mpfr_test(test_arithmetic_variants tests/test_arithmetic_variants.c arithmetic_variants fast 300)
+  ppf_add_mpfr_test(test_assignment_conversion tests/test_assignment_conversion.c assignment_conversion fast 300)
+  ppf_add_mpfr_test(test_io tests/test_io.c io fast 300)
+  ppf_add_mpfr_test(test_format tests/test_format.c format fast 300)
+  ppf_add_mpfr_test(test_utilities tests/test_utilities.c utilities fast 300)
+  ppf_add_mpfr_test(test_utilities_remainder tests/test_utilities_remainder.c utilities_remainder fast 300)
+  ppf_add_mpfr_test(test_range_flags tests/test_range_flags.c range_flags fast 300)
+  ppf_add_mpfr_test(test_roots tests/test_roots.c roots fast 600)
+  ppf_add_mpfr_test(test_divisor_plan tests/test_divisor_plan.c divisor_plan fast 300)
+  ppf_add_mpfr_test(test_product_planner tests/test_product_planner.c product_planner fast 600)
+  ppf_add_mpfr_test(test_constants tests/test_constants.c constants fast 900)
+
+  ppf_add_mpfr_test(test_transcendental_complete tests/test_transcendental_complete.c transcendental_complete fast 900)
+  ppf_add_mpfr_test(test_transcendental_range tests/test_transcendental_range.c transcendental_range fast 900)
+  ppf_add_mpfr_test(test_transcendental_random tests/test_transcendental_random.c transcendental_random extended 3600)
+  ppf_add_mpfr_test(test_transcendental_large tests/test_transcendental_large.c transcendental_large extended 3600)
+
+  ppf_add_mpfr_test(test_trig_hyperbolic tests/test_trig_hyperbolic.c trig_hyperbolic fast 900)
+  ppf_add_mpfr_test(test_trig_hyperbolic_special tests/test_trig_hyperbolic_special.c trig_hyperbolic_special fast 900)
+  ppf_add_mpfr_test(test_trig_hyperbolic_alias tests/test_trig_hyperbolic_alias.c trig_hyperbolic_alias fast 900)
+  ppf_add_mpfr_test(test_trig_hyperbolic_random tests/test_trig_hyperbolic_random.c trig_hyperbolic_random extended 3600)
+  ppf_add_mpfr_test(test_trig_hyperbolic_large tests/test_trig_hyperbolic_large.c trig_hyperbolic_large extended 3600)
+
+  ppf_add_mpfr_test(test_special_functions tests/test_special_functions.c special_functions fast 1800)
+  ppf_add_mpfr_test(test_special_values tests/test_special_values.c special_values fast 1800)
+  ppf_add_mpfr_test(test_special_faithful tests/test_special_faithful.c special_faithful fast 1800)
+  ppf_add_mpfr_test(test_special_constants tests/test_special_constants.c special_constants fast 1800)
+  ppf_add_mpfr_test(test_special_alias tests/test_special_alias.c special_alias fast 1800)
+  ppf_add_mpfr_test(test_special_random tests/test_special_random.c special_random extended 7200)
+  ppf_add_mpfr_test(test_special_large tests/test_special_large.c special_large extended 7200)
+
+  ppf_add_mpfr_test(test_runtime_support tests/test_runtime_support.c runtime_support fast 300)
+  ppf_add_mpfr_test(test_random_runtime tests/test_random_runtime.c random_runtime fast 900)
+  ppf_add_mpfr_test(test_conditional_formats tests/test_conditional_formats.c conditional_formats fast 300)
+  target_compile_definitions(test_conditional_formats PRIVATE
+    PPF_MPFR_HAVE_FLOAT128_API=${PPF_MPFR_HAVE_FLOAT128_API}
+    PPF_MPFR_HAVE_DECIMAL_API=${PPF_MPFR_HAVE_DECIMAL_API})
+  ppf_add_mpfr_test(test_exhaustive_small tests/test_exhaustive_small.c exhaustive_small extended 3600)
+else()
+  message(STATUS "MPFR adapter not built: differential and extended MPFR tests are omitted")
+endif()

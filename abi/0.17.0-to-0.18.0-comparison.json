@@ -1,0 +1,1946 @@
+{
+  "baseline_version": "0.17.0",
+  "breaking": [],
+  "compatible": true,
+  "compatible_additions": [],
+  "compatible_metadata_changes": [
+    {
+      "after": "\"e55f826ecd61b67c91c2e9b7e1ca3efc35fb831ac923fc34aad65148d5ea41c5\"",
+      "before": "\"c73232d14025c985f4515277d96bcf58fd12cd79abfcac8d3e98d2059324b530\"",
+      "category": "constants",
+      "change": "changed",
+      "name": "PPF_ALIASING_CONTRACT_SHA256"
+    },
+    {
+      "after": "\"c2934870bc76396e14c3b51643ec5c3b31ad1b21a93495f746ff4a20feffa444\"",
+      "before": "\"a6d7cb939f90d98e2c56647625db5019847596d915639b5a82205d3f2eaaa7a6\"",
+      "category": "constants",
+      "change": "changed",
+      "name": "PPF_SEMANTIC_CONTRACT_SHA256"
+    }
+  ],
+  "current_version": "0.18.0",
+  "schema_version": 1,
+  "unchanged": [
+    {
+      "category": "functions",
+      "name": "ppf_abi_contract_sha256"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_abi_epoch"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_abi_info_size"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_abi_revision"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_abi_tag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_abs"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_acos"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_acosh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_acospi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_acosu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_add_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_agm"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ai"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_allocflag_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_arena_alloc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_arena_mark"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_arena_release"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_arena_reset"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_asin"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_asinh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_asinpi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_asinu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_asprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atan2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atan2pi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atan2u"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atanh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atanpi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_atanu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_beta"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_decimal_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_float128_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_gmpinternals_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_sharedcache_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_thread_cleanup_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_tls_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_buildopt_tune_case"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_can_round"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cbrt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ceil"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_check_range"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_allocflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_constant_cache"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_divby0"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_erangeflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_flags"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_inexflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_nanflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_overflow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clear_underflow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_clears"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_f"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_ld"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_si_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_ui_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmp_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmpabs"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cmpabs_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_commit_regular"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_compound_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_catalan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_catalan_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_catalan_uncached"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_euler"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_euler_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_euler_uncached"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_log2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_log2_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_log2_uncached"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_pi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_pi_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_const_pi_uncached"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_constant_cache_precision"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_clear"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_clone"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_flags"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_flags_clear"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_flags_restore"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_flags_save"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_flags_set"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_init"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_init_custom"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_set_default_precision"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_set_range"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_context_set_rounding"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_copysign"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cos"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cosh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cospi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cosu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_cot"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_coth"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_csc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_csch"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_get_exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_get_kind"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_get_significand"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_get_size"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_init"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_init_set"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_custom_move"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_d_div"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_d_sub"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_default_allocator"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_default_context"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_default_context_cleanup"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_digamma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_dim"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_2si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_2ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_with_plan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_with_plan_many"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_div_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divby0_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divisor_plan_applications"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divisor_plan_create"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divisor_plan_create_ex"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divisor_plan_destroy"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_divisor_plan_precision"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_dot"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_dot_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_dump"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_dump_file"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_eint"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_eq"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_equal_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_erandom"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_erangeflag_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_erf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_erfc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_exp10"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_exp10m1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_exp2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_exp2m1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_expm1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fac_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_intmax_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_sint_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_slong_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_sshort_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_uint_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_uintmax_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_ulong_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fits_ushort_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_flags_clear"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_flags_restore"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_flags_save"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_flags_set"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_flags_test"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_floor"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fma_algorithm_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fma_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fmma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fmms"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fmod"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fmod_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fmodquo"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fms"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fms_algorithm_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fms_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fpif_export"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fpif_import"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_fprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_frac"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_free_cache"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_free_cache2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_free_constant_caches"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_free_pool"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_free_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_frexp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_gamma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_gamma_inc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_abi_info"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_constant_interval"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_constant_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_d_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_decimal128"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_decimal64"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_default_prec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_default_rounding_mode"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emax"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emax_max"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emax_min"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emin"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emin_max"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_emin_min"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_f"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_float128"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_flt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_last_constant_stats"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_ld"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_ld_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_mpfr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_patches"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_prec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_sj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_str_ndigits"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_trig_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_uj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_version"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_get_z_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_grandom"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_greater_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_greaterequal_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_hypot"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_import_mpfr_exact"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_inexflag_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_inf_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init2_ctx"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_f"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_flt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_ld"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_sj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_uj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_init_set_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_inits"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_inits2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_inp_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_integer_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_j0"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_j1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_jn"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_kind_name"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_less_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_lessequal_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_lessgreater_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_lgamma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_li2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_limb_count"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_limbs_read"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_limbs_write"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_lngamma"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log10"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log10p1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log1p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log2p1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_log_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_max"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_min"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_min_prec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_modf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mp_memory_cleanup"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_2si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_2ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_algorithm_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_mul_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nan_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nanflag_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_neg"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nextabove"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nextbelow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nexttoward"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_nrandom"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_number_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_out_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_overflow_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_plan_product"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_plan_product_algorithm"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow_sj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow_uj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pow_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_pown"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_powr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_prec_round"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_precompute_catalan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_precompute_constant"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_precompute_euler"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_precompute_log2"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_precompute_pi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_print_rnd_mode"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_printf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_product_profile_name"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_product_profile_sha256"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rec_sqrt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rec_sqrt_algorithm_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rec_sqrt_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_regular_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_reldiff"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_remainder"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_remquo"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_reserve"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint_ceil"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint_floor"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint_round"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint_roundeven"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rint_trunc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_root"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rootn_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rootn_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_round"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_round_nearest_away_finish"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_roundeven"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rounding_from_mpfr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rounding_name"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_rounding_to_mpfr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sech"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_allocflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_constant_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_decimal128"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_decimal64"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_default_prec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_default_rounding_mode"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_divby0"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_dyadic_interval"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_emax"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_emin"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_erangeflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_f"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_float128"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_flt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_inexflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_inf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_ld"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_mpfr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_nan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_nanflag"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_overflow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_prec"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_prec_raw"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_si_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_sj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_sj_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_str"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_trig_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_ui_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_uj"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_uj_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_underflow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_z_2exp"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_set_zero"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_setsign"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sgn"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_si_div"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_si_sub"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_signbit"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sin"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sin_cos"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sinh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sinh_cosh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sinpi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sinu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_snprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sqr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sqr_algorithm_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sqr_threads"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sqrt"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sqrt_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_strtofr"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub_d"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub_q"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub_si"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sub_z"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_subnormalize"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_sum"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_swap"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_tan"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_tanh"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_tanpi"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_tanu"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_thread_cleanup"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_total_order_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_trunc"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ui_div"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ui_pow"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ui_pow_ui"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_ui_sub"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_underflow_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_unordered_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_urandom"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_urandomb"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_validate"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_vasprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_vfprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_vprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_vsnprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_vsprintf"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_y0"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_y1"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_yn"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_z_sub"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_zero_p"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_zeta"
+    },
+    {
+      "category": "functions",
+      "name": "ppf_zeta_ui"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_decimal128_t"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_decimal64_t"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_exp_t"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_flags_t"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_float128_t"
+    },
+    {
+      "category": "typedefs",
+      "name": "ppf_prec_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_abi_info_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_allocator_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_arena_mark_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_constant_stats_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_context_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_product_plan_t"
+    },
+    {
+      "category": "structs",
+      "name": "ppf_t"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_ABI_ENDIAN_UNKNOWN"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_ABI_FEATURE_FLOAT128"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_FLAG_UNDERFLOW"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_NAN_KIND"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_PREC_MIN"
+    },
+    {
+      "category": "enums",
+      "name": "anonymous:PPF_STORAGE_OWNED"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_constant_id_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_free_cache_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_interval_status_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_kind_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_product_algorithm_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_product_operation_t"
+    },
+    {
+      "category": "enums",
+      "name": "ppf_rnd_t"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_ABI_EPOCH"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_ABI_INFO_VERSION"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_ABI_REVISION"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_ABI_TAG"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_ALIASING_CONTRACT_VERSION"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_EMAX_DEFAULT"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_EMAX_MAX"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_EMIN_DEFAULT"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_EMIN_MIN"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_PREC_DEFAULT"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_SEMANTIC_CONTRACT_VERSION"
+    },
+    {
+      "category": "constants",
+      "name": "PPF_TERNARY_ERROR"
+    }
+  ]
+}

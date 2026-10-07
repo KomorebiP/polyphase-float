@@ -1,0 +1,56 @@
+INDEPENDENT LOGARITHM, EXPONENTIAL, AND POWER VALIDATION
+
+Public family
+-------------
+24 of 24 inventory functions implemented and exported:
+
+log, log_ui, log2, log10, log1p, log2p1, log10p1
+exp, exp2, exp10, expm1, exp2m1, exp10m1
+pow, powr, pow_ui, pow_si, pow_uj, pow_sj, pown, pow_z
+ui_pow_ui, ui_pow, compound_si
+
+Numerical contract
+------------------
+- independent ppf_t input and output
+- nearest-even, toward-zero, upward, downward, away, and faithful modes
+- exact/above/below ternary result
+- signed zero, infinity, and NaN
+- overflow, underflow, divide-by-zero, NaN, inexact, and range flags
+- input/output aliasing
+- exact algebraic cases
+- no MPFR arithmetic import in the production library
+
+Differential coverage
+---------------------
+- structured precision matrix: 2, 3, 5, 12, 24, 53, 80, 128, and 256 bits
+- differing input and output precisions
+- all five deterministic ordinary rounding modes
+- faithful-rounding neighbor tests
+- deterministic randomized values at 8, 17, 53, and 96 bits
+- narrow exponent-range overflow and underflow tests
+- NaN, signed zero, infinity, negative bases, integer and noninteger exponents
+- exact powers of two and ten
+- exact dyadic powers including 9^(1/2) and 81^(1/4)
+- exact log1p/log2p1/log10p1 identities
+- scalar, GMP-integer, and compound power interfaces
+
+Build and analysis
+------------------
+- optimized warning-clean Make build: PASS
+- complete inherited Make test suite: PASS
+- binary independence audit: PASS
+- CMake release build: PASS
+- CTest: 24 of 24 PASS
+- AddressSanitizer: PASS
+- UndefinedBehaviorSanitizer: PASS
+- leak detection: PASS
+- GCC static analyzer on transcendental.c: no diagnostics
+- Make staged installation and linked example: PASS
+- CMake staged installation: PASS
+
+Performance boundary
+--------------------
+The first certified interval kernels are slower than MPFR for general log,
+exp, and pow. Exact integer powers are already competitive in the measured
+rows. The release is a correctness and architecture milestone, not a broad
+transcendental speed claim.

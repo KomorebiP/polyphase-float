@@ -1,0 +1,148 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
+/* Internal prototypes corresponding to the remapped implementations. */
+#ifndef PPF_TRANSACTIONAL_IMPL_PROTOTYPES_H
+#define PPF_TRANSACTIONAL_IMPL_PROTOTYPES_H
+
+int ppf_log_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log_ui_uncommitted_internal(ppf_t *rop, unsigned long op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log2_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log10_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log1p_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log2p1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_log10p1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_exp_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_exp2_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_exp10_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_expm1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_exp2m1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_exp10m1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_uncommitted_internal(ppf_t *rop, const ppf_t *base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_powr_uncommitted_internal(ppf_t *rop, const ppf_t *base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_ui_uncommitted_internal(ppf_t *rop, const ppf_t *base, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_si_uncommitted_internal(ppf_t *rop, const ppf_t *base, long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_uj_uncommitted_internal(ppf_t *rop, const ppf_t *base, uintmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_sj_uncommitted_internal(ppf_t *rop, const ppf_t *base, intmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pown_uncommitted_internal(ppf_t *rop, const ppf_t *base, intmax_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_pow_z_uncommitted_internal(ppf_t *rop, const ppf_t *base, mpz_srcptr exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_ui_pow_ui_uncommitted_internal(ppf_t *rop, unsigned long base, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_ui_pow_uncommitted_internal(ppf_t *rop, unsigned long base, const ppf_t *exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_compound_si_uncommitted_internal(ppf_t *rop, const ppf_t *op, long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_cos_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sin_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_tan_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_cosu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sinu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_tanu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_cospi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sinpi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_tanpi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sin_cos_uncommitted_internal(ppf_t *sop, ppf_t *cop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sec_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_csc_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_cot_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_acos_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_asin_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atan_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_acosu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_asinu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atanu_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_acospi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_asinpi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atanpi_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atan2_uncommitted_internal(ppf_t *rop, const ppf_t *y, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atan2u_uncommitted_internal(ppf_t *rop, const ppf_t *y, const ppf_t *x, unsigned long u, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atan2pi_uncommitted_internal(ppf_t *rop, const ppf_t *y, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_cosh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sinh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_tanh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sinh_cosh_uncommitted_internal(ppf_t *sop, ppf_t *cop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sech_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_csch_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_coth_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_acosh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_asinh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_atanh_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_eint_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_li2_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_gamma_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_gamma_inc_uncommitted_internal(ppf_t *rop, const ppf_t *op, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_lngamma_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_lgamma_uncommitted_internal(ppf_t *rop, int *signp, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_digamma_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_beta_uncommitted_internal(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_zeta_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_zeta_ui_uncommitted_internal(ppf_t *rop, unsigned long op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_erf_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_erfc_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_j0_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_j1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_jn_uncommitted_internal(ppf_t *rop, long n, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_y0_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_y1_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_yn_uncommitted_internal(ppf_t *rop, long n, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_agm_uncommitted_internal(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_ai_uncommitted_internal(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+
+/* 0.18.0 arithmetic, fused-operation, and root implementations. */
+int ppf_add_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_add_ui_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_add_si_uncommitted_internal(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_add_d_uncommitted_internal(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_add_z_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_add_q_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_ui_sub_uncommitted_internal(ppf_t *rop, unsigned long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_ui_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_si_sub_uncommitted_internal(ppf_t *rop, long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_si_uncommitted_internal(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_d_sub_uncommitted_internal(ppf_t *rop, double value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_d_uncommitted_internal(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_z_sub_uncommitted_internal(ppf_t *rop, mpz_srcptr value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_z_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_sub_q_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_ui_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_si_uncommitted_internal(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_d_uncommitted_internal(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_z_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_q_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_threads_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_sqr_threads_uncommitted_internal(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_sqr_algorithm_threads_uncommitted_internal( ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);
+int ppf_ui_div_uncommitted_internal(ppf_t *rop, unsigned long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_ui_uncommitted_internal(ppf_t *rop, const ppf_t *op, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_si_div_uncommitted_internal(ppf_t *rop, long value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_si_uncommitted_internal(ppf_t *rop, const ppf_t *op, long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_d_div_uncommitted_internal(ppf_t *rop, double value, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_d_uncommitted_internal(ppf_t *rop, const ppf_t *op, double value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_z_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_q_uncommitted_internal(ppf_t *rop, const ppf_t *op, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_with_plan_many_uncommitted_internal( ppf_t *outputs[], const ppf_t *const numerators[], size_t length, const ppf_divisor_plan_t *plan, ppf_rnd_t rnd, unsigned long workers, int ternaries[], ppf_context_t *ctx);
+int ppf_fma_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_fma_threads_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_fma_algorithm_threads_uncommitted_internal( ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);
+int ppf_fms_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_fmma_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, const ppf_t *d, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_fmms_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, const ppf_t *d, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_fms_threads_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_fms_algorithm_threads_uncommitted_internal( ppf_t *rop, const ppf_t *a, const ppf_t *b, const ppf_t *c, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);
+int ppf_mul_2ui_uncommitted_internal(ppf_t *rop, const ppf_t *a, unsigned long shift, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_mul_2si_uncommitted_internal(ppf_t *rop, const ppf_t *a, long shift, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_2ui_uncommitted_internal(ppf_t *rop, const ppf_t *a, unsigned long shift, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_div_2si_uncommitted_internal(ppf_t *rop, const ppf_t *a, long shift, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_fac_ui_uncommitted_internal(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_dot_threads_uncommitted_internal(ppf_t *rop, const ppf_t *const a[], const ppf_t *const b[], size_t length, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_sqrt_uncommitted_internal(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_rec_sqrt_threads_uncommitted_internal(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_context_t *ctx);
+int ppf_rec_sqrt_algorithm_threads_uncommitted_internal( ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, unsigned long workers, ppf_product_algorithm_t algorithm, ppf_context_t *ctx);
+int ppf_cbrt_uncommitted_internal(ppf_t *rop, const ppf_t *a, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_rootn_ui_uncommitted_internal(ppf_t *rop, const ppf_t *a, unsigned long degree, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_rootn_si_uncommitted_internal(ppf_t *rop, const ppf_t *a, long degree, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_root_uncommitted_internal(ppf_t *rop, const ppf_t *a, unsigned long degree, ppf_rnd_t rnd, ppf_context_t *ctx);
+int ppf_hypot_uncommitted_internal(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);
+
+#endif

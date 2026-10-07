@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: Bug report
+description: Report a reproducible build, API, numerical, or runtime defect
+title: "[bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the observed and expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal reproducer
+      description: Include source, command, precision, rounding mode, and inputs.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Version or commit, OS, CPU, compiler, GMP, MPFR, OpenMP, and build options.
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Numerical mismatch
+        - Build or installation
+        - Crash or memory safety
+        - Threading
+        - I/O or serialization
+        - Documentation
+        - Performance regression
+    validations:
+      required: true
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Disclosure
+      options:
+        - label: This report does not contain a privately disclosed security vulnerability.
+          required: true

@@ -1,0 +1,70 @@
+Polyphase independent floating-point library: I/O and formatting validation
+
+Inventory block
+- stream and raw I/O: 5/5 direct counterparts
+- formatted output: 10/10 direct counterparts
+- direct inventory coverage: 279/349 (79.94%)
+- public ppf_* declarations/shared exports: 353/353
+
+Implemented interfaces
+- ppf_out_str, ppf_inp_str, ppf_fpif_export, ppf_fpif_import, ppf_dump
+- ppf_fprintf, ppf_vfprintf, ppf_printf, ppf_vprintf
+- ppf_sprintf, ppf_vsprintf, ppf_snprintf, ppf_vsnprintf
+- ppf_asprintf, ppf_vasprintf
+- project convenience ppf_dump_file
+
+Optimized build and differential tests
+- warning-clean optimized C11 Make build: PASS
+- complete inherited Make test suite: PASS
+- exhaustive normal-range cases: 304045 passed
+- constrained-range cases: 34125 passed
+- new stream and interchange suite: PASS
+- new formatted-output suite: PASS
+- randomized stream comparisons: PASS
+- randomized PPFIF01 cross-precision round trips: PASS
+- corruption/truncation rejection with destination preservation: PASS
+- 200 randomized finite values across 35 independent formats: PASS
+- standard C, GMP, precision, and ppf_t mixed arguments: PASS
+- every ordinary rounding selector and dynamic selector: PASS
+- width, precision, padding, alternate form, and special values: PASS
+- snprintf truncation and required-length semantics: PASS
+- standard and independent %n: PASS
+- embedded null byte handling: PASS
+
+Independent-build checks
+- production shared-library MPFR import audit: PASS
+- public declarations/shared exports: 353/353
+- GCC -fanalyzer on src/io.c and src/format.c: PASS with no diagnostics
+- focused AddressSanitizer/UndefinedBehaviorSanitizer tests for I/O and formatting: PASS
+- focused leak detection for I/O and formatting: PASS
+
+Build systems and installation
+- clean CMake Release build: PASS
+- CTest: 42/42 passed
+- Make staged installation: PASS
+- CMake staged installation: PASS
+- linked installed-library formatting example: PASS
+- standalone example_io_formatting: PASS
+
+Final benchmark
+- nine repetitions at 10000, 100000, and 1000000 bits
+- all retained text results checked against MPFR
+- one-million-bit 128-digit out_str: 2.061 us vs MPFR 1.595 us
+- one-million-bit 128-significant-digit asprintf: 2.083 us vs MPFR 1.625 us
+- one-million-bit PPFIF01 round trip: 0.921 ms
+
+Format boundaries
+- PPFIF01 is canonical, endian-independent, checksum-protected, and independent
+- PPFIF01 is not claimed to be byte-compatible with MPFR's experimental FPIF
+- positional $ arguments are deliberately rejected in the baseline formatter
+- no redistribution license has been selected
+
+Distribution verification
+- complete archive manifest: 304 files including package manifest
+- focused source archive manifest: 158 files including package manifest
+- complete archive clean extraction and checksum verification: PASS
+- complete archive clean Make build, full tests, audit, example, and benchmark smoke: PASS
+- complete archive clean CMake build and CTest 42/42: PASS
+- focused archive clean extraction and checksum verification: PASS
+- focused archive clean Make build, full tests, audit, example, and benchmark smoke: PASS
+- focused archive clean CMake build and CTest 42/42: PASS

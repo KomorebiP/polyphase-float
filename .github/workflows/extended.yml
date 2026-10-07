@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: Extended validation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 0"
+
+permissions:
+  contents: read
+
+jobs:
+  extended:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config libgmp-dev libmpfr-dev python3
+      - name: Configure and build
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DPPF_MPFR_SUPPORT=ON \
+            -DPPF_BUILD_EXAMPLES=ON \
+            -DPPF_BUILD_BENCHMARKS=ON
+          cmake --build build --parallel
+      - name: Extended tests
+        run: ctest --test-dir build -L extended --output-on-failure
+      - name: Benchmark smoke tests
+        run: ctest --test-dir build -L smoke --output-on-failure
+      - name: Final audit
+        run: python3 tools/release_audit.py --library build/libpolyphase_float.so

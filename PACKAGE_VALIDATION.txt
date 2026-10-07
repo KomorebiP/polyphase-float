@@ -1,0 +1,40 @@
+POLYPHASE INDEPENDENT FLOATING-POINT RUNTIME COMPLETION
+Version: 0.10.3
+Validation date: 2026-08-13
+
+Strict CMake validation build: PASS
+CMake fast suite: PASS, 31/31
+CMake extended suite: PASS, 7/7
+CMake benchmark-smoke suite: PASS, 11/11
+Complete CTest inventory: PASS, 49/49
+
+Optimized strict Make build: PASS
+Complete Make differential suite: PASS
+Independence audit: PASS, zero imported mpfr_* symbols
+API coverage audit: PASS, 349/349 direct or conditional counterparts
+Header/shared-library agreement: PASS, 423/423 exported functions
+
+Independent CMake installation: PASS
+Installed CMake consumer: PASS
+Relocated CMake package consumer: PASS
+Relocated pkg-config consumer: PASS, version 0.10.3
+Staged Make installation: PASS
+Staged Make/pkg-config consumer: PASS, version 0.10.3
+
+AddressSanitizer, UndefinedBehaviorSanitizer, and leak-detection inventory: PASS
+The sanitizer build and tests through the trigonometric/hyperbolic families ran in
+the main sanitizer invocation. The special-function and runtime families were
+then run individually from the same sanitizer-instrumented binaries after the
+orchestration process reached its execution limit. Every sanitizer test passed,
+and no sanitizer diagnostic was observed.
+
+MPFR precision/exponent fallback model: PASS, signed GMP-sized types
+Checked MPFR-to-Polyphase precision conversion: PASS
+Compile-time MPFR type-model regression: PASS
+Production src/ files changed from 0.10.2: 0/35
+
+Local note: the validation environment had the MPFR 4.2.2 runtime library but
+not the official development header. The exact signed-type condition exposed by
+the official header was reproduced with the corrected compatibility model. The
+complete Windows/WSL runner performs the final official-header build when
+libmpfr-dev is installed on the target system.

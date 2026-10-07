@@ -1,0 +1,38 @@
+Polyphase Float 0.10.4 optional MPFR format compatibility validation
+Date: 2026-08-13
+
+Failure reproduced from target-machine log:
+- official mpfr.h did not expose mpfr_float128 or the binary128 conversion
+  functions without MPFR_WANT_FLOAT128;
+- official mpfr.h did not define mpfr_decimal64 or mpfr_decimal128 aliases;
+- official mpfr.h required a mutable mpfr_ptr for mpfr_fpif_export.
+
+Correction:
+- official-style opt-in declarations in the fallback header;
+- compiler-and-library feature probes in CMake;
+- compile-link-run optional-format probes in Make;
+- conditional differential tests use Polyphase conditional types;
+- FPIF benchmark helper uses mpfr_ptr.
+
+Local strict validation completed:
+- complete warnings-as-errors CMake build: PASS;
+- conditional_formats focused test: PASS;
+- io_formatting_smoke focused test: PASS;
+- fast CTest label: 31/31 PASS;
+- extended CTest label: 7/7 PASS;
+- benchmark smoke label: 11/11 PASS;
+- complete CTest inventory: 49/49 PASS;
+- complete Make differential suite: PASS;
+- Make conditional-format test and FPIF benchmark: PASS;
+- public release audit: PASS;
+- declarations/exports: 423/423;
+- production MPFR imports: 0.
+
+Environment limitation:
+- the local validation host had the MPFR runtime but not the official mpfr.h
+  development header. The fallback header now deliberately mirrors the
+  official opt-in surface. The user's WSL rerun remains the direct official-
+  header confirmation.
+
+Production source comparison:
+- files under src/ changed from 0.10.3: 0.

@@ -1,0 +1,67 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
+/* Internal implementation-name remapping for arithmetic/root transactions. */
+#ifndef PPF_TRANSACTIONAL_ARITHMETIC_ROOT_NAMES_H
+#define PPF_TRANSACTIONAL_ARITHMETIC_ROOT_NAMES_H
+
+#define ppf_add ppf_add_uncommitted_internal
+#define ppf_add_ui ppf_add_ui_uncommitted_internal
+#define ppf_add_si ppf_add_si_uncommitted_internal
+#define ppf_add_d ppf_add_d_uncommitted_internal
+#define ppf_add_z ppf_add_z_uncommitted_internal
+#define ppf_add_q ppf_add_q_uncommitted_internal
+#define ppf_sub ppf_sub_uncommitted_internal
+#define ppf_ui_sub ppf_ui_sub_uncommitted_internal
+#define ppf_sub_ui ppf_sub_ui_uncommitted_internal
+#define ppf_si_sub ppf_si_sub_uncommitted_internal
+#define ppf_sub_si ppf_sub_si_uncommitted_internal
+#define ppf_d_sub ppf_d_sub_uncommitted_internal
+#define ppf_sub_d ppf_sub_d_uncommitted_internal
+#define ppf_z_sub ppf_z_sub_uncommitted_internal
+#define ppf_sub_z ppf_sub_z_uncommitted_internal
+#define ppf_sub_q ppf_sub_q_uncommitted_internal
+#define ppf_mul ppf_mul_uncommitted_internal
+#define ppf_mul_ui ppf_mul_ui_uncommitted_internal
+#define ppf_mul_si ppf_mul_si_uncommitted_internal
+#define ppf_mul_d ppf_mul_d_uncommitted_internal
+#define ppf_mul_z ppf_mul_z_uncommitted_internal
+#define ppf_mul_q ppf_mul_q_uncommitted_internal
+#define ppf_mul_threads ppf_mul_threads_uncommitted_internal
+#define ppf_sqr_threads ppf_sqr_threads_uncommitted_internal
+#define ppf_sqr_algorithm_threads ppf_sqr_algorithm_threads_uncommitted_internal
+#define ppf_ui_div ppf_ui_div_uncommitted_internal
+#define ppf_div_ui ppf_div_ui_uncommitted_internal
+#define ppf_si_div ppf_si_div_uncommitted_internal
+#define ppf_div_si ppf_div_si_uncommitted_internal
+#define ppf_d_div ppf_d_div_uncommitted_internal
+#define ppf_div_d ppf_div_d_uncommitted_internal
+#define ppf_div_z ppf_div_z_uncommitted_internal
+#define ppf_div_q ppf_div_q_uncommitted_internal
+#define ppf_div_with_plan_many ppf_div_with_plan_many_uncommitted_internal
+#define ppf_fma ppf_fma_uncommitted_internal
+#define ppf_fma_threads ppf_fma_threads_uncommitted_internal
+#define ppf_fma_algorithm_threads ppf_fma_algorithm_threads_uncommitted_internal
+#define ppf_fms ppf_fms_uncommitted_internal
+#define ppf_fmma ppf_fmma_uncommitted_internal
+#define ppf_fmms ppf_fmms_uncommitted_internal
+#define ppf_fms_threads ppf_fms_threads_uncommitted_internal
+#define ppf_fms_algorithm_threads ppf_fms_algorithm_threads_uncommitted_internal
+#define ppf_mul_2ui ppf_mul_2ui_uncommitted_internal
+#define ppf_mul_2si ppf_mul_2si_uncommitted_internal
+#define ppf_div_2ui ppf_div_2ui_uncommitted_internal
+#define ppf_div_2si ppf_div_2si_uncommitted_internal
+#define ppf_fac_ui ppf_fac_ui_uncommitted_internal
+#define ppf_dot_threads ppf_dot_threads_uncommitted_internal
+#define ppf_sqrt ppf_sqrt_uncommitted_internal
+#define ppf_rec_sqrt_threads ppf_rec_sqrt_threads_uncommitted_internal
+#define ppf_rec_sqrt_algorithm_threads ppf_rec_sqrt_algorithm_threads_uncommitted_internal
+#define ppf_cbrt ppf_cbrt_uncommitted_internal
+#define ppf_rootn_ui ppf_rootn_ui_uncommitted_internal
+#define ppf_rootn_si ppf_rootn_si_uncommitted_internal
+#define ppf_root ppf_root_uncommitted_internal
+#define ppf_hypot ppf_hypot_uncommitted_internal
+
+#endif

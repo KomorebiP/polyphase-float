@@ -1,0 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
+#include "polyphase_float_mpfr.h"
+#include <stdio.h>
+#include <stdlib.h>
+#define CHECK(c) do{if(!(c)){fprintf(stderr,"FAIL %s:%d %s\n",__FILE__,__LINE__,#c);exit(1);}}while(0)
+typedef int(*pu)(ppf_t*,const ppf_t*,ppf_rnd_t,ppf_context_t*);typedef int(*mu)(mpfr_ptr,mpfr_srcptr,mpfr_rnd_t);
+typedef struct{int u,o,d,n,i,e;}F;static F mf(void){F f={mpfr_underflow_p()!=0,mpfr_overflow_p()!=0,mpfr_divby0_p()!=0,mpfr_nanflag_p()!=0,mpfr_inexflag_p()!=0,mpfr_erangeflag_p()!=0};return f;}static int fe(ppf_context_t*c,F f){return !!(c->flags&PPF_FLAG_UNDERFLOW)==f.u&&!!(c->flags&PPF_FLAG_OVERFLOW)==f.o&&!!(c->flags&PPF_FLAG_DIVBY0)==f.d&&!!(c->flags&PPF_FLAG_NAN)==f.n&&!!(c->flags&PPF_FLAG_INEXACT)==f.i&&!!(c->flags&PPF_FLAG_ERANGE)==f.e;}static int sg(int x){return(x>0)-(x<0);}static int same(ppf_t*p,mpfr_t m){mpfr_t g;mpfr_init2(g,53);CHECK(ppf_get_mpfr(g,p,MPFR_RNDN)!=PPF_TERNARY_ERROR);int ok;if(mpfr_nan_p(m))ok=mpfr_nan_p(g);else if(mpfr_inf_p(m))ok=mpfr_inf_p(g)&&mpfr_signbit(g)==mpfr_signbit(m);else if(mpfr_zero_p(m))ok=mpfr_zero_p(g)&&mpfr_signbit(g)==mpfr_signbit(m);else ok=mpfr_equal_p(g,m);mpfr_clear(g);return ok;}
+static void one(const char*n,pu pf,mu mm,const char*s){ppf_context_t c;ppf_t x,r;mpfr_t mx,mr;CHECK(ppf_context_init(&c)==0);CHECK(ppf_init2_ctx(&x,53,&c)==0);CHECK(ppf_init2_ctx(&r,53,&c)==0);mpfr_init2(mx,53);mpfr_init2(mr,53);CHECK(mpfr_set_str(mx,s,0,MPFR_RNDN)==0);CHECK(ppf_set_mpfr(&x,mx,PPF_RNDN,&c)!=PPF_TERNARY_ERROR);ppf_context_flags_clear(&c,PPF_FLAGS_ALL);mpfr_clear_flags();int a=pf(&r,&x,PPF_RNDN,&c),b=mm(mr,mx,MPFR_RNDN);F f=mf();if(a==PPF_TERNARY_ERROR||!same(&r,mr)||sg(a)!=sg(b)||!fe(&c,f)){fprintf(stderr,"%s(%s) a=%d b=%d pf=0x%x mf=%d%d%d%d%d%d\n",n,s,a,b,(unsigned)c.flags,f.u,f.o,f.d,f.n,f.i,f.e);exit(1);}ppf_clear(&x);ppf_clear(&r);ppf_context_clear(&c);mpfr_clear(mx);mpfr_clear(mr);}
+int main(void){const char*all[]={"nan","inf","-inf","0","-0"};for(int i=0;i<5;i++){one("eint",ppf_eint,mpfr_eint,all[i]);one("li2",ppf_li2,mpfr_li2,all[i]);one("gamma",ppf_gamma,mpfr_gamma,all[i]);one("digamma",ppf_digamma,mpfr_digamma,all[i]);one("zeta",ppf_zeta,mpfr_zeta,all[i]);one("erf",ppf_erf,mpfr_erf,all[i]);one("erfc",ppf_erfc,mpfr_erfc,all[i]);one("j0",ppf_j0,mpfr_j0,all[i]);one("j1",ppf_j1,mpfr_j1,all[i]);one("y0",ppf_y0,mpfr_y0,all[i]);one("y1",ppf_y1,mpfr_y1,all[i]);one("ai",ppf_ai,mpfr_ai,all[i]);}one("gamma",ppf_gamma,mpfr_gamma,"-2");one("digamma",ppf_digamma,mpfr_digamma,"-2");one("zeta",ppf_zeta,mpfr_zeta,"1");one("y0",ppf_y0,mpfr_y0,"-1");puts("special values passed");return 0;}

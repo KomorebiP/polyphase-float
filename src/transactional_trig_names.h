@@ -1,0 +1,46 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+ * SPDX-License-Identifier: LGPL-3.0-or-later
+ */
+
+/* Internal implementation-name remapping for transactional wrappers. */
+#ifndef PPF_TRANSACTIONAL_TRIG_NAMES_H
+#define PPF_TRANSACTIONAL_TRIG_NAMES_H
+
+#define ppf_cos ppf_cos_uncommitted_internal
+#define ppf_sin ppf_sin_uncommitted_internal
+#define ppf_tan ppf_tan_uncommitted_internal
+#define ppf_cosu ppf_cosu_uncommitted_internal
+#define ppf_sinu ppf_sinu_uncommitted_internal
+#define ppf_tanu ppf_tanu_uncommitted_internal
+#define ppf_cospi ppf_cospi_uncommitted_internal
+#define ppf_sinpi ppf_sinpi_uncommitted_internal
+#define ppf_tanpi ppf_tanpi_uncommitted_internal
+#define ppf_sin_cos ppf_sin_cos_uncommitted_internal
+#define ppf_sec ppf_sec_uncommitted_internal
+#define ppf_csc ppf_csc_uncommitted_internal
+#define ppf_cot ppf_cot_uncommitted_internal
+#define ppf_acos ppf_acos_uncommitted_internal
+#define ppf_asin ppf_asin_uncommitted_internal
+#define ppf_atan ppf_atan_uncommitted_internal
+#define ppf_acosu ppf_acosu_uncommitted_internal
+#define ppf_asinu ppf_asinu_uncommitted_internal
+#define ppf_atanu ppf_atanu_uncommitted_internal
+#define ppf_acospi ppf_acospi_uncommitted_internal
+#define ppf_asinpi ppf_asinpi_uncommitted_internal
+#define ppf_atanpi ppf_atanpi_uncommitted_internal
+#define ppf_atan2 ppf_atan2_uncommitted_internal
+#define ppf_atan2u ppf_atan2u_uncommitted_internal
+#define ppf_atan2pi ppf_atan2pi_uncommitted_internal
+#define ppf_cosh ppf_cosh_uncommitted_internal
+#define ppf_sinh ppf_sinh_uncommitted_internal
+#define ppf_tanh ppf_tanh_uncommitted_internal
+#define ppf_sinh_cosh ppf_sinh_cosh_uncommitted_internal
+#define ppf_sech ppf_sech_uncommitted_internal
+#define ppf_csch ppf_csch_uncommitted_internal
+#define ppf_coth ppf_coth_uncommitted_internal
+#define ppf_acosh ppf_acosh_uncommitted_internal
+#define ppf_asinh ppf_asinh_uncommitted_internal
+#define ppf_atanh ppf_atanh_uncommitted_internal
+
+#endif

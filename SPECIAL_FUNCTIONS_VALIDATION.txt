@@ -1,0 +1,54 @@
+Polyphase independent floating-point library: package validation
+
+Special-function block
+- all 24 inventory names have direct ppf_* counterparts
+- 22 new functions or constants added in this block
+- Euler and Catalan interval caches integrated with the existing constant system
+- independent production library imports no mpfr_* symbols
+
+Build and tests
+- optimized warning-clean Make build: PASS
+- complete Make differential test suite: PASS
+- clean CMake release build: PASS
+- CTest: 39/39 passed
+- public declarations/shared exports: 338/338
+- staged Make installation and linked installed example: PASS
+- staged CMake installation: PASS
+- pkg-config sysroot validation: PASS
+
+Numerical validation
+- inherited exhaustive normal-range cases: 304045 passed
+- inherited constrained-range cases: 34125 passed
+- structured special-function suite at 24, 53, and 96 bits: PASS
+- deterministic randomized special-function suite: PASS
+- special values, signed zero, NaN, infinity, pole, and flags: PASS
+- faithful-rounding neighbor suite: PASS
+- aliasing suite: PASS
+- Euler/Catalan interval, cache, precompute, cleanup, and concurrency suite: PASS
+- 256-bit all-rounding and selected 512-bit suite: PASS
+- upper incomplete gamma at zero and negative real shape parameters: PASS
+- exact result and ternary-direction comparison with MPFR: PASS
+
+Dynamic and static analysis
+- AddressSanitizer on all seven new special-function tests: PASS
+- UndefinedBehaviorSanitizer on all seven new special-function tests: PASS
+- leak detection, including concurrent constant-cache threads: PASS
+- GCC -fanalyzer on all four new production modules: PASS with no diagnostics
+
+Development benchmark
+- correctness-gated rows completed at 64, 128, and 256 bits
+- current reference special-function kernels are slower than MPFR
+- results retained as explicit speed boundaries, not performance claims
+
+Distribution verification
+- complete-package SHA-256 manifest covers 288 files
+- focused-source SHA-256 manifest covers 123 files
+- complete archive: clean extraction, manifest verification, Make build, tests, audit, example, benchmark smoke, CMake build, and CTest
+- focused archive: clean extraction, manifest verification, Make build, tests, audit, example, benchmark smoke, CMake build, and CTest
+
+Known boundaries
+- Airy Ai reference path is limited to abs(x) <= 500
+- singular Beta pole combinations not covered by the signed log-gamma composition fail explicitly
+- unusually large Bessel order/argument cases can be resource intensive
+- special-function kernels are correctness-first and remain a major speed target
+- no redistribution license has been selected

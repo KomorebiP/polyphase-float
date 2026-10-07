@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+
+find_dependency(GMP REQUIRED)
+find_dependency(Threads REQUIRED)
+if(@PPF_INSTALLED_WITH_OPENMP@)
+  find_dependency(OpenMP REQUIRED COMPONENTS C)
+endif()
+
+if(@PPF_INSTALLED_WITH_MPFR@)
+  find_dependency(MPFR REQUIRED)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/PolyphaseFloatTargets.cmake")
+check_required_components(PolyphaseFloat)

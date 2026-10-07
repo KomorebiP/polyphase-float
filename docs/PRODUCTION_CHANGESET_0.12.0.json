@@ -1,0 +1,175 @@
+{
+  "added_files": [
+    "abi.c"
+  ],
+  "baseline_version": "0.11.0",
+  "change_boundary": [
+    "runtime ABI introspection",
+    "no existing production source modified",
+    "no numerical formula modified"
+  ],
+  "changed_files": [],
+  "files": {
+    "abi.c": {
+      "bytes": 4730,
+      "sha256": "87259fbda630b8ba2f584092ff5fe66a5fc51b94c8b664833005100385da2cdd"
+    },
+    "arithmetic.c": {
+      "bytes": 70929,
+      "sha256": "0d6e74805bce2d762bef181c695c267b02b3b8a80fa0eaeabbeb575805703ea5"
+    },
+    "arithmetic_variants.c": {
+      "bytes": 14025,
+      "sha256": "1de1ecfff1055a3d4177e6d593862990e3f9c0906acc624bf16dc06553cbee1e"
+    },
+    "assignment.c": {
+      "bytes": 66888,
+      "sha256": "209a9063869dddecd17f3092e8aaba9ecebad0e319ba8fa52de79d2a61376c2b"
+    },
+    "conditional_formats.c": {
+      "bytes": 13445,
+      "sha256": "d7cbff6b7b5394a2cce5df146d50a295e92768b21e7d17d712efb989b41bfe93"
+    },
+    "constant_internal.h": {
+      "bytes": 2826,
+      "sha256": "34a0b942530b4b366f4fa3c1f55c287231c3c24f1793085f6e59842316d7a774"
+    },
+    "constant_log2.c": {
+      "bytes": 11275,
+      "sha256": "f1073967011a6eb6f69215c7b43652ca4520994695ba98e73d2f6abddb307199"
+    },
+    "constant_pi.c": {
+      "bytes": 7750,
+      "sha256": "dd053fc8a81ca5755117224947d77a6376b6a167ad4d8e4fc672353a30faadfa"
+    },
+    "constants.c": {
+      "bytes": 20391,
+      "sha256": "0f37b5882826ac34747c25b636f2fd88cfe2c0d126d764eb0df40882f0f34202"
+    },
+    "context.c": {
+      "bytes": 14479,
+      "sha256": "8c5451913b201baf63577fc6afdc197158ef7ab4eaba0994fb6988b333011a4e"
+    },
+    "divisor_plan.c": {
+      "bytes": 21043,
+      "sha256": "ea1f7263281b7c417842fd766d3e1d73d9235e10f56d4b60b53e6bc60f4b401f"
+    },
+    "format.c": {
+      "bytes": 40802,
+      "sha256": "fc8d01f287595c181adb699c566db4c2be918d7dd54d2caa9ef83eaf79d311fd"
+    },
+    "inverse_angle_fast.c": {
+      "bytes": 20983,
+      "sha256": "e55aec36c3579d25bc0e4531affbec47631c37768a6ac1fcb5aab54727cc9dca"
+    },
+    "io.c": {
+      "bytes": 16951,
+      "sha256": "4f9817d30afbcfca679dc7888448e948ff5394494ff7d5fa957d1153e48ad618"
+    },
+    "limb_round.c": {
+      "bytes": 9840,
+      "sha256": "24e3c372e792343aad514139fc533bee297ba3f0e5b26e9aed73451b5c29cc3f"
+    },
+    "object.c": {
+      "bytes": 11084,
+      "sha256": "410423c90ec1960b677107381d0adaf4a3547ccbd54ae5c82f5fb167ff210b6a"
+    },
+    "polyphase_chudnovsky_core.c": {
+      "bytes": 151438,
+      "sha256": "74930234712376c587114a5963c086d662ef992282c69bf2914ad9dab5e82cc5"
+    },
+    "ppf_internal.h": {
+      "bytes": 7585,
+      "sha256": "04be868af5ff5425599cf6193b82e13ed9d144ff6959f20e409d1299c5b1c503"
+    },
+    "ppf_openmp_compat.h": {
+      "bytes": 980,
+      "sha256": "7f0a8e805e2599ee24aabf689205a649c64ae64f426bd699c779b297033c4864"
+    },
+    "ppf_product_profile_build.h": {
+      "bytes": 527,
+      "sha256": "99bc66dccc65533d6eb2b0a428e2d122889258061d24352f20f6f1e4ea443404"
+    },
+    "product_planner.c": {
+      "bytes": 5703,
+      "sha256": "cbf076ff9248e5e868793902452967d4289dfd1e2b712fc2f9e10293d49c9932"
+    },
+    "random.c": {
+      "bytes": 17861,
+      "sha256": "498ea612fea1760101a1be413cc2add68737a5535ca14e3aa0dc03d509a038ee"
+    },
+    "range_flags.c": {
+      "bytes": 10596,
+      "sha256": "14602702a609201c5b3a71a5fb6582b8e6d46c75fb8bd937e890c10a538cb02d"
+    },
+    "remainder.c": {
+      "bytes": 11641,
+      "sha256": "64d7d7f001f86b20fc6153a0a72f0aa3a2fe073310a484e675dad249469a4fc1"
+    },
+    "roots.c": {
+      "bytes": 42803,
+      "sha256": "48b68f81c48bfbdd8c61d748446d03a385f444dcf76a1a096fe451539553c0ac"
+    },
+    "round.c": {
+      "bytes": 16855,
+      "sha256": "2492a8f9cb8f6916dadf5340bf6eaae8171a0c1f69c508114fd796cc30804d85"
+    },
+    "runtime_support.c": {
+      "bytes": 12412,
+      "sha256": "7dc1ae927fdcbb82c7d672d19bacd8489214ba46cc897eaf1a09ab2d9d8d87df"
+    },
+    "special_bessel.c": {
+      "bytes": 24229,
+      "sha256": "4ef19878a6c9c3c6910a33b12111586d91d1477cb370fa8ca680be7fc26ee6a4"
+    },
+    "special_common.c": {
+      "bytes": 25212,
+      "sha256": "7f4b8c0973248b78485755bec3c8f77fa835f6713c8ba951dda11691a78fe925"
+    },
+    "special_gamma.c": {
+      "bytes": 26452,
+      "sha256": "ff73a31d03e5541e10afab07e91c29df66777860849e55c6d75049c14098a10f"
+    },
+    "special_internal.h": {
+      "bytes": 4363,
+      "sha256": "be7c81cc6ba6cae973cfa0867d0063c4fb348ec2b3c8fa87ff58305f3608f9ef"
+    },
+    "special_misc.c": {
+      "bytes": 27498,
+      "sha256": "66719d657fd062b31b812723227ec5ce5628d0cb499508d176ff104e51675bee"
+    },
+    "toom3.c": {
+      "bytes": 20028,
+      "sha256": "63049eac36d53dc4d378ea20467409bbd71000571af81114a6807c6e4c6bbb15"
+    },
+    "transcendental.c": {
+      "bytes": 66517,
+      "sha256": "e3408cd66de3c80eb656c867a90faf86afb6598968eec8ba85359e78a5c9b84b"
+    },
+    "transcendental_fast.c": {
+      "bytes": 139325,
+      "sha256": "181aa840cda9b9766328463584a60c40355789bc4b245b7ec204996faa27eef0"
+    },
+    "trig_fast.c": {
+      "bytes": 80887,
+      "sha256": "93770a90511190c08505bdc8b4fd6cfb2756523490ca004d7968f10f332bb1e6"
+    },
+    "trig_hyperbolic.c": {
+      "bytes": 107344,
+      "sha256": "bff9a1e8fd8485ace79800f8bfcd5fa710b889b6bf53849cf75c73f26e13a2c0"
+    },
+    "utilities.c": {
+      "bytes": 39976,
+      "sha256": "2a159369425130bf5af208db1a6fcc13037c3b996480a87814cc366c5ae780a9"
+    },
+    "window_product.c": {
+      "bytes": 8168,
+      "sha256": "c7543a413d8d7a5254792120278c88454dbbd7c7b0e8ab2d480dd887a0b60482"
+    }
+  },
+  "numerical_formula_changes": false,
+  "production_source_unchanged": false,
+  "removed_files": [],
+  "schema_version": 1,
+  "version": "0.12.0"
+}

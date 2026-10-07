@@ -1,0 +1,33 @@
+Polyphase Float 0.10.3 MPFR precision-type compatibility validation
+Date: 2026-08-13
+
+Original signedness failure reproduced: PASS
+  tests/test_divisor_plan.c was rejected under signed mpfr_prec_t and
+  -Werror=sign-compare.
+Fallback MPFR precision/exponent model corrected: PASS
+  mpfr_prec_t uses GMP mp_size_t.
+  mpfr_exp_t uses GMP mp_exp_t.
+Explicit checked cross-library precision conversion: PASS
+Compile-time signed-type regression: PASS
+Complete strict CMake build: PASS
+Fast CTest suite: 31/31 PASS
+Extended CTest suite: 7/7 PASS
+Benchmark smoke suite: 11/11 PASS
+Complete CTest inventory: 49/49 PASS
+Strict Make build: PASS
+Complete Make differential suite: PASS
+CMake installed consumer: PASS
+CMake package relocation: PASS
+pkg-config relocation: PASS
+Make staged installation and consumer: PASS
+ASan/UBSan/leak-detection test inventory: PASS
+Public function declarations/exports: 423/423 PASS
+Production mpfr_* imports: 0 PASS
+Production src/ files changed from 0.10.2: 0/35
+
+Environment boundary:
+  The local validation environment had the MPFR 4.2.2 runtime library but not
+  the official mpfr.h development header. The signed official-header condition
+  was reproduced by correcting the fallback model to GMP's signed size and
+  exponent types. The supplied Windows/WSL runner validates the official-header
+  configuration on systems where libmpfr-dev is installed.

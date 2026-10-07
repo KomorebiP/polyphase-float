@@ -1,0 +1,12 @@
+Polyphase Float 0.10.2 official MPFR header compatibility validation
+Date: 2026-08-12
+
+Trigger reproduced: PASS
+  Direct mpfr_root call rejected under a deprecation-annotated MPFR header and
+  -Werror=deprecated-declarations.
+
+Corrected strict validation build: PASS
+Minimal-header strict validation build: PASS
+Deprecated MPFR call audit: PASS
+Legacy negative-zero/even-degree root comparison: retained
+Production src/ files changed: 0

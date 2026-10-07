@@ -1,0 +1,34 @@
+# CMake and Make build products
+/build/
+/build-*/
+/cmake-build-*/
+/bin/
+/lib/
+/stage/
+/install/
+CMakeUserPresets.json
+
+# Generated benchmark output
+/results/local_*/
+/results/**/raw*.jsonl
+/results/**/raw*.csv
+
+# Tooling
+__pycache__/
+*.py[cod]
+*.gcda
+*.gcno
+*.gcov
+*.profraw
+*.profdata
+compile_commands.json
+.cache/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.tmp

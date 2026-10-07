@@ -1,0 +1,46 @@
+TRIGONOMETRIC AND HYPERBOLIC SPEED REFINEMENT VALIDATION
+
+Build and correctness
+- warning-clean optimized C11 build: PASS
+- complete Make differential suite: PASS
+- CMake release build: PASS
+- CTest: 31/31 PASS
+- public header/export agreement: 310/310
+- independent production library imports no mpfr_* symbols: PASS
+
+Numerical coverage inherited and rerun
+- exhaustive normal-range rounding cases: 304045 PASS
+- constrained-range cases: 34125 PASS
+- ordinary trig/hyperbolic differential suite: PASS
+- special-value and exact-grid suite: PASS
+- deterministic randomized suite: PASS
+- large-precision suite: PASS
+- input/output aliasing suite: PASS
+
+Dynamic and static analysis
+- AddressSanitizer + UndefinedBehaviorSanitizer deterministic suite: PASS
+- AddressSanitizer + UndefinedBehaviorSanitizer special suite: PASS
+- AddressSanitizer + UndefinedBehaviorSanitizer large suite: PASS
+- AddressSanitizer + UndefinedBehaviorSanitizer alias suite: PASS
+- sanitized randomized smoke suite: PASS
+- GCC -fanalyzer on trig_fast.c and trig_hyperbolic.c: no diagnostics
+
+Benchmark contract
+- equal binary precision: YES
+- nearest-even rounding: YES
+- value verified before timing: YES
+- ternary direction verified before timing: YES
+- alternating method order: YES
+- decimal conversion or output inside timed operation: NO
+
+Distribution validation
+- complete archive internal manifest: PASS, 249 files
+- focused source archive internal manifest: PASS, 174 files
+- clean complete archive optimized rebuild: PASS
+- clean complete archive deterministic trig/hyperbolic suites: PASS
+- clean complete archive independence audit: PASS
+- clean complete archive example and benchmark smoke: PASS
+- clean focused source optimized rebuild: PASS
+- clean focused source ordinary/special/large/alias suites: PASS
+- clean focused source independence audit and benchmark smoke: PASS
+- the full randomized trig/hyperbolic differential suite passed in the final pre-packaging build; the clean-archive validation used the deterministic suites and a randomized sanitizer smoke because the full random suite is intentionally long-running

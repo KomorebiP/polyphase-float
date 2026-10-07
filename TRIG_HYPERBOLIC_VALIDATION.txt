@@ -1,0 +1,66 @@
+POLYPHASE INDEPENDENT FLOATING-POINT TRIGONOMETRIC/HYPERBOLIC VALIDATION
+
+Implemented inventory functions
+  trigonometric: 25 of 25
+  hyperbolic:    10 of 10
+  total new functions: 35
+
+Public surface
+  distinct ppf_* declarations: 308
+  exported ppf_* symbols:      308
+  direct inventory counterparts: 243 of 349 (69.63%)
+
+Correctness suites
+  ordinary differential cases across 24, 53, and 80-bit outputs
+  all five deterministic rounding modes
+  exact-grid and special-value tests
+  signed-zero, infinity, NaN, pole, and domain behavior
+  deterministic randomized dyadic tests through 128 bits
+  1000-bit all-mode tests
+  5000-bit selected large-precision tests
+  faithful-rounding neighbor tests
+  source/destination aliasing
+  paired-output aliasing
+  atan2 axis, quadrant, zero, and infinity cases
+  large hyperbolic saturation, overflow, and underflow cases
+
+Inherited validation
+  304045 exhaustive normal-range rounding cases
+  34125 constrained-range cases
+  complete object, assignment, conversion, arithmetic, utility,
+  remainder, root, divisor-plan, constant, product-planner, and
+  log/exp/power differential suites
+
+Build and analysis
+  warning-clean optimized Make build: PASS
+  complete Make test suite: PASS
+  binary independence audit: PASS
+  header/export agreement: 308/308
+  clean CMake release build: PASS
+  CTest: 31 of 31 passed
+  targeted AddressSanitizer and UndefinedBehaviorSanitizer on all five
+    new trig/hyperbolic suites: PASS
+  leak detection on targeted sanitized suites: PASS
+  GCC static analyzer on src/trig_hyperbolic.c: no diagnostics
+  correctness-gated benchmark smoke: PASS
+
+Performance boundary
+  The current trigonometric and inverse-angle implementation is a
+  correctness-first baseline and is substantially slower than MPFR.
+  Hyperbolic calls are closer because they reuse the optimized exp/log
+  layer, but no broad speed claim is made for this block.
+
+Independence
+  libpolyphase_float imports no mpfr_* symbols. MPFR is used only by the
+  optional adapter and external verification/benchmark executables.
+
+Archive validation
+  complete ZIP internal manifest: PASS
+  complete ZIP optimized Make rebuild: PASS
+  complete ZIP five new differential suites: PASS
+  complete ZIP independence audit: PASS
+  complete ZIP benchmark and example smoke: PASS
+  focused source ZIP internal manifest: PASS
+  focused source ZIP optimized Make rebuild: PASS
+  focused source ZIP special and 5000-bit tests: PASS
+  focused source ZIP independence audit and benchmark smoke: PASS

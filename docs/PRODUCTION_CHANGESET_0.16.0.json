@@ -1,0 +1,191 @@
+{
+  "added_files": [],
+  "baseline_version": "0.15.0",
+  "change_boundary": {
+    "constant_internal.h": "Pass the active context into constant interval builders and expose an internal interval swap used for atomic cache commit.",
+    "constant_log2.c": "Route packet arrays through provenance-carrying context allocation and preallocate all worker scratch before OpenMP execution.",
+    "constant_pi.c": "Route embedded-core C work arrays through the active context, synchronize context publication with worker callbacks, and select the exact non-adic Chudnovsky execution path for the governed public builder.",
+    "constants.c": "Stage caller destinations, distinguish new allocation failures from sticky state, and commit exact and rounded caches only after complete construction.",
+    "context.c": "Add project-allocation failure epochs and allocator-provenance temporary buffers with exact realloc and free callbacks.",
+    "io.c": "Record direct PPFIF export allocation failure in the internal project-allocation epoch.",
+    "object.c": "Record direct object-reserve reallocation failure in the internal project-allocation epoch.",
+    "polyphase_chudnovsky_core.c": "Make C heap calls overridable, keep GMP-owned decimal strings in the GMP allocator domain, replace selected process-fatal allocation exits with clean failure returns, and update embedded version metadata.",
+    "ppf_internal.h": "Declare internal project-allocation failure-epoch and allocator-provenance buffer helpers.",
+    "special_common.c": "Route Euler and Catalan builder work through a caller-derived wide context and propagate nested allocation failure."
+  },
+  "changed_files": [
+    "constant_internal.h",
+    "constant_log2.c",
+    "constant_pi.c",
+    "constants.c",
+    "context.c",
+    "io.c",
+    "object.c",
+    "polyphase_chudnovsky_core.c",
+    "ppf_internal.h",
+    "special_common.c"
+  ],
+  "files": {
+    "abi.c": {
+      "bytes": 4730,
+      "sha256": "87259fbda630b8ba2f584092ff5fe66a5fc51b94c8b664833005100385da2cdd"
+    },
+    "arithmetic.c": {
+      "bytes": 70929,
+      "sha256": "0d6e74805bce2d762bef181c695c267b02b3b8a80fa0eaeabbeb575805703ea5"
+    },
+    "arithmetic_variants.c": {
+      "bytes": 14025,
+      "sha256": "1de1ecfff1055a3d4177e6d593862990e3f9c0906acc624bf16dc06553cbee1e"
+    },
+    "assignment.c": {
+      "bytes": 70033,
+      "sha256": "3e0b903e9c56f049f707f3c5e27305551c318920c21a5c450547cc5633826d0e"
+    },
+    "conditional_formats.c": {
+      "bytes": 13445,
+      "sha256": "d7cbff6b7b5394a2cce5df146d50a295e92768b21e7d17d712efb989b41bfe93"
+    },
+    "constant_internal.h": {
+      "bytes": 2971,
+      "sha256": "994152cbcef4a61701566eacba07047cf92b9567a1e64536164fdf5a506fe50b"
+    },
+    "constant_log2.c": {
+      "bytes": 11582,
+      "sha256": "aa5c33c1b16968b5e3e049cd10c42654ee6f3aeea32c8c368f95014c49114b0a"
+    },
+    "constant_pi.c": {
+      "bytes": 10182,
+      "sha256": "f5fcd490fd170d697acba275f14d0e5ca2afac5bb15406544f24930c923f7793"
+    },
+    "constants.c": {
+      "bytes": 24314,
+      "sha256": "8011d0d220d8493a5ecc8a98f5234618fc4aec4059a6f1661d633a34890a98fe"
+    },
+    "context.c": {
+      "bytes": 19823,
+      "sha256": "e0e0f33c62ab6a3c4bb1e4a846ed379f90699576ca83ef882a7603c04d2fb1fa"
+    },
+    "divisor_plan.c": {
+      "bytes": 21043,
+      "sha256": "ea1f7263281b7c417842fd766d3e1d73d9235e10f56d4b60b53e6bc60f4b401f"
+    },
+    "format.c": {
+      "bytes": 42192,
+      "sha256": "505e720107572c41a546e09b1a46b2b112f877abeb494e8cd18a6883ac2f8ca3"
+    },
+    "inverse_angle_fast.c": {
+      "bytes": 20983,
+      "sha256": "e55aec36c3579d25bc0e4531affbec47631c37768a6ac1fcb5aab54727cc9dca"
+    },
+    "io.c": {
+      "bytes": 18154,
+      "sha256": "c0bf74a29b02f31e9b03d8974224095bca55f10bde07e02de41a8d2ec4756185"
+    },
+    "limb_round.c": {
+      "bytes": 9840,
+      "sha256": "24e3c372e792343aad514139fc533bee297ba3f0e5b26e9aed73451b5c29cc3f"
+    },
+    "object.c": {
+      "bytes": 11148,
+      "sha256": "887832b20af63b7734a6456ab8fe00e2dd1b509ff6554f154653d13b1cd7bbc3"
+    },
+    "polyphase_chudnovsky_core.c": {
+      "bytes": 155040,
+      "sha256": "99466ce19a23c60a462bc43551c2bf75f5d64d72a7e2fc79525c5f9ceb0fcb41"
+    },
+    "ppf_internal.h": {
+      "bytes": 8795,
+      "sha256": "e59925081c49bc8fbe73246d8b155f67731b2f73d894cdb3e05f51ed410448e1"
+    },
+    "ppf_openmp_compat.h": {
+      "bytes": 980,
+      "sha256": "7f0a8e805e2599ee24aabf689205a649c64ae64f426bd699c779b297033c4864"
+    },
+    "ppf_product_profile_build.h": {
+      "bytes": 527,
+      "sha256": "99bc66dccc65533d6eb2b0a428e2d122889258061d24352f20f6f1e4ea443404"
+    },
+    "product_planner.c": {
+      "bytes": 5703,
+      "sha256": "cbf076ff9248e5e868793902452967d4289dfd1e2b712fc2f9e10293d49c9932"
+    },
+    "random.c": {
+      "bytes": 17974,
+      "sha256": "99d8c38dce6e7aace2638e3b5499e5ec05876ef1a69321fae67250f3df8f8a6b"
+    },
+    "range_flags.c": {
+      "bytes": 10596,
+      "sha256": "14602702a609201c5b3a71a5fb6582b8e6d46c75fb8bd937e890c10a538cb02d"
+    },
+    "remainder.c": {
+      "bytes": 11641,
+      "sha256": "64d7d7f001f86b20fc6153a0a72f0aa3a2fe073310a484e675dad249469a4fc1"
+    },
+    "roots.c": {
+      "bytes": 42803,
+      "sha256": "48b68f81c48bfbdd8c61d748446d03a385f444dcf76a1a096fe451539553c0ac"
+    },
+    "round.c": {
+      "bytes": 16855,
+      "sha256": "2492a8f9cb8f6916dadf5340bf6eaae8171a0c1f69c508114fd796cc30804d85"
+    },
+    "runtime_support.c": {
+      "bytes": 12412,
+      "sha256": "7dc1ae927fdcbb82c7d672d19bacd8489214ba46cc897eaf1a09ab2d9d8d87df"
+    },
+    "special_bessel.c": {
+      "bytes": 24229,
+      "sha256": "4ef19878a6c9c3c6910a33b12111586d91d1477cb370fa8ca680be7fc26ee6a4"
+    },
+    "special_common.c": {
+      "bytes": 26075,
+      "sha256": "2037ff450bca978d23cbeba1da5622d54bdff9b1d1f8fa355db79c95b8c47790"
+    },
+    "special_gamma.c": {
+      "bytes": 26452,
+      "sha256": "ff73a31d03e5541e10afab07e91c29df66777860849e55c6d75049c14098a10f"
+    },
+    "special_internal.h": {
+      "bytes": 4363,
+      "sha256": "be7c81cc6ba6cae973cfa0867d0063c4fb348ec2b3c8fa87ff58305f3608f9ef"
+    },
+    "special_misc.c": {
+      "bytes": 27498,
+      "sha256": "66719d657fd062b31b812723227ec5ce5628d0cb499508d176ff104e51675bee"
+    },
+    "toom3.c": {
+      "bytes": 20028,
+      "sha256": "63049eac36d53dc4d378ea20467409bbd71000571af81114a6807c6e4c6bbb15"
+    },
+    "transcendental.c": {
+      "bytes": 66517,
+      "sha256": "e3408cd66de3c80eb656c867a90faf86afb6598968eec8ba85359e78a5c9b84b"
+    },
+    "transcendental_fast.c": {
+      "bytes": 139325,
+      "sha256": "181aa840cda9b9766328463584a60c40355789bc4b245b7ec204996faa27eef0"
+    },
+    "trig_fast.c": {
+      "bytes": 80887,
+      "sha256": "93770a90511190c08505bdc8b4fd6cfb2756523490ca004d7968f10f332bb1e6"
+    },
+    "trig_hyperbolic.c": {
+      "bytes": 107344,
+      "sha256": "bff9a1e8fd8485ace79800f8bfcd5fa710b889b6bf53849cf75c73f26e13a2c0"
+    },
+    "utilities.c": {
+      "bytes": 40065,
+      "sha256": "12b144e4f779a77e401d0b43d112ac91769a2c9d022ef58592704d93e476d621"
+    },
+    "window_product.c": {
+      "bytes": 8168,
+      "sha256": "c7543a413d8d7a5254792120278c88454dbbd7c7b0e8ab2d480dd887a0b60482"
+    }
+  },
+  "numerical_formula_changes": false,
+  "production_source_unchanged": false,
+  "removed_files": [],
+  "schema_version": 1,
+  "version": "0.16.0"
+}

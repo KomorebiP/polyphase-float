@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: polyphase-float
+Description: Independent arbitrary-precision binary floating-point arithmetic
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -lpolyphase_float
+Libs.private: @PPF_PC_OPENMP_LIB@ -pthread @PPF_PC_MATH_LIB@
+Cflags: -I${includedir}
+Requires: gmp

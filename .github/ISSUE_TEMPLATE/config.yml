@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/KomorebiP/polyphase-float/security/advisories/new
+    about: Do not disclose security-sensitive details in a public issue.

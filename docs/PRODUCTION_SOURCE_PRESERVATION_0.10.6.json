@@ -1,0 +1,118 @@
+{
+  "added_files": [],
+  "changed_files": [],
+  "common_file_count": 35,
+  "comparison": "polyphase-float-0.10.5/src vs polyphase-float-0.10.6/src",
+  "files": {
+    "arithmetic.c": {
+      "sha256": "06e001eb22c5acf07822bf3edde7a35df1313a30070b1df379c0d4bad4236603"
+    },
+    "arithmetic_variants.c": {
+      "sha256": "34a48578355390bb155d747ce76f213ed526d08100233e49da57f2dcfe06d829"
+    },
+    "assignment.c": {
+      "sha256": "209a9063869dddecd17f3092e8aaba9ecebad0e319ba8fa52de79d2a61376c2b"
+    },
+    "conditional_formats.c": {
+      "sha256": "d7cbff6b7b5394a2cce5df146d50a295e92768b21e7d17d712efb989b41bfe93"
+    },
+    "constant_internal.h": {
+      "sha256": "34a0b942530b4b366f4fa3c1f55c287231c3c24f1793085f6e59842316d7a774"
+    },
+    "constant_log2.c": {
+      "sha256": "4d6736e35a7516ba460f30fdd8cf332ee2c75aef0088bdcdeb597f1d38cfc430"
+    },
+    "constant_pi.c": {
+      "sha256": "dd053fc8a81ca5755117224947d77a6376b6a167ad4d8e4fc672353a30faadfa"
+    },
+    "constants.c": {
+      "sha256": "59db2e00401ddef3773db781ce1101d23380a139285de02ed9c28456b8823639"
+    },
+    "context.c": {
+      "sha256": "bcbb5ca34f067f6de3e8575fb5e3dd0f665b6a9f2652575c18fda0663b54ff39"
+    },
+    "divisor_plan.c": {
+      "sha256": "05143a2e5773a41d712c23489934342b13c3fdf98e2a310a36beab24b059319c"
+    },
+    "format.c": {
+      "sha256": "fc8d01f287595c181adb699c566db4c2be918d7dd54d2caa9ef83eaf79d311fd"
+    },
+    "inverse_angle_fast.c": {
+      "sha256": "c93e09b40515d98cf443185074b12f807b5e8557f10f920f1545dafbe01e6ab5"
+    },
+    "io.c": {
+      "sha256": "9317a85761b7b9c5ce701e514d6080ecfb6c3b47eae460f9f78b0bb5557709a8"
+    },
+    "limb_round.c": {
+      "sha256": "24e3c372e792343aad514139fc533bee297ba3f0e5b26e9aed73451b5c29cc3f"
+    },
+    "object.c": {
+      "sha256": "4f7fd18df4034f2bb4477bb25a9ea33f5d5a79b34d4d7f4421da6903b0f9b07d"
+    },
+    "polyphase_chudnovsky_core.c": {
+      "sha256": "205be7df21a94f1b5e0e0739a2fd7a376b7dab3542930a0aabd966b66f0d022f"
+    },
+    "ppf_internal.h": {
+      "sha256": "7142756e8c088693e21a9d5a8b3ded1341ba6a2dc6551ab9e1fafedb464912ab"
+    },
+    "random.c": {
+      "sha256": "498ea612fea1760101a1be413cc2add68737a5535ca14e3aa0dc03d509a038ee"
+    },
+    "range_flags.c": {
+      "sha256": "840fea8efc2b1a08fc374c3483b4de52f969d9d0992f5a155a7f423619805f30"
+    },
+    "remainder.c": {
+      "sha256": "64d7d7f001f86b20fc6153a0a72f0aa3a2fe073310a484e675dad249469a4fc1"
+    },
+    "roots.c": {
+      "sha256": "08f15eeb5117f9030ec6cdb338577025d64f781f2699bee134ffaf4c7392bdd5"
+    },
+    "round.c": {
+      "sha256": "0f842ec7c5b49ab6fafea252a3f5b3b9d5d9519a680b312646f82d9eecd4416e"
+    },
+    "runtime_support.c": {
+      "sha256": "7dc1ae927fdcbb82c7d672d19bacd8489214ba46cc897eaf1a09ab2d9d8d87df"
+    },
+    "special_bessel.c": {
+      "sha256": "4ef19878a6c9c3c6910a33b12111586d91d1477cb370fa8ca680be7fc26ee6a4"
+    },
+    "special_common.c": {
+      "sha256": "32ffdc05a04c17b9c5a71e9ca22b1fbcdc5d3dd49dcbac8879921c029304e0d3"
+    },
+    "special_gamma.c": {
+      "sha256": "ff73a31d03e5541e10afab07e91c29df66777860849e55c6d75049c14098a10f"
+    },
+    "special_internal.h": {
+      "sha256": "f1f3674ef511b157c1ea392bb8466197b5e3a7a44f9ec6ee938ad8e6182c5339"
+    },
+    "special_misc.c": {
+      "sha256": "66719d657fd062b31b812723227ec5ce5628d0cb499508d176ff104e51675bee"
+    },
+    "toom3.c": {
+      "sha256": "e0c246b4b3dc18677ce446ed82f426a1789495f92c57f03883a34aeacf9c8414"
+    },
+    "transcendental.c": {
+      "sha256": "964f80c4cb842c48816bcac2b8d77672f93610f2a7c879b042f8394fdd91abb1"
+    },
+    "transcendental_fast.c": {
+      "sha256": "181aa840cda9b9766328463584a60c40355789bc4b245b7ec204996faa27eef0"
+    },
+    "trig_fast.c": {
+      "sha256": "919deedcc7d11cf0c230ebb7ef7793c0924822d03c9a2d172cd396fa3cf54b74"
+    },
+    "trig_hyperbolic.c": {
+      "sha256": "d84d7011434ce30c57440678e6dc0edb1213e28f2a660716f9c20cd83e196f48"
+    },
+    "utilities.c": {
+      "sha256": "2a159369425130bf5af208db1a6fcc13037c3b996480a87814cc366c5ae780a9"
+    },
+    "window_product.c": {
+      "sha256": "64476da1408da073c0aff76251a4894e19e0a8f7bfe3e66f172f5f3df1dc61b0"
+    }
+  },
+  "new_file_count": 35,
+  "old_file_count": 35,
+  "production_source_unchanged": true,
+  "removed_files": [],
+  "schema_version": 1
+}

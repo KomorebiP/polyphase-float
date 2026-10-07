@@ -1,0 +1,24 @@
+Polyphase Float 0.10.1 format-security patch validation
+Date: 2026-08-12
+
+Reproduced original failure:
+  CFLAGS=-Wformat -Werror=format-security
+  GCC rejected dynamic zero-argument snprintf calls in append_standard.
+
+Corrected validation:
+  CMake hardening configure/build: PASS
+  CMake hardening fast core tests: 2/2 PASS
+  CMake MPFR validation build with hardening flags: PASS
+  CMake fast semantic/differential tests: 30/30 PASS
+  CMake benchmark smoke tests: 11/11 PASS
+  Native format and errno-format tests: PASS
+  Make core build with -Werror=format-security: PASS
+  Make native errno-format test: PASS
+  Public release audit: PASS
+  Public ppf_* declarations: 423
+  Shared-library ppf_* exports: 423
+  Production mpfr_* imports: 0
+
+Scope:
+  Native formatted-output implementation and test/build infrastructure only.
+  Numerical kernels were not modified.

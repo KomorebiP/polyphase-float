@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use Polyphase Float in research, cite the archived release and the associated method paper when available."
+title: "Polyphase Float"
+type: software
+authors:
+  - name: "Komorebi P."
+version: "0.18.0"
+date-released: 2026-08-31
+license: "LGPL-3.0-or-later"
+repository-code: "https://github.com/KomorebiP/polyphase-float"
+url: "https://github.com/KomorebiP/polyphase-float"
+abstract: >-
+  An independent arbitrary-precision binary floating-point research runtime
+  built on GMP, with certified rounding infrastructure, a broad numerical API,
+  and experimental polyphase product and constant-computation kernels.
+keywords:
+  - arbitrary precision
+  - floating point
+  - correctly rounded arithmetic
+  - numerical computing
+  - polyphase

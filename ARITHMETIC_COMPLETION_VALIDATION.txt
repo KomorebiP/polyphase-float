@@ -1,0 +1,51 @@
+INDEPENDENT ARITHMETIC-FAMILY COMPLETION — VALIDATION
+
+Build and API
+- optimized warning-clean C11 build: PASS
+- complete arithmetic inventory: 54/54
+- direct inventory coverage: 311/349 (89.11%)
+- public declarations/shared exports: 385/385
+- production-library MPFR import audit: PASS
+
+Differential coverage
+- randomized scalar integer, double, mpz, and mpq arithmetic: PASS
+- all five deterministic ordinary rounding modes: PASS
+- fmma/fmms exact value and ternary comparisons: PASS
+- factorial and unsigned scaling comparisons: PASS
+- signed-zero rational cases: PASS
+- NaN and infinity cases: PASS
+- narrow exponent-range fused cases: PASS
+- enormous unsigned scaling cases: PASS
+- destination/input alias cases: PASS
+
+Inherited suite
+- complete Make test suite: PASS
+- exhaustive normal-range cases: 304045
+- constrained-range cases: 34125
+- inherited arithmetic, conversion, utility, root, constant, transcendental,
+  trigonometric, special-function, I/O, and formatting suites: PASS
+
+Independent builds
+- Make optimized build: PASS
+- CMake Release build: PASS
+- CTest: 45/45 PASS
+- independence audit: PASS
+
+Performance
+- correctness-gated benchmark: PASS
+- result and ternary checked before timing: PASS
+- benchmark precisions: 1000, 10000, 100000 bits
+
+Sanitizers and analysis
+- targeted and inherited AddressSanitizer/UndefinedBehaviorSanitizer tests: PASS
+- leak detection: PASS
+- GCC static analyzer on the new production and test files: PASS
+
+Installation and archive validation
+- staged Make installation and linked example: PASS
+- staged CMake installation and linked example: PASS
+- staged pkg-config static build: PASS
+- complete ZIP: manifest, clean Make build/test/audit, clean CMake 45/45,
+  example, and benchmark smoke: PASS
+- focused source ZIP: manifest, clean Make build/test/audit, clean CMake 45/45,
+  example, and benchmark smoke: PASS

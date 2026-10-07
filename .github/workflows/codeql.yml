@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "29 3 * * 2"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: c-cpp
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libgmp-dev
+      - name: Build independent core
+        run: |
+          cmake -S . -B build-codeql -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DPPF_MPFR_SUPPORT=OFF \
+            -DPPF_BUILD_EXAMPLES=OFF \
+            -DBUILD_TESTING=OFF
+          cmake --build build-codeql --parallel
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4

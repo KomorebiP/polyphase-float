@@ -1,0 +1,175 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    name: Validation (${{ matrix.compiler }}, OpenMP=${{ matrix.openmp }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc
+            openmp: "ON"
+          - compiler: gcc
+            openmp: "OFF"
+          - compiler: clang
+            openmp: "OFF"
+    env:
+      CC: ${{ matrix.compiler }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgmp-dev libmpfr-dev libomp-dev python3
+      - name: Configure
+        run: >-
+          cmake -S . -B build -G Ninja
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DPPF_OPENMP=${{ matrix.openmp }}
+          -DPPF_MPFR_SUPPORT=ON
+          -DPPF_BUILD_EXAMPLES=ON
+          -DPPF_BUILD_BENCHMARKS=ON
+          -DPPF_WARNINGS_AS_ERRORS=ON
+      - name: Build
+        run: cmake --build build --parallel
+      - name: Fast and allocation-hardening tests
+        run: ctest --test-dir build -L 'fast|hardening' --output-on-failure
+      - name: Smoke tests
+        run: ctest --test-dir build -L smoke --output-on-failure
+      - name: Semantic contract audit
+        run: cmake --build build --target semantic-contract-audit
+      - name: Release audit
+        run: python3 tools/release_audit.py --library build/libpolyphase_float.so
+      - name: Verify OpenMP dependency boundary
+        shell: bash
+        run: |
+          if [[ "${{ matrix.openmp }}" == "OFF" ]]; then
+            ! ldd build/libpolyphase_float.so | grep -E 'libgomp|libomp'
+          else
+            ldd build/libpolyphase_float.so | grep -E 'libgomp|libomp'
+          fi
+      - name: Install
+        run: cmake --install build --prefix "$PWD/stage/prefix"
+      - name: Validate pkg-config metadata
+        run: |
+          export PKG_CONFIG_PATH="$PWD/stage/prefix/lib/pkgconfig"
+          pkg-config --validate "$PWD/stage/prefix/lib/pkgconfig/polyphase-float.pc"
+          pkg-config --validate "$PWD/stage/prefix/lib/pkgconfig/polyphase-float-mpfr.pc"
+          pkg-config --exists polyphase-float
+          pkg-config --exists polyphase-float-mpfr
+          if [[ "${{ matrix.openmp }}" == "OFF" ]]; then
+            ! pkg-config --static --libs polyphase-float | grep -- '-fopenmp'
+          fi
+      - name: Build installed consumer
+        run: |
+          cmake -S tests/install_consumer -B build-consumer -G Ninja \
+            -DCMAKE_PREFIX_PATH="$PWD/stage/prefix"
+          cmake --build build-consumer --parallel
+          ctest --test-dir build-consumer --output-on-failure
+
+  independent-core:
+    name: Independent serial core without MPFR
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CFLAGS: -O2 -fstack-protector-strong -Wformat -Werror=format-security
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config libgmp-dev python3
+      - name: Configure and build
+        run: |
+          cmake -S . -B build-core -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPPF_OPENMP=OFF \
+            -DPPF_MPFR_SUPPORT=OFF \
+            -DPPF_BUILD_EXAMPLES=ON \
+            -DPPF_BUILD_BENCHMARKS=OFF \
+            -DPPF_WARNINGS_AS_ERRORS=ON
+          cmake --build build-core --parallel
+      - name: Core tests and independence audit
+        run: |
+          ctest --test-dir build-core -L 'fast|hardening' --output-on-failure
+          cmake --build build-core --target semantic-contract-audit
+          python3 tools/release_audit.py --library build-core/libpolyphase_float.so
+          ! ldd build-core/libpolyphase_float.so | grep -E 'libgomp|libomp'
+
+  thread-sanitizer:
+    name: ThreadSanitizer and cache lifecycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CC: gcc
+      TSAN_OPTIONS: halt_on_error=1:history_size=7:second_deadlock_stack=1
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libgmp-dev
+      - name: Configure and build serial ThreadSanitizer tree
+        run: |
+          cmake -S . -B build-tsan -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DPPF_OPENMP=OFF \
+            -DPPF_MPFR_SUPPORT=OFF \
+            -DPPF_BUILD_SHARED=OFF \
+            -DPPF_BUILD_STATIC=ON \
+            -DPPF_BUILD_EXAMPLES=OFF \
+            -DPPF_BUILD_BENCHMARKS=OFF \
+            -DPPF_ENABLE_THREAD_SANITIZER=ON \
+            -DPPF_WARNINGS_AS_ERRORS=ON
+          cmake --build build-tsan --parallel
+      - name: Run concurrency and lifecycle stress under ThreadSanitizer
+        run: |
+          ctest --test-dir build-tsan -L threading --output-on-failure
+          PPF_THREAD_STRESS_MULTIPLIER=8 build-tsan/test_thread_safety
+
+  fuzz-smoke:
+    name: Clang parser and PPFIF fuzz smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+      UBSAN_OPTIONS: halt_on_error=1
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build libgmp-dev
+      - name: Configure and build fuzzers
+        run: |
+          cmake -S . -B build-fuzz -G Ninja \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DPPF_OPENMP=OFF \
+            -DPPF_MPFR_SUPPORT=OFF \
+            -DPPF_BUILD_SHARED=OFF \
+            -DPPF_BUILD_STATIC=ON \
+            -DBUILD_TESTING=OFF \
+            -DPPF_BUILD_EXAMPLES=OFF \
+            -DPPF_BUILD_BENCHMARKS=OFF \
+            -DPPF_BUILD_FUZZERS=ON \
+            -DPPF_WARNINGS_AS_ERRORS=ON
+          cmake --build build-fuzz --parallel
+      - name: Run bounded fuzz smoke
+        run: |
+          mkdir -p build-fuzz/corpus-work/text build-fuzz/corpus-work/fpif
+          build-fuzz/fuzz_text_parser build-fuzz/corpus-work/text fuzz/corpus/text -runs=5000
+          build-fuzz/fuzz_fpif_import build-fuzz/corpus-work/fpif fuzz/corpus/fpif -runs=5000
