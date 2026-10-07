@@ -368,6 +368,13 @@ endif()
 
 find_package(Python3 COMPONENTS Interpreter QUIET)
 if(BUILD_TESTING AND Python3_Interpreter_FOUND)
+  add_test(NAME release_api_audit
+    COMMAND "${Python3_EXECUTABLE}"
+            "${PROJECT_SOURCE_DIR}/tools/tests/test_release_api_audit.py"
+            --cc "${CMAKE_C_COMPILER}")
+  set_tests_properties(release_api_audit PROPERTIES
+    LABELS "fast;hardening" TIMEOUT 180)
+
   add_test(NAME product_profile_generator
     COMMAND "${Python3_EXECUTABLE}"
             "${PROJECT_SOURCE_DIR}/tests/test_generate_product_profile.py")

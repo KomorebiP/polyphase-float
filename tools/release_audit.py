@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import csv
 import hashlib
 import json
@@ -69,6 +70,7 @@ REQUIRED_FILES = (
     "tests/test_benchmark_json_schema.py",
     "tests/test_product_profile.c",
     "tests/test_generate_product_profile.py",
+    "tools/tests/test_release_api_audit.py",
     "src/product_planner.c",
     "src/ppf_product_profile_build.h",
     "src/ppf_openmp_compat.h",
@@ -1217,6 +1219,34 @@ def audit_current_claims(root: Path, failures: list[str]) -> None:
                 fail(f"stale top-level claim {pattern!r} in {relative}", failures)
 
 
+def active_api_declarations(library: Path, declarations: set[str]) -> set[str]:
+    """Match compiler-conditional declarations to the library's feature probes.
+
+    Use the audited library's build options, rather than the compiler running
+    this Python process or the presence of optional symbols. Missing symbols
+    for an enabled feature must still fail the export comparison.
+    """
+    conditional_groups = {
+        "ppf_buildopt_float128_p": {"ppf_get_float128", "ppf_set_float128"},
+        "ppf_buildopt_decimal_p": {
+            "ppf_get_decimal64", "ppf_set_decimal64",
+            "ppf_get_decimal128", "ppf_set_decimal128",
+        },
+    }
+    built = ctypes.CDLL(str(library.resolve()))
+    active = declarations.copy()
+    for probe_name, symbols in conditional_groups.items():
+        probe = getattr(built, probe_name)
+        probe.argtypes = []
+        probe.restype = ctypes.c_int
+        enabled = probe()
+        if enabled not in (0, 1):
+            raise ValueError(f"{probe_name} returned invalid feature value {enabled}")
+        if not enabled:
+            active.difference_update(symbols)
+    return active
+
+
 def audit_api(root: Path, library: Path | None, failures: list[str]) -> tuple[int, int]:
     command = [sys.executable, str(root / "scripts/check_api_coverage.py")]
     result = subprocess.run(command, cwd=root, text=True, capture_output=True)
@@ -1254,12 +1284,18 @@ def audit_api(root: Path, library: Path | None, failures: list[str]) -> tuple[in
         else:
             exports = set(re.findall(r"\b(ppf_[a-z0-9_]+)(?:@@?[A-Za-z0-9_.-]+)?$", nm.stdout, re.M))
             export_count = len(exports)
-            if exports != declarations:
-                missing = sorted(declarations - exports)
-                extra = sorted(exports - declarations)
+            try:
+                active_declarations = active_api_declarations(library, declarations)
+            except (OSError, AttributeError, ValueError) as exc:
+                fail(f"unable to inspect shared-library optional-format features: {exc}", failures)
+                return len(declarations), export_count
+            if exports != active_declarations:
+                missing = sorted(active_declarations - exports)
+                extra = sorted(exports - active_declarations)
                 fail(
                     "header/export mismatch: "
-                    f"declared={len(declarations)} exported={len(exports)} "
+                    f"declared={len(declarations)} active={len(active_declarations)} "
+                    f"exported={len(exports)} "
                     f"missing={missing[:10]} extra={extra[:10]}",
                     failures,
                 )
