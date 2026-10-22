@@ -856,7 +856,7 @@ static int fx_atanh_series_horner(ppf_fx_iv_t *out, const ppf_fx_iv_t *z,
     ppf_fx_ball_t zb,q,h,temp,quotient,scaled,result;
     ppf_fx_ball_t *powers=NULL,*blocks=NULL,*ratios=NULL;
     mpz_t p0,p1,p2,p3,scratch,upper,tail;
-    unsigned long terms=0,block_count;
+    unsigned long terms=0,block_count=0;
     unsigned m=0;
     int rc=-1;
     ball_init(&zb);ball_init(&q);ball_init(&h);ball_init(&temp);

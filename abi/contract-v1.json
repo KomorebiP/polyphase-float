@@ -6,18 +6,18 @@
     "PPF_ABI_INFO_VERSION": "1",
     "PPF_ABI_REVISION": "0",
     "PPF_ABI_TAG": "\"polyphase-float-abi-1\"",
-    "PPF_ALIASING_CONTRACT_SHA256": "\"e55f826ecd61b67c91c2e9b7e1ca3efc35fb831ac923fc34aad65148d5ea41c5\"",
+    "PPF_ALIASING_CONTRACT_SHA256": "\"802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7\"",
     "PPF_ALIASING_CONTRACT_VERSION": "1",
     "PPF_EMAX_DEFAULT": "((ppf_exp_t) 1073741823)",
     "PPF_EMAX_MAX": "((ppf_exp_t)(INT64_MAX / 4))",
     "PPF_EMIN_DEFAULT": "((ppf_exp_t)-1073741823)",
     "PPF_EMIN_MIN": "((ppf_exp_t)(INT64_MIN / 4))",
     "PPF_PREC_DEFAULT": "((ppf_prec_t)53)",
-    "PPF_SEMANTIC_CONTRACT_SHA256": "\"c2934870bc76396e14c3b51643ec5c3b31ad1b21a93495f746ff4a20feffa444\"",
+    "PPF_SEMANTIC_CONTRACT_SHA256": "\"a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139\"",
     "PPF_SEMANTIC_CONTRACT_VERSION": "1",
     "PPF_TERNARY_ERROR": "INT_MIN"
   },
-  "contract_sha256": "100c993384c2cc04193c4cd1d5b3c49c9f1823257d2e7b306b3115fae6929423",
+  "contract_sha256": "6025fff55e8a41fb682cadab8df813c84ce34d6dbd9c7e717fbf974f0c0a7868",
   "enums": {
     "anonymous:PPF_ABI_ENDIAN_UNKNOWN": [
       "PPF_ABI_ENDIAN_UNKNOWN = 0",
@@ -2752,7 +2752,7 @@
     }
   ],
   "library": "Polyphase Float",
-  "release_version": "0.18.0",
+  "release_version": "0.20.0",
   "schema_version": 1,
   "structs": {
     "ppf_abi_info_t": [

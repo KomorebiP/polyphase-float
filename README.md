@@ -14,16 +14,28 @@ tests, and matched benchmarks.
 The canonical source repository is
 [`KomorebiP/polyphase-float`](https://github.com/KomorebiP/polyphase-float).
 
-The current source is **version 0.18.0** and is a public pre-1.0 development
-release. Version 0.18.0 closes project-controlled allocation atomicity for 56
-public arithmetic, fused/planned-operation, and root endpoints. Common-
-precision single-result calls use inline staging, larger results use
-allocator-backed staging, and `ppf_div_with_plan_many` commits its complete
-numerical and ternary batch only after every element succeeds. Supported
-in-place calls and caller-managed external significands retain their existing
-aliasing and ownership rules. See
-`docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_CONTRACT_0.18.0.md` and
-`docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md`.
+The current source is **version 0.20.0**, an externally reproducible pre-1.0
+candidate on the Linux ELF LP64/GMP64 baseline. It integrates bounded PPFIF
+import, exact Airy domain admission, and floating-setter validation repairs.
+The API, ABI epoch 1 and SONAME are preserved. The production library has no
+MPFR dependency.
+
+The 79 allocation-evidence entries from the previous audit now have explicit
+source classifications and dedicated lifecycle or transaction tests. This
+includes allocation-free paths, initialization failure, prefix cleanup,
+external storage and successful exact fallbacks. GMP-managed storage remains
+outside the recoverable project-allocation contract.
+
+Start with `docs/COMPLETION_SCOPE_0.20.0.md`,
+`docs/ALLOCATION_COMPLETION_0.20.0.md`, `docs/BRANCH_REVIEW_0.20.0.md` and
+`docs/FPIF_RESOURCE_CONTRACT.md`. Run the supported compiler, sanitizer and
+fuzz qualification with the command in `docs/QUALIFICATION.md`. The separate
+qualification receipt describes actual execution, including omitted or failed
+checks. External replication and independent mathematical review remain
+requirements before a 1.0 promotion.
+
+Version 0.18.0 introduced arithmetic, fused-operation, and root transactions.
+See `docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_CONTRACT_0.18.0.md` for that contract.
 
 Version 0.17.0 closed the transcendental and special-function allocation
 transaction block. See
@@ -40,9 +52,7 @@ Version 0.15.0 closed the bounded text and interchange allocation block. See
 
 Version 0.14.0 established the complete function-by-function aliasing contract.
 All 437 public core functions have an explicit aliasing classification and the
-reviewed ledger contains zero unverified aliasing entries. See
-`docs/ALIASING_CONTRACT_0.18.0.md` and
-`docs/ALIASING_CONTRACT_VALIDATION_0.18.0.md`.
+reviewed ledger contains zero unverified aliasing entries. See `docs/ALIASING_CONTRACT_0.19.0.md`.
 
 Version 0.12.0 established **C ABI epoch 1** for the supported Linux ELF
 LP64/GMP64 baseline while preserving the public 0.11.0 binary interface. It
@@ -105,8 +115,10 @@ precision-type, and optional-format compatibility corrections documented under
 | Optional validation/interoperability dependency | MPFR |
 | Public ABI | Epoch 1 governed on Linux ELF LP64/GMP64 |
 | Public semantic ledger | 437 / 437 functions indexed; gaps retained explicitly |
-| Verified transactional public functions | 213 |
-| Remaining allocation-atomicity gaps | 81 |
+| Verified transactional public functions | 192 |
+| Reviewed allocation-free public functions | 63 |
+| Verified initializer and prefix-cleanup lifecycles | 14 |
+| Remaining indexed allocation-evidence gaps | 0 |
 | Aliasing contract | 437 / 437 functions classified; 0 unverified aliasing entries |
 | License | LGPL-3.0-or-later |
 
@@ -316,5 +328,6 @@ This repository contains a serious numerical implementation and substantial
 validation infrastructure. It is still pre-1.0 software. Correctness evidence
 is strongest for the domains exercised by the supplied exact, differential,
 randomized, special-value, and range tests. External review, broader platform
-coverage, long-running fuzzing, allocation-failure testing, and an ABI decision
-remain necessary before a production-maturity claim.
+coverage, long-running fuzzing, independent mathematical review and external replication
+remain necessary before a production-maturity claim. ABI epoch 1 is already
+governed on the supported baseline.

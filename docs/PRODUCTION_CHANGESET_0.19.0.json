@@ -1,0 +1,231 @@
+{
+  "added_files": [],
+  "baseline_manifest_sha256": "7de5dfd4787e4c2b97db5096d68491089f7d2df39ecc902003becfeda211a42b",
+  "baseline_version": "0.18.0",
+  "change_boundary": {
+    "assignment.c": "Reject empty text and invalid rounding; conservatively classify large exponents with significand size; correct directed underflow.",
+    "format.c": "Reject the unrepresentable absolute value of minimum signed dynamic width without overflow or buffer mutation.",
+    "object.c": "Exclude infinities from the finite-number predicate.",
+    "polyphase_chudnovsky_core.c": "Update release version metadata only.",
+    "random.c": "Stage five random endpoints and clean partially initialized scratch without rolling back RNG state.",
+    "remainder.c": "Make scalar unsigned remainder transactional and propagate working-context allocation errors.",
+    "round.c": "Stage precision changes and interval assignment; preserve external storage; correct directed sign reversal and error sentinel handling.",
+    "runtime_support.c": "Stage relative difference; clear partially initialized rounding scratch; validate signed custom kind safely.",
+    "special_bessel.c": "Correct parity, interval endpoint and factorial direction; bound finite order safely; enclose Airy coefficients.",
+    "special_common.c": "Provide private decreasing-Gamma and positive-tail interval helpers.",
+    "special_gamma.c": "Add exact integer identities, correct special values and flags, preserve reflection intervals and validate exact transforms.",
+    "special_internal.h": "Declare private enclosure helpers without changing public ABI.",
+    "special_misc.c": "Correct positive-tail majorants and transformed Li2 and zeta certificates.",
+    "transcendental_fast.c": "Initialize cleanup loop bound explicitly for warning hygiene without altering numerical logic."
+  },
+  "changed_files": [
+    "assignment.c",
+    "format.c",
+    "object.c",
+    "polyphase_chudnovsky_core.c",
+    "random.c",
+    "remainder.c",
+    "round.c",
+    "runtime_support.c",
+    "special_bessel.c",
+    "special_common.c",
+    "special_gamma.c",
+    "special_internal.h",
+    "special_misc.c",
+    "transcendental_fast.c"
+  ],
+  "files": {
+    "abi.c": {
+      "bytes": 4730,
+      "sha256": "87259fbda630b8ba2f584092ff5fe66a5fc51b94c8b664833005100385da2cdd"
+    },
+    "arithmetic.c": {
+      "bytes": 70929,
+      "sha256": "0d6e74805bce2d762bef181c695c267b02b3b8a80fa0eaeabbeb575805703ea5"
+    },
+    "arithmetic_root_transaction.c": {
+      "bytes": 34279,
+      "sha256": "edcb5c1bf3630935e48c7ec971e70642292abcf9bd5ddb5af590fd2251f0146d"
+    },
+    "arithmetic_variants.c": {
+      "bytes": 14025,
+      "sha256": "1de1ecfff1055a3d4177e6d593862990e3f9c0906acc624bf16dc06553cbee1e"
+    },
+    "assignment.c": {
+      "bytes": 71454,
+      "sha256": "0d736d4c9108254e5dac5ca56d05f836fcd26450a26be5d2980a108c87f74d19"
+    },
+    "conditional_formats.c": {
+      "bytes": 13445,
+      "sha256": "d7cbff6b7b5394a2cce5df146d50a295e92768b21e7d17d712efb989b41bfe93"
+    },
+    "constant_internal.h": {
+      "bytes": 2971,
+      "sha256": "994152cbcef4a61701566eacba07047cf92b9567a1e64536164fdf5a506fe50b"
+    },
+    "constant_log2.c": {
+      "bytes": 11582,
+      "sha256": "aa5c33c1b16968b5e3e049cd10c42654ee6f3aeea32c8c368f95014c49114b0a"
+    },
+    "constant_pi.c": {
+      "bytes": 10182,
+      "sha256": "f5fcd490fd170d697acba275f14d0e5ca2afac5bb15406544f24930c923f7793"
+    },
+    "constants.c": {
+      "bytes": 24314,
+      "sha256": "8011d0d220d8493a5ecc8a98f5234618fc4aec4059a6f1661d633a34890a98fe"
+    },
+    "context.c": {
+      "bytes": 19823,
+      "sha256": "e0e0f33c62ab6a3c4bb1e4a846ed379f90699576ca83ef882a7603c04d2fb1fa"
+    },
+    "divisor_plan.c": {
+      "bytes": 21043,
+      "sha256": "ea1f7263281b7c417842fd766d3e1d73d9235e10f56d4b60b53e6bc60f4b401f"
+    },
+    "format.c": {
+      "bytes": 42398,
+      "sha256": "e582b1ada00ca4e41a86460d043b005c5f96f214414e6e461094c0da1128f272"
+    },
+    "inverse_angle_fast.c": {
+      "bytes": 20983,
+      "sha256": "e55aec36c3579d25bc0e4531affbec47631c37768a6ac1fcb5aab54727cc9dca"
+    },
+    "io.c": {
+      "bytes": 18154,
+      "sha256": "c0bf74a29b02f31e9b03d8974224095bca55f10bde07e02de41a8d2ec4756185"
+    },
+    "limb_round.c": {
+      "bytes": 9840,
+      "sha256": "24e3c372e792343aad514139fc533bee297ba3f0e5b26e9aed73451b5c29cc3f"
+    },
+    "object.c": {
+      "bytes": 11186,
+      "sha256": "2d5ff7fb3bac634c3b62c7496c1a663fe542d55ba0a0586e8f227b89ab1c543d"
+    },
+    "polyphase_chudnovsky_core.c": {
+      "bytes": 155040,
+      "sha256": "e25f6622dd26d7ec65b4d941760a4f76c77df64324f908a1bfb724ff77e8a664"
+    },
+    "ppf_internal.h": {
+      "bytes": 10739,
+      "sha256": "b932e0a8148009186b8b9befa9466a19179e52e5d9786c90b8c88f848fa26b38"
+    },
+    "ppf_openmp_compat.h": {
+      "bytes": 980,
+      "sha256": "7f0a8e805e2599ee24aabf689205a649c64ae64f426bd699c779b297033c4864"
+    },
+    "ppf_product_profile_build.h": {
+      "bytes": 527,
+      "sha256": "99bc66dccc65533d6eb2b0a428e2d122889258061d24352f20f6f1e4ea443404"
+    },
+    "product_planner.c": {
+      "bytes": 5703,
+      "sha256": "cbf076ff9248e5e868793902452967d4289dfd1e2b712fc2f9e10293d49c9932"
+    },
+    "random.c": {
+      "bytes": 21647,
+      "sha256": "e48e238a0b21da1cbb150bb7f1411e0337cff064111ee269ac684b29622c1b36"
+    },
+    "range_flags.c": {
+      "bytes": 10596,
+      "sha256": "14602702a609201c5b3a71a5fb6582b8e6d46c75fb8bd937e890c10a538cb02d"
+    },
+    "remainder.c": {
+      "bytes": 12438,
+      "sha256": "2fbe3b7a9efe323776b3b0b848f6e44f27bb9932955cd7d84971cd2968d9e37f"
+    },
+    "result_transaction.c": {
+      "bytes": 9136,
+      "sha256": "72a5ad1892e7b74bb6c63b7e239f62778a8103d7c2dc74ec9e7de20fe07faf2d"
+    },
+    "roots.c": {
+      "bytes": 42803,
+      "sha256": "48b68f81c48bfbdd8c61d748446d03a385f444dcf76a1a096fe451539553c0ac"
+    },
+    "round.c": {
+      "bytes": 19570,
+      "sha256": "f4715385ebc390f889bcfa5d30a98b158449da16b4135a8edc6ec5f79d614027"
+    },
+    "runtime_support.c": {
+      "bytes": 13298,
+      "sha256": "126f5c0d431e30f825988ecccc2df90c13cdffe9db2c99ae61f8679b842e402d"
+    },
+    "special_bessel.c": {
+      "bytes": 24573,
+      "sha256": "a806b239e12313102f109fb168ccc879899217a807302dabd379a1d58db147db"
+    },
+    "special_common.c": {
+      "bytes": 27135,
+      "sha256": "604ffcf0e332bcbe48660c0e100f61be37519a6368359ccd0b0eaaadb55a5033"
+    },
+    "special_gamma.c": {
+      "bytes": 30975,
+      "sha256": "fc6a3cc6c14a382a892c868038fdeac57e725b743b4afe4466a82863c0a6f5e5"
+    },
+    "special_internal.h": {
+      "bytes": 4959,
+      "sha256": "42836b6e086d3a6af026fd68e92b2c081a4682bb10451a4c54247f0e3568fb87"
+    },
+    "special_misc.c": {
+      "bytes": 29506,
+      "sha256": "24835c6eb311b286baf41aecf9fe8cece82216c42dea46da43859b154de33e16"
+    },
+    "toom3.c": {
+      "bytes": 20028,
+      "sha256": "63049eac36d53dc4d378ea20467409bbd71000571af81114a6807c6e4c6bbb15"
+    },
+    "transactional_arithmetic_root_names.h": {
+      "bytes": 3333,
+      "sha256": "ae319b57d68897f1dd6158e4aaa0f1c5380f57a15eb2e43800e194b51721fbcc"
+    },
+    "transactional_impl_prototypes.h": {
+      "bytes": 15950,
+      "sha256": "ca247a1965346d0abbdb71d35868316a26776e8f91d283a55788251338e63e23"
+    },
+    "transactional_special_names.h": {
+      "bytes": 1237,
+      "sha256": "fe98c76ba09c332cacdeba5a0173693a343fc14eb2919b4792fb19778a85e2ed"
+    },
+    "transactional_transcendental_names.h": {
+      "bytes": 1511,
+      "sha256": "4c6d24d21e639c811b49a5909575c8704e6568a68d5fcfb6807ac60782714339"
+    },
+    "transactional_trig_names.h": {
+      "bytes": 1982,
+      "sha256": "4b3851de1a145bb685a0ea020a0237ad76517b816f156059c42a5459570ab261"
+    },
+    "transcendental.c": {
+      "bytes": 66566,
+      "sha256": "fcd5b99100ccd98f8e39a3a523a5c3c887039f041952b8546545848eed911898"
+    },
+    "transcendental_fast.c": {
+      "bytes": 140098,
+      "sha256": "fda13220586d151ba6269ea8740be4e1582f7b0003dd7afed3aca8f69d1a7d0b"
+    },
+    "transcendental_special_transaction.c": {
+      "bytes": 40905,
+      "sha256": "68040ae5f6861060bcc572fb35f650c42deb6697101e3e9e425f59e1f99602a9"
+    },
+    "trig_fast.c": {
+      "bytes": 82729,
+      "sha256": "8afeb9edcafdbdee10dbda6817e64f3687f519a96e6d31e3ead1dbca3d67334f"
+    },
+    "trig_hyperbolic.c": {
+      "bytes": 107383,
+      "sha256": "85e0a63d96ea76ecebc0c45c746a412d078dfa9128901468b35e864d19f7ad59"
+    },
+    "utilities.c": {
+      "bytes": 40065,
+      "sha256": "12b144e4f779a77e401d0b43d112ac91769a2c9d022ef58592704d93e476d621"
+    },
+    "window_product.c": {
+      "bytes": 8168,
+      "sha256": "c7543a413d8d7a5254792120278c88454dbbd7c7b0e8ab2d480dd887a0b60482"
+    }
+  },
+  "numerical_formula_changes": true,
+  "production_source_unchanged": false,
+  "removed_files": [],
+  "version": "0.19.0"
+}

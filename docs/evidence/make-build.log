@@ -1,0 +1,52 @@
+mkdir -p build/generated
+cp src/ppf_product_profile_build.h build/generated/ppf_product_profile_build.h
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/abi.c -o build/abi.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/context.c -o build/context.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/result_transaction.c -o build/result_transaction.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/arithmetic_root_transaction.c -o build/arithmetic_root_transaction.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/transcendental_special_transaction.c -o build/transcendental_special_transaction.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/object.c -o build/object.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/round.c -o build/round.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/limb_round.c -o build/limb_round.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/toom3.c -o build/toom3.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/window_product.c -o build/window_product.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/product_planner.c -o build/product_planner.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/arithmetic.c -o build/arithmetic.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/arithmetic_variants.c -o build/arithmetic_variants.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/assignment.c -o build/assignment.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/io.c -o build/io.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/format.c -o build/format.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/utilities.c -o build/utilities.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/remainder.c -o build/remainder.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/range_flags.c -o build/range_flags.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/roots.c -o build/roots.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/divisor_plan.c -o build/divisor_plan.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/constants.c -o build/constants.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/constant_pi.c -o build/constant_pi.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/constant_log2.c -o build/constant_log2.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/transcendental_fast.c -o build/transcendental_fast.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/transcendental.c -o build/transcendental.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/trig_fast.c -o build/trig_fast.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/inverse_angle_fast.c -o build/inverse_angle_fast.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/trig_hyperbolic.c -o build/trig_hyperbolic.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/special_common.c -o build/special_common.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/special_gamma.c -o build/special_gamma.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/special_misc.c -o build/special_misc.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/special_bessel.c -o build/special_bessel.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/runtime_support.c -o build/runtime_support.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/random.c -o build/random.o
+cc -Ibuild/generated -Iinclude -Isrc -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c src/conditional_formats.c -o build/conditional_formats.o
+mkdir -p lib
+cc -shared -Wl,-soname,libpolyphase_float.so.0 -Wl,--version-script=abi/polyphase_float.map -o lib/libpolyphase_float.so build/abi.o build/context.o build/result_transaction.o build/arithmetic_root_transaction.o build/transcendental_special_transaction.o build/object.o build/round.o build/limb_round.o build/toom3.o build/window_product.o build/product_planner.o build/arithmetic.o build/arithmetic_variants.o build/assignment.o build/io.o build/format.o build/utilities.o build/remainder.o build/range_flags.o build/roots.o build/divisor_plan.o build/constants.o build/constant_pi.o build/constant_log2.o build/transcendental_fast.o build/transcendental.o build/trig_fast.o build/inverse_angle_fast.o build/trig_hyperbolic.o build/special_common.o build/special_gamma.o build/special_misc.o build/special_bessel.o build/runtime_support.o build/random.o build/conditional_formats.o -pthread  -lgmp -lm
+ln -sf libpolyphase_float.so lib/libpolyphase_float.so.0
+mkdir -p bin
+cc -Ibuild/generated -Iinclude -Isrc -O2 -std=c11 -Wall -Wextra -Wpedantic tests/test_api_lifecycle_audit.c -Llib -lpolyphase_float -Wl,-rpath,'$ORIGIN/../lib' -pthread  -lgmp -lm -o bin/test_api_lifecycle_audit
+cc -Ibuild/generated -Iinclude -Isrc -O2 -std=c11 -Wall -Wextra -Wpedantic tests/test_precision_remainder_failure.c -Llib -lpolyphase_float -Wl,-rpath,'$ORIGIN/../lib' -pthread  -lgmp -lm -o bin/test_precision_remainder_failure
+cc -Ibuild/generated -Iinclude -Isrc   -O3  -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden  -DPPF_BUILD_SHARED -DPPF_BUILDING_LIBRARY -c adapter/mpfr_adapter.c -o build/mpfr_adapter.o
+cc -shared -Wl,-soname,libpolyphase_float_mpfr.so.0 -Wl,--version-script=abi/polyphase_float_mpfr.map -o lib/libpolyphase_float_mpfr.so build/mpfr_adapter.o -Llib -lpolyphase_float -pthread  -lmpfr -lgmp  -lgmp -lm
+ln -sf libpolyphase_float_mpfr.so lib/libpolyphase_float_mpfr.so.0
+cc -Ibuild/generated -Iinclude -Isrc   -O2 -std=c11 -Wall -Wextra -Wpedantic tests/test_special_edge_audit.c -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$ORIGIN/../lib' -pthread  -lmpfr -lgmp  -lgmp -lm -o bin/test_special_edge_audit
+ar rcs lib/libpolyphase_float_mpfr.a build/mpfr_adapter.o
+ar rcs lib/libpolyphase_float.a build/abi.o build/context.o build/result_transaction.o build/arithmetic_root_transaction.o build/transcendental_special_transaction.o build/object.o build/round.o build/limb_round.o build/toom3.o build/window_product.o build/product_planner.o build/arithmetic.o build/arithmetic_variants.o build/assignment.o build/io.o build/format.o build/utilities.o build/remainder.o build/range_flags.o build/roots.o build/divisor_plan.o build/constants.o build/constant_pi.o build/constant_log2.o build/transcendental_fast.o build/transcendental.o build/trig_fast.o build/inverse_angle_fast.o build/trig_hyperbolic.o build/special_common.o build/special_gamma.o build/special_misc.o build/special_bessel.o build/runtime_support.o build/random.o build/conditional_formats.o
+cc -Ibuild/generated -Iinclude -Isrc   -O2 -std=c11 -Wall -Wextra -Wpedantic tests/test_special_interval_audit.c lib/libpolyphase_float_mpfr.a lib/libpolyphase_float.a -pthread  -lmpfr -lgmp  -lgmp -lm -o bin/test_special_interval_audit
+cc -Ibuild/generated -Iinclude -Isrc   -O2 -std=c11 -Wall -Wextra -Wpedantic tests/test_independent_special_review.c -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$ORIGIN/../lib' -pthread  -lmpfr -lgmp  -lgmp -lm -o bin/test_independent_special_review

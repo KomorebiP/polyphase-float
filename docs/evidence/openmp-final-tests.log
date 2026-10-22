@@ -1,0 +1,142 @@
+Test project /workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-openmp
+      Start  1: object_model
+      Start  2: allocation_failure
+      Start  3: io_allocation_failure
+ 1/64 Test  #3: io_allocation_failure .......................   Passed    0.01 sec
+      Start  4: constant_allocation_failure
+ 2/64 Test  #1: object_model ................................   Passed    0.03 sec
+      Start  5: transcendental_special_allocation_failure
+ 3/64 Test  #2: allocation_failure ..........................   Passed    0.06 sec
+      Start  6: arithmetic_root_allocation_failure
+ 4/64 Test  #6: arithmetic_root_allocation_failure ..........   Passed    0.03 sec
+      Start  8: format_errno
+ 5/64 Test  #8: format_errno ................................   Passed    0.00 sec
+      Start  9: product_profile
+ 6/64 Test  #9: product_profile .............................   Passed    0.10 sec
+      Start 10: abi_runtime
+ 7/64 Test #10: abi_runtime .................................   Passed    0.01 sec
+      Start 11: semantic_surface
+ 8/64 Test #11: semantic_surface ............................   Passed    0.02 sec
+      Start 12: aliasing_matrix
+ 9/64 Test #12: aliasing_matrix .............................   Passed    1.64 sec
+      Start 13: api_lifecycle_audit
+10/64 Test #13: api_lifecycle_audit .........................   Passed    0.98 sec
+      Start 14: precision_remainder_failure
+11/64 Test #14: precision_remainder_failure .................   Passed    0.01 sec
+      Start 15: special_edge_audit
+12/64 Test  #4: constant_allocation_failure .................   Passed    5.38 sec
+      Start 16: independent_special_review
+13/64 Test #15: special_edge_audit ..........................   Passed    2.62 sec
+      Start 17: special_interval_audit
+14/64 Test #17: special_interval_audit ......................   Passed    0.21 sec
+      Start 18: mpfr_adapter
+15/64 Test #18: mpfr_adapter ................................   Passed    0.01 sec
+      Start 19: mpfr_type_model
+16/64 Test #19: mpfr_type_model .............................   Passed    0.00 sec
+      Start 20: arithmetic_range
+17/64 Test #20: arithmetic_range ............................   Passed    0.00 sec
+      Start 21: arithmetic_special
+18/64 Test #21: arithmetic_special ..........................   Passed    0.00 sec
+      Start 22: arithmetic
+19/64 Test #22: arithmetic ..................................   Passed    0.05 sec
+      Start 23: arithmetic_variants
+20/64 Test #23: arithmetic_variants .........................   Passed    0.04 sec
+      Start 24: assignment_conversion
+21/64 Test #24: assignment_conversion .......................   Passed    0.12 sec
+      Start 25: io
+22/64 Test #25: io ..........................................   Passed    0.03 sec
+      Start 26: format
+23/64 Test #26: format ......................................   Passed    0.04 sec
+      Start 27: utilities
+24/64 Test #27: utilities ...................................   Passed    0.10 sec
+      Start 28: utilities_remainder
+25/64 Test #28: utilities_remainder .........................   Passed    0.32 sec
+      Start 29: range_flags
+26/64 Test #29: range_flags .................................   Passed    0.01 sec
+      Start 30: roots
+27/64 Test #30: roots .......................................   Passed    0.50 sec
+      Start 31: divisor_plan
+28/64 Test #31: divisor_plan ................................   Passed    0.09 sec
+      Start 32: product_planner
+29/64 Test #16: independent_special_review ..................   Passed    2.52 sec
+      Start 33: constants
+30/64 Test #33: constants ...................................   Passed    2.03 sec
+      Start 34: transcendental_complete
+31/64 Test #34: transcendental_complete .....................   Passed    0.13 sec
+      Start 35: transcendental_range
+32/64 Test #35: transcendental_range ........................   Passed    0.00 sec
+      Start 36: transcendental_random
+33/64 Test #36: transcendental_random .......................   Passed    0.23 sec
+      Start 37: transcendental_large
+34/64 Test #37: transcendental_large ........................   Passed    0.13 sec
+      Start 38: trig_hyperbolic
+35/64 Test #38: trig_hyperbolic .............................   Passed    0.16 sec
+      Start 39: trig_hyperbolic_special
+36/64 Test #39: trig_hyperbolic_special .....................   Passed    0.03 sec
+      Start 40: trig_hyperbolic_alias
+37/64 Test #40: trig_hyperbolic_alias .......................   Passed    0.01 sec
+      Start 41: trig_hyperbolic_random
+38/64 Test #41: trig_hyperbolic_random ......................   Passed    7.96 sec
+      Start 42: trig_hyperbolic_large
+39/64 Test #42: trig_hyperbolic_large .......................   Passed    0.08 sec
+      Start 43: special_functions
+40/64 Test #43: special_functions ...........................   Passed    7.05 sec
+      Start 44: special_values
+41/64 Test #44: special_values ..............................   Passed    0.03 sec
+      Start 45: special_faithful
+42/64 Test #45: special_faithful ............................   Passed    0.11 sec
+      Start 46: special_constants
+43/64 Test #46: special_constants ...........................   Passed    0.10 sec
+      Start 47: special_alias
+44/64 Test #47: special_alias ...............................   Passed    0.09 sec
+      Start 48: special_random
+45/64 Test #48: special_random ..............................   Passed    2.28 sec
+      Start 49: special_large
+46/64 Test #49: special_large ...............................   Passed    0.99 sec
+      Start 50: runtime_support
+47/64 Test #50: runtime_support .............................   Passed    0.02 sec
+      Start 51: random_runtime
+48/64 Test #51: random_runtime ..............................   Passed    0.10 sec
+      Start 52: conditional_formats
+49/64 Test #32: product_planner .............................   Passed   24.64 sec
+      Start 53: exhaustive_small
+50/64 Test #53: exhaustive_small ............................   Passed    0.15 sec
+      Start 54: install_packaging
+51/64 Test #52: conditional_formats .........................   Passed   13.32 sec
+      Start 55: product_profile_generator
+52/64 Test #55: product_profile_generator ...................   Passed    0.59 sec
+      Start 56: semantic_contract_current
+53/64 Test #56: semantic_contract_current ...................   Passed   10.46 sec
+      Start 57: semantic_contract_policy
+54/64 Test #54: install_packaging ...........................   Passed   27.16 sec
+      Start 58: aliasing_contract_current
+55/64 Test #57: semantic_contract_policy ....................   Passed    8.92 sec
+      Start 59: aliasing_contract_policy
+56/64 Test #58: aliasing_contract_current ...................   Passed    8.99 sec
+      Start 60: abi_contract_current
+57/64 Test #60: abi_contract_current ........................   Passed    0.10 sec
+      Start 61: abi_contract_compatibility
+58/64 Test #61: abi_contract_compatibility ..................   Passed    0.07 sec
+      Start 62: abi_contract_previous_release
+59/64 Test #62: abi_contract_previous_release ...............   Passed    0.08 sec
+      Start 63: abi_layout_compatibility
+60/64 Test #63: abi_layout_compatibility ....................   Passed    0.09 sec
+      Start 64: abi_exports
+61/64 Test #64: abi_exports .................................   Passed    0.09 sec
+62/64 Test #59: aliasing_contract_policy ....................   Passed    8.84 sec
+63/64 Test  #5: transcendental_special_allocation_failure ...   Passed   98.32 sec
+      Start  7: thread_safety
+64/64 Test  #7: thread_safety ...............................   Passed    0.34 sec
+
+100% tests passed out of 64
+
+Label Time Summary:
+aliasing     =  17.84 sec*proc (2 tests)
+extended     =  11.82 sec*proc (7 tests)
+fast         = 122.68 sec*proc (51 tests)
+hardening    = 149.76 sec*proc (22 tests)
+packaging    =  27.16 sec*proc (1 test)
+semantic     = 143.62 sec*proc (12 tests)
+threading    =   0.34 sec*proc (1 test)
+
+Total Test time (real) =  98.70 sec

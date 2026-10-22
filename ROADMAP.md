@@ -35,7 +35,14 @@
 - [ ] establish sustained fuzzing and permanent regression-corpus governance
 - [x] generate a complete indexed semantic, ownership, limit, and gap matrix for every core export in 0.13.0
 - [x] close the individual aliasing gaps recorded by that matrix in 0.14.0
-- [ ] close or explicitly delimit the remaining 81 allocation-atomicity gaps recorded by that matrix
+- [x] close the 79 indexed allocation-evidence entries through reviewed allocation-free, initializer, prefix-cleanup and transaction contracts in 0.20.0
+
+## Deep audit completed in 0.19.0
+
+- [x] regressions for confirmed rounding, parsing, exceptional-value, interval, and resource defects
+- [x] relocated multiarch package consumers and explicit core/MPFR components
+- [x] allocation evidence classified by tested endpoints, with setup calls excluded
+- [x] fresh compiler, differential, sanitizer, ABI, and bounded fuzz evidence recorded
 
 ## Numerical validation blocks
 

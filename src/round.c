@@ -59,7 +59,8 @@ static int set_overflow(ppf_t *rop, int sign, ppf_rnd_t rnd,
     else infinity = 0; /* toward zero and faithful use max finite */
 
     if (infinity) ppf_set_inf(rop, sign);
-    else if (ppf_set_max_finite(rop, sign, ctx) != 0) return 0;
+    else if (ppf_set_max_finite(rop, sign, ctx) != 0)
+        return PPF_TERNARY_ERROR;
     ppf_raise(ctx, PPF_FLAG_OVERFLOW | PPF_FLAG_INEXACT);
     if (sign > 0) return infinity ? 1 : -1;
     return infinity ? -1 : 1;
@@ -80,7 +81,8 @@ static int set_underflow(ppf_t *rop, mpz_srcptr magnitude,
     }
 
     if (minimum) {
-        if (ppf_set_min_normal(rop, sign, ctx) != 0) return 0;
+        if (ppf_set_min_normal(rop, sign, ctx) != 0)
+            return PPF_TERNARY_ERROR;
     } else {
         ppf_set_zero(rop, sign);
     }
@@ -103,7 +105,7 @@ int ppf_set_z_2exp(ppf_t *rop, mpz_srcptr value,
     if (!rop || !value || !ctx || !ppf_rounding_valid(rnd) ||
         !ppf_precision_valid(rop->precision)) {
         if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
-        return 0;
+        return PPF_TERNARY_ERROR;
     }
     if (mpz_sgn(value) == 0) {
         ppf_set_zero(rop, 1);
@@ -164,7 +166,7 @@ int ppf_set_z_2exp(ppf_t *rop, mpz_srcptr value,
         ppf_prec_t wide_shift = (ppf_prec_t)bits - rop->precision;
         if (wide_shift > ULONG_MAX) {
             ppf_raise(ctx, PPF_FLAG_ERANGE);
-            ternary = 0;
+            ternary = PPF_TERNARY_ERROR;
             goto done;
         }
         shift = (unsigned long)wide_shift;
@@ -194,7 +196,7 @@ int ppf_set_z_2exp(ppf_t *rop, mpz_srcptr value,
 
     if (ppf_store_normalized_mpz(rop, quotient, rounded_exp, sign) != 0) {
         ppf_raise(ctx, PPF_FLAG_ERANGE);
-        ternary = 0;
+        ternary = PPF_TERNARY_ERROR;
         goto done;
     }
     if (!inexact) {
@@ -241,7 +243,11 @@ int ppf_set(ppf_t *rop, const ppf_t *op,
     ppf_exp_t e;
     int t;
     ctx = ppf_resolve_context(ctx);
-    if (!rop || !op || !ctx) return 0;
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !op || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     if (rop == op) return 0;
     if (ppf_nan_p(op)) {
         ppf_set_nan(rop, op->sign);
@@ -261,7 +267,7 @@ int ppf_set(ppf_t *rop, const ppf_t *op,
         size_t bytes = op->used_limbs * sizeof(mp_limb_t);
         if (ppf_reserve(rop, rop->precision) != 0) {
             ppf_raise(ctx, PPF_FLAG_ERANGE);
-            return 0;
+            return PPF_TERNARY_ERROR;
         }
         memcpy(rop->limbs, op->limbs, bytes);
         rop->used_limbs = op->used_limbs;
@@ -279,43 +285,70 @@ int ppf_set(ppf_t *rop, const ppf_t *op,
 
 int ppf_prec_round(ppf_t *x, ppf_prec_t precision,
                    ppf_rnd_t rnd, ppf_context_t *ctx) {
-    mpz_t z;
-    ppf_exp_t e;
-    int t;
-    ppf_kind_t kind;
-    int sign;
-    if (!x || !ppf_precision_valid(precision)) return 0;
+    ppf_t staged;
+    size_t limbs;
+    int t = 0;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!x || !ctx || !ppf_validate(x) ||
+        !ppf_precision_valid(precision) || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     if (precision == x->precision) return 0;
-    kind = x->kind;
-    sign = x->sign;
-    if (kind != PPF_KIND_REGULAR) {
-        if (ppf_set_prec(x, precision) != 0) return 0;
-        if (kind == PPF_KIND_ZERO) ppf_set_zero(x, sign);
-        else if (kind == PPF_KIND_INF) ppf_set_inf(x, sign);
-        else ppf_set_nan(x, sign);
-        return 0;
+    if (x->storage_flags & PPF_STORAGE_EXTERNAL) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
     }
-    mpz_init(z);
-    e = ppf_get_z_2exp(z, x);
-    if (ppf_set_prec(x, precision) != 0) {
-        mpz_clear(z);
-        return 0;
+
+    /* Round independently before changing either precision or ownership.
+       Only the final reserve can alter x's allocation; the remaining commit
+       is fixed-size copying and cannot fail. */
+    if (ppf_init2_ctx(&staged, precision, ctx) != 0)
+        return PPF_TERNARY_ERROR;
+    if (ppf_regular_p(x)) t = ppf_set(&staged, x, rnd, ctx);
+    else if (ppf_zero_p(x)) ppf_set_zero(&staged, x->sign);
+    else if (ppf_inf_p(x)) ppf_set_inf(&staged, x->sign);
+    else ppf_set_nan(&staged, x->sign);
+    if (t == PPF_TERNARY_ERROR) {
+        ppf_clear(&staged);
+        return t;
     }
-    t = ppf_set_z_2exp(x, z, e, rnd, ctx);
-    mpz_clear(z);
+    if (ppf_reserve(x, precision) != 0) {
+        ppf_clear(&staged);
+        ppf_raise(ctx, PPF_FLAG_ALLOC);
+        return PPF_TERNARY_ERROR;
+    }
+    limbs = ppf_limbs_for_precision(precision);
+    memset(x->limbs, 0, x->allocated_limbs * sizeof(*x->limbs));
+    memcpy(x->limbs, staged.limbs, limbs * sizeof(*x->limbs));
+    x->precision = precision;
+    x->used_limbs = staged.used_limbs;
+    x->exponent = staged.exponent;
+    x->sign = staged.sign;
+    x->kind = staged.kind;
+    ppf_clear(&staged);
     return t;
 }
 
 int ppf_neg(ppf_t *rop, const ppf_t *op,
             ppf_rnd_t rnd, ppf_context_t *ctx) {
     int t;
-    if (!rop || !op) return 0;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !op || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     if (rop == op) {
         rop->sign = -rop->sign;
         if (ppf_nan_p(rop)) ppf_raise(ctx, PPF_FLAG_NAN);
         return 0;
     }
+    if (rnd == PPF_RNDU) rnd = PPF_RNDD;
+    else if (rnd == PPF_RNDD) rnd = PPF_RNDU;
     t = ppf_set(rop, op, rnd, ctx);
+    if (t == PPF_TERNARY_ERROR) return t;
     rop->sign = -rop->sign;
     return -t;
 }
@@ -323,9 +356,19 @@ int ppf_neg(ppf_t *rop, const ppf_t *op,
 int ppf_abs(ppf_t *rop, const ppf_t *op,
             ppf_rnd_t rnd, ppf_context_t *ctx) {
     int source_sign, t;
-    if (!rop || !op) return 0;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !op || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     source_sign = op->sign;
+    if (source_sign < 0) {
+        if (rnd == PPF_RNDU) rnd = PPF_RNDD;
+        else if (rnd == PPF_RNDD) rnd = PPF_RNDU;
+    }
     t = ppf_set(rop, op, rnd, ctx);
+    if (t == PPF_TERNARY_ERROR) return t;
     rop->sign = 1;
     return source_sign < 0 ? -t : t;
 }
@@ -442,16 +485,24 @@ ppf_interval_status_t ppf_set_dyadic_interval(
     ppf_context_t *ctx) {
     ppf_t lo, hi;
     ppf_context_t lo_ctx, hi_ctx;
-    int tlo, thi, cmp_lo, cmp_hi, rc = PPF_INTERVAL_ERROR;
+    int tlo, thi, cmp_lo, cmp_hi, selected_ternary = 0;
+    int rc = PPF_INTERVAL_ERROR;
     int lo_initialized = 0, hi_initialized = 0;
     ppf_flags_t original;
     memset(&lo, 0, sizeof(lo));
     memset(&hi, 0, sizeof(hi));
-    if (!rop || !lower || !upper || mpz_cmp(lower, upper) > 0) return rc;
     ctx = ppf_resolve_context(ctx);
     if (!ctx) return rc;
+    if (!rop || !lower || !upper || !ppf_validate(rop) ||
+        mpz_cmp(lower, upper) > 0) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return (ppf_interval_status_t)rc;
+    }
     if (rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
-    if (!ppf_rounding_valid(rnd)) return rc;
+    if (!ppf_rounding_valid(rnd)) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return (ppf_interval_status_t)rc;
+    }
     original = ctx->flags;
     if (ppf_context_clone(&lo_ctx, ctx) != 0) return rc;
     if (ppf_context_clone(&hi_ctx, ctx) != 0) {
@@ -476,8 +527,10 @@ ppf_interval_status_t ppf_set_dyadic_interval(
     hi_initialized = 1;
     tlo = ppf_set_z_2exp(&lo, lower, exponent, rnd, &lo_ctx);
     thi = ppf_set_z_2exp(&hi, upper, exponent, rnd, &hi_ctx);
-    (void)tlo;
-    (void)thi;
+    if (tlo == PPF_TERNARY_ERROR || thi == PPF_TERNARY_ERROR) {
+        ctx->flags = original | lo_ctx.flags | hi_ctx.flags;
+        goto done;
+    }
     if (!ppf_same_value(&lo, &hi)) {
         rc = PPF_INTERVAL_UNDECIDED;
         goto done;
@@ -485,16 +538,23 @@ ppf_interval_status_t ppf_set_dyadic_interval(
     cmp_lo = ppf_compare_exact_to_object(lower, exponent, &lo);
     cmp_hi = ppf_compare_exact_to_object(upper, exponent, &lo);
     if (cmp_hi < 0) {
-        if (ternary) *ternary = 1;
+        selected_ternary = 1;
     } else if (cmp_lo > 0) {
-        if (ternary) *ternary = -1;
+        selected_ternary = -1;
     } else if (mpz_cmp(lower, upper) == 0 && cmp_lo == 0) {
-        if (ternary) *ternary = 0;
+        selected_ternary = 0;
     } else {
         rc = PPF_INTERVAL_UNDECIDED;
         goto done;
     }
-    ppf_swap(rop, &lo);
+    /* Both endpoints and the initialized destination have the same precision.
+       Copying the decided value therefore needs no allocation and preserves
+       caller-managed significand storage and allocator provenance. */
+    if (ppf_set(rop, &lo, PPF_RNDN, ctx) == PPF_TERNARY_ERROR) {
+        ctx->flags |= original | lo_ctx.flags | hi_ctx.flags;
+        goto done;
+    }
+    if (ternary) *ternary = selected_ternary;
     ctx->flags = original | lo_ctx.flags | hi_ctx.flags;
     rc = PPF_INTERVAL_DECIDED;
 

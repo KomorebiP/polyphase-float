@@ -1,0 +1,8 @@
+{
+  "baseline_output": "ppf_t=88 context=88 exact=121932631112635380 pi=3.1415926535897931 plan=1/4/1",
+  "consumer_needed_soname": true,
+  "current_output": "ppf_t=88 context=88 exact=121932631112635380 pi=3.1415926535897931 plan=1/4/1",
+  "outputs_equal": true,
+  "passed": true,
+  "schema_version": 1
+}

@@ -130,6 +130,21 @@ $(ADAPTER_SHARED): $(ADAPTER_OBJECT) $(CORE_SHARED) abi/polyphase_float_mpfr.map
 $(ADAPTER_STATIC): $(ADAPTER_OBJECT) | lib
 	$(AR) rcs $@ $^
 
+bin/test_api_lifecycle_audit: tests/test_api_lifecycle_audit.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_precision_remainder_failure: tests/test_precision_remainder_failure.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_special_edge_audit: tests/test_special_edge_audit.c $(ADAPTER_SHARED) | bin
+	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
+
+bin/test_independent_special_review: tests/test_independent_special_review.c tests/test_special_edge_audit.c $(ADAPTER_SHARED) | bin
+	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
+
+bin/test_special_interval_audit: tests/test_special_interval_audit.c $(ADAPTER_STATIC) $(CORE_STATIC) | bin
+	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< $(ADAPTER_STATIC) $(CORE_STATIC) $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
+
 bin/test_object: tests/test_object.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
 
@@ -138,6 +153,15 @@ bin/test_allocation_failure: tests/test_allocation_failure.c $(CORE_SHARED) | bi
 
 bin/test_io_allocation_failure: tests/test_io_allocation_failure.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_fpif_resource_bounds: tests/test_fpif_resource_bounds.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_allocation_completion: tests/test_allocation_completion.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_release_boundaries: tests/test_release_boundaries.c tests/test_special_edge_audit.c $(ADAPTER_STATIC) $(CORE_STATIC) | bin
+	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< $(ADAPTER_STATIC) $(CORE_STATIC) $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
 
 bin/test_constant_allocation_failure: tests/test_constant_allocation_failure.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
@@ -289,7 +313,15 @@ bin/benchmark_runtime_completion: benchmarks/benchmark_runtime_completion.c $(AD
 bin/benchmark_object: benchmarks/benchmark_object.c $(ADAPTER_SHARED) | bin
 	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O3 -march=native -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
 
-test: bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_abi_runtime bin/test_semantic_surface bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities bin/test_utilities_remainder bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats
+test: bin/test_allocation_completion bin/test_release_boundaries bin/test_fpif_resource_bounds bin/test_independent_special_review bin/test_api_lifecycle_audit bin/test_precision_remainder_failure bin/test_special_edge_audit bin/test_special_interval_audit bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_abi_runtime bin/test_semantic_surface bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities bin/test_utilities_remainder bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats
+	./bin/test_allocation_completion
+	./bin/test_release_boundaries
+	./bin/test_fpif_resource_bounds
+	./bin/test_independent_special_review
+	./bin/test_api_lifecycle_audit
+	./bin/test_precision_remainder_failure
+	./bin/test_special_edge_audit
+	./bin/test_special_interval_audit
 	./bin/test_object
 	./bin/test_allocation_failure
 	./bin/test_io_allocation_failure
@@ -352,7 +384,7 @@ abi-check: $(CORE_SHARED) $(ADAPTER_SHARED) bin/test_abi_runtime bin/abi_layout_
 	./bin/test_abi_runtime
 	python3 tools/abi_contract.py verify --root . --contract abi/contract-v1.json
 	python3 tools/abi_contract.py compare --baseline abi/baselines/0.11.0-contract.json --current abi/contract-v1.json
-	python3 tools/abi_contract.py compare --baseline abi/baselines/0.17.0-contract.json --current abi/contract-v1.json
+	python3 tools/abi_contract.py compare --baseline abi/baselines/0.19.0-contract.json --current abi/contract-v1.json
 	python3 tools/abi_layout_compare.py --probe ./bin/abi_layout_probe --baseline abi/baselines/0.11.0-linux-x86_64-lp64-gmp64-layout.json --skip-model-mismatch
 	python3 tools/abi_exports.py --root . --core-library $(CORE_SHARED) --adapter-library $(ADAPTER_SHARED) $(if $(filter 1,$(PPF_ELF_SYMBOL_VERSIONING_ENABLED)),--require-versions,)
 
@@ -489,7 +521,7 @@ bin/example_runtime_completion: examples/runtime_completion.c $(CORE_SHARED) | b
 
 examples: bin/example_basic bin/example_mpfr_bridge bin/example_arithmetic bin/example_assignment_conversion bin/example_utilities_remainder bin/example_range_roots_division bin/example_constants bin/example_transcendentals bin/example_trig_hyperbolic bin/example_special_functions bin/example_io_formatting bin/example_arithmetic_completion bin/example_runtime_completion
 
-VERSION ?= 0.18.0
+VERSION ?= 0.20.0
 SOVERSION ?= 0
 DOCDIR ?= $(PREFIX)/share/doc/PolyphaseFloat
 
@@ -512,6 +544,8 @@ install: all polyphase-float.pc
 	install -m 0644 $(CORE_STATIC) $(ADAPTER_STATIC) $(DESTDIR)$(LIBDIR)/
 	install -m 0644 polyphase-float.pc $(DESTDIR)$(PKGCONFIGDIR)/
 	install -m 0644 README.md LICENSE.md LICENSE COPYING AUTHORS.md THIRD_PARTY_NOTICES.md ROADMAP.md docs/ABI_POLICY.md docs/ABI_STABILITY_VALIDATION_0.12.0.md docs/ABI_STABILITY_RELEASE_REPORT_0.12.0.md docs/ABI_COMPATIBILITY_0.14.0.md docs/ABI_COMPATIBILITY_0.15.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.15.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.15.0.md docs/ALIASING_CONTRACT_0.15.0.md docs/ALIASING_CONTRACT_VALIDATION_0.15.0.md docs/IO_ALLOCATION_CONTRACT_0.15.0.md docs/IO_ALLOCATION_HARDENING_VALIDATION_0.15.0.md docs/COMPLETION_STATUS_0.15.0.md docs/PRODUCTION_CHANGESET_0.15.0.json docs/ABI_COMPATIBILITY_0.16.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.16.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.16.0.md docs/ALIASING_CONTRACT_0.16.0.md docs/ALIASING_CONTRACT_VALIDATION_0.16.0.md docs/CONSTANT_ALLOCATION_CONTRACT_0.16.0.md docs/CONSTANT_ALLOCATION_HARDENING_VALIDATION_0.16.0.md docs/COMPLETION_STATUS_0.16.0.md docs/PRODUCTION_CHANGESET_0.16.0.json docs/ABI_COMPATIBILITY_0.17.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.17.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.17.0.md docs/ALIASING_CONTRACT_0.17.0.md docs/ALIASING_CONTRACT_VALIDATION_0.17.0.md docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_CONTRACT_0.17.0.md docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_HARDENING_VALIDATION_0.17.0.md docs/COMPLETION_STATUS_0.17.0.md docs/PRODUCTION_CHANGESET_0.17.0.json docs/ABI_COMPATIBILITY_0.18.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.18.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.18.0.md docs/ALIASING_CONTRACT_0.18.0.md docs/ALIASING_CONTRACT_VALIDATION_0.18.0.md docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_CONTRACT_0.18.0.md docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md docs/COMPLETION_STATUS_0.18.0.md docs/PRODUCTION_CHANGESET_0.18.0.json $(DESTDIR)$(DOCDIR)/
+	install -m 0644 docs/COMPLETION_SCOPE_0.20.0.md docs/ALLOCATION_COMPLETION_0.20.0.md docs/BRANCH_REVIEW_0.20.0.md docs/FPIF_RESOURCE_CONTRACT.md docs/QUALIFICATION.md docs/ABI_COMPATIBILITY_0.20.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.20.0.md docs/ALIASING_CONTRACT_0.20.0.md docs/PRODUCTION_CHANGESET_0.20.0.json $(DESTDIR)$(DOCDIR)/
+	install -m 0644 docs/DEEP_AUDIT_0.19.0.md docs/COMPLETION_SCOPE_0.19.0.md docs/API_LIFECYCLE_AUDIT_0.19.0.md docs/NUMERICAL_EDGE_AUDIT_2026-10-09.md docs/ABI_COMPATIBILITY_0.19.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.19.0.md docs/ALIASING_CONTRACT_0.19.0.md docs/PRODUCTION_CHANGESET_0.19.0.json $(DESTDIR)$(DOCDIR)/
 	install -m 0644 semantics/contract-v1.json semantics/function-matrix-v1.csv semantics/aliasing-contract-v1.json semantics/aliasing-matrix-v1.csv $(DESTDIR)$(DOCDIR)/semantics/
 	install -m 0644 abi/contract-v1.json $(DESTDIR)$(DOCDIR)/abi/
 

@@ -308,27 +308,44 @@ int ppf_remquo(ppf_t *rop, long *quotient_bits,
 int ppf_fmod_ui(ppf_t *rop, const ppf_t *x, unsigned long y,
                 ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_context_t wide;
-    ppf_t denominator;
+    ppf_t denominator = {0};
+    ppf_result_transaction_t tx;
     ppf_prec_t p = PPF_PREC_MIN;
     unsigned long temp = y;
     int t;
     ctx = ppf_resolve_context(ctx);
-    if (!ctx) return remainder_error(rop, ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !x || !ctx || !ppf_rounding_valid(rnd))
+        return remainder_error(rop, ctx);
+    if (ppf_result_transaction_begin_inline_internal(&tx, rop, ctx) != 0)
+        return PPF_TERNARY_ERROR;
     while (temp) { ++p; temp >>= 1; }
     if (p < PPF_PREC_MIN) p = PPF_PREC_MIN;
-    if (ppf_context_clone(&wide, ctx) != 0)
-        return remainder_error(rop, ctx);
+    if (ppf_context_clone(&wide, ctx) != 0) {
+        ppf_result_transaction_abort_internal(&tx);
+        return PPF_TERNARY_ERROR;
+    }
     wide.emin = PPF_EMIN_MIN;
     wide.emax = PPF_EMAX_MAX;
     wide.flags = 0;
     if (ppf_init2_ctx(&denominator, p, &wide) != 0) {
+        ppf_raise(ctx, wide.flags & PPF_FLAG_ALLOC);
         ppf_context_clear(&wide);
-        return remainder_error(rop, ctx);
+        return ppf_result_transaction_finish_internal(
+            &tx, rop, PPF_TERNARY_ERROR);
     }
     if (y == 0) ppf_set_zero(&denominator, 1);
-    else (void)ppf_set_ui(&denominator, y, PPF_RNDN, &wide);
-    t = ppf_fmod(rop, x, &denominator, rnd, ctx);
+    else if (ppf_set_ui(&denominator, y, PPF_RNDN, &wide) ==
+             PPF_TERNARY_ERROR) {
+        ppf_raise(ctx, wide.flags & (PPF_FLAG_ALLOC | PPF_FLAG_ERANGE));
+        ppf_clear(&denominator);
+        ppf_context_clear(&wide);
+        ppf_result_transaction_abort_internal(&tx);
+        return PPF_TERNARY_ERROR;
+    }
+    t = ppf_fmod(&tx.staged, x, &denominator, rnd, ctx);
+    ppf_raise(ctx, wide.flags & PPF_FLAG_ALLOC);
     ppf_clear(&denominator);
     ppf_context_clear(&wide);
-    return t;
+    return ppf_result_transaction_finish_internal(&tx, rop, t);
 }

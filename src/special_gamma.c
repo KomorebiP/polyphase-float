@@ -62,8 +62,8 @@ static int gamma_sign_exact(const ppf_t *x,int *sign,ppf_context_t *ctx){
     return ok;
 }
 
-static int lgamma_positive_interval(ppf_special_iv_t *out,const ppf_t *x,
-                                    ppf_prec_t work,ppf_context_t *ctx){
+static int lgamma_positive_input_interval(ppf_special_iv_t *out,const ppf_special_iv_t *x,
+                                          ppf_prec_t work,ppf_context_t *ctx){
     ppf_special_iv_t z,lnz,half,zmhalf,base,term,partial,candidate,next,z2,power,
                      coeff,shift_sum,tmp,twopi,pi,one;
     mpq_t *B=NULL;unsigned maxm=0;int rc=-1;unsigned long shift=0;
@@ -76,7 +76,7 @@ static int lgamma_positive_interval(ppf_special_iv_t *out,const ppf_t *x,
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(z);INIT(lnz);INIT(half);INIT(zmhalf);INIT(base);INIT(term);INIT(partial);INIT(candidate);INIT(next);INIT(z2);INIT(power);INIT(coeff);INIT(shift_sum);INIT(tmp);INIT(twopi);INIT(pi);INIT(one);
 #undef INIT
-    if(ppf_special_iv_set_exact(&z,x,ctx)||ppf_special_iv_set_ui(&shift_sum,0,ctx))goto done;
+    if(ppf_special_iv_copy(&z,x,ctx)||ppf_special_iv_set_ui(&shift_sum,0,ctx))goto done;
     {
         unsigned long threshold=(unsigned long)(work/8u+12u);if(threshold<16)threshold=16;if(threshold>100000)threshold=100000;
         while(ppf_cmp_ui(&z.lo,threshold,ctx)<0){
@@ -102,21 +102,34 @@ done:
     if(B){ppf_special_bernoulli_clear(B,2u*maxm);ppf_owned_buffer_free_internal(B);}ppf_special_iv_clear(&z);ppf_special_iv_clear(&lnz);ppf_special_iv_clear(&half);ppf_special_iv_clear(&zmhalf);ppf_special_iv_clear(&base);ppf_special_iv_clear(&term);ppf_special_iv_clear(&partial);ppf_special_iv_clear(&candidate);ppf_special_iv_clear(&next);ppf_special_iv_clear(&z2);ppf_special_iv_clear(&power);ppf_special_iv_clear(&coeff);ppf_special_iv_clear(&shift_sum);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&twopi);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&one);return rc;
 }
 
+static int lgamma_positive_interval(ppf_special_iv_t *out, const ppf_t *x,
+                                    ppf_prec_t work, ppf_context_t *ctx) {
+    ppf_special_iv_t input;
+    int rc = -1;
+    memset(&input, 0, sizeof(input));
+    if (ppf_special_iv_init(&input, work, ctx) ||
+        ppf_special_iv_set_exact(&input, x, ctx)) goto done;
+    rc = lgamma_positive_input_interval(out, &input, work, ctx);
+done:
+    ppf_special_iv_clear(&input);
+    return rc;
+}
+
 static int lgamma_abs_interval(ppf_special_iv_t *out,int *sign,const ppf_t *x,
                               ppf_prec_t work,ppf_context_t *ctx){
     if(x->sign>0){*sign=1;return lgamma_positive_interval(out,x,work,ctx);}
     if(ppf_integer_p(x))return -1;
-    ppf_t y;ppf_special_iv_t lg,sp,asp,lsp,pi,lpi,tmp;
+    ppf_special_iv_t y,lg,sp,asp,lsp,pi,lpi,tmp;
     int rc=-1,s=0;memset(&y,0,sizeof(y));memset(&lg,0,sizeof(lg));memset(&sp,0,sizeof(sp));memset(&asp,0,sizeof(asp));memset(&lsp,0,sizeof(lsp));memset(&pi,0,sizeof(pi));memset(&lpi,0,sizeof(lpi));memset(&tmp,0,sizeof(tmp));
-    if(!gamma_sign_exact(x,&s,ctx)||ppf_init2_ctx(&y,work,ctx))goto done;
+    if(!gamma_sign_exact(x,&s,ctx))goto done;
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
-    INIT(lg);INIT(sp);INIT(asp);INIT(lsp);INIT(pi);INIT(lpi);INIT(tmp);
+    INIT(y);INIT(lg);INIT(sp);INIT(asp);INIT(lsp);INIT(pi);INIT(lpi);INIT(tmp);
 #undef INIT
-    if(ppf_set_ui(&y,1,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_sub(&y,&y,x,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||
-       lgamma_positive_interval(&lg,&y,work,ctx)||iv_sinpi_exact(&sp,x,ctx)||ppf_special_iv_abs(&asp,&sp,ctx)||ppf_special_iv_log_positive(&lsp,&asp,ctx)||
+    if(ppf_special_iv_set_ui(&y,1,ctx)||ppf_special_iv_set_exact(&tmp,x,ctx)||ppf_special_iv_sub(&y,&y,&tmp,ctx)||
+       lgamma_positive_input_interval(&lg,&y,work,ctx)||iv_sinpi_exact(&sp,x,ctx)||ppf_special_iv_abs(&asp,&sp,ctx)||ppf_special_iv_log_positive(&lsp,&asp,ctx)||
        ppf_special_pi_interval(&pi,ctx)||ppf_special_iv_log_positive(&lpi,&pi,ctx)||ppf_special_iv_sub(&tmp,&lpi,&lsp,ctx)||ppf_special_iv_sub(out,&tmp,&lg,ctx))goto done;
     *sign=s;rc=0;
-done:if(y.limbs)ppf_clear(&y);ppf_special_iv_clear(&lg);ppf_special_iv_clear(&sp);ppf_special_iv_clear(&asp);ppf_special_iv_clear(&lsp);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&lpi);ppf_special_iv_clear(&tmp);return rc;
+done:ppf_special_iv_clear(&y);ppf_special_iv_clear(&lg);ppf_special_iv_clear(&sp);ppf_special_iv_clear(&asp);ppf_special_iv_clear(&lsp);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&lpi);ppf_special_iv_clear(&tmp);return rc;
 }
 
 typedef struct{const ppf_t*x;int require_positive_gamma;int *signp;} lg_arg_t;
@@ -136,23 +149,30 @@ int ppf_lgamma(ppf_t *rop, int *signp, const ppf_t *x, ppf_rnd_t rnd,
     lg_arg_t a = {x, 0, signp};
     ctx = ppf_resolve_context(ctx);
     if (!rop || !x || !signp || !ctx) return sp_error(rop, ctx);
-    if (ppf_nan_p(x) || (ppf_inf_p(x) && x->sign < 0)) {
-        *signp = 0;
+    if (ppf_nan_p(x)) {
+        *signp = 1;
         return sp_nan(rop, ctx);
     }
     if (ppf_inf_p(x)) {
-        *signp = 1;
+        *signp = x->sign;
         ppf_set_inf(rop, 1);
         return 0;
     }
     if (ppf_zero_p(x)) {
         *signp = x->sign;
         ppf_set_inf(rop, 1);
+        ppf_raise(ctx, PPF_FLAG_DIVBY0);
         return 0;
     }
     if (x->sign < 0 && ppf_integer_p(x)) {
-        *signp = 0;
+        *signp = 1;
         ppf_set_inf(rop, 1);
+        ppf_raise(ctx, PPF_FLAG_DIVBY0);
+        return 0;
+    }
+    if (ppf_cmp_ui(x, 1, ctx) == 0 || ppf_cmp_ui(x, 2, ctx) == 0) {
+        *signp = 1;
+        ppf_set_zero(rop, 1);
         return 0;
     }
     return ppf_special_evaluate(rop, rnd, ctx, build_lgamma, &a);
@@ -164,13 +184,18 @@ int ppf_lngamma(ppf_t *rop, const ppf_t *x, ppf_rnd_t rnd,
     lg_arg_t a = {x, 1, &s};
     ctx = ppf_resolve_context(ctx);
     if (!rop || !x || !ctx) return sp_error(rop, ctx);
-    if (ppf_nan_p(x) || (ppf_inf_p(x) && x->sign < 0)) return sp_nan(rop, ctx);
+    if (ppf_nan_p(x)) return sp_nan(rop, ctx);
     if (ppf_inf_p(x)) {
         ppf_set_inf(rop, 1);
         return 0;
     }
     if (ppf_zero_p(x) || (x->sign < 0 && ppf_integer_p(x))) {
         ppf_set_inf(rop, 1);
+        ppf_raise(ctx, PPF_FLAG_DIVBY0);
+        return 0;
+    }
+    if (ppf_cmp_ui(x, 1, ctx) == 0 || ppf_cmp_ui(x, 2, ctx) == 0) {
+        ppf_set_zero(rop, 1);
         return 0;
     }
     if (x->sign < 0 && !gamma_sign_exact(x, &s, ctx)) return sp_nan(rop, ctx);
@@ -194,17 +219,24 @@ int ppf_gamma(ppf_t *rop, const ppf_t *x, ppf_rnd_t rnd,
         return 0;
     }
     if (x->sign < 0 && ppf_integer_p(x)) return sp_nan(rop, ctx);
+    /* A finite-width enclosure cannot certify equality with an exact factorial.
+       Use the exact integer route for the bounded, practical factorial domain. */
+    if (x->sign > 0 && ppf_integer_p(x) && ppf_cmp_ui(x, 100000, ctx) <= 0) {
+        long integer;
+        if (!ppf_special_get_long_if_integer(x, &integer, ctx)) return sp_error(rop, ctx);
+        return ppf_fac_ui(rop, (unsigned long)(integer - 1), rnd, ctx);
+    }
     return ppf_special_evaluate(rop, rnd, ctx, build_gamma, &a);
 }
 
-static int digamma_positive_interval(ppf_special_iv_t*out,const ppf_t*x,ppf_prec_t work,ppf_context_t*ctx){
+static int digamma_positive_input_interval(ppf_special_iv_t*out,const ppf_special_iv_t*x,ppf_prec_t work,ppf_context_t*ctx){
     ppf_special_iv_t z,shift,lnz,half,recip,base,z2,power,coeff,next,cand,partial,tmp;
     mpq_t *B=NULL;unsigned maxm=0;int rc=-1;unsigned long count=0;
     memset(&z,0,sizeof(z));memset(&shift,0,sizeof(shift));memset(&lnz,0,sizeof(lnz));memset(&half,0,sizeof(half));memset(&recip,0,sizeof(recip));memset(&base,0,sizeof(base));memset(&z2,0,sizeof(z2));memset(&power,0,sizeof(power));memset(&coeff,0,sizeof(coeff));memset(&next,0,sizeof(next));memset(&cand,0,sizeof(cand));memset(&partial,0,sizeof(partial));memset(&tmp,0,sizeof(tmp));
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(z);INIT(shift);INIT(lnz);INIT(half);INIT(recip);INIT(base);INIT(z2);INIT(power);INIT(coeff);INIT(next);INIT(cand);INIT(partial);INIT(tmp);
 #undef INIT
-    if(ppf_special_iv_set_exact(&z,x,ctx)||ppf_special_iv_set_ui(&shift,0,ctx))goto done;
+    if(ppf_special_iv_copy(&z,x,ctx)||ppf_special_iv_set_ui(&shift,0,ctx))goto done;
     unsigned long threshold=(unsigned long)(work/8u+12u);if(threshold<16)threshold=16;
     while(ppf_cmp_ui(&z.lo,threshold,ctx)<0){if(iv_recip_local(&recip,&z,ctx)||ppf_special_iv_add(&tmp,&shift,&recip,ctx)||ppf_special_iv_copy(&shift,&tmp,ctx)||iv_add_ui_local(&tmp,&z,1,ctx)||ppf_special_iv_copy(&z,&tmp,ctx))goto done;if(++count>100000)goto done;}
     if(ppf_special_iv_log_positive(&lnz,&z,ctx)||iv_recip_local(&recip,&z,ctx)||ppf_special_iv_scale2(&half,&recip,-1,ctx)||ppf_special_iv_sub(&partial,&lnz,&half,ctx)||ppf_special_iv_mul(&z2,&z,&z,ctx)||ppf_special_iv_copy(&power,&z2,ctx))goto done;
@@ -213,25 +245,38 @@ static int digamma_positive_interval(ppf_special_iv_t*out,const ppf_t*x,ppf_prec
 done:if(B){ppf_special_bernoulli_clear(B,2u*maxm);ppf_owned_buffer_free_internal(B);}ppf_special_iv_clear(&z);ppf_special_iv_clear(&shift);ppf_special_iv_clear(&lnz);ppf_special_iv_clear(&half);ppf_special_iv_clear(&recip);ppf_special_iv_clear(&base);ppf_special_iv_clear(&z2);ppf_special_iv_clear(&power);ppf_special_iv_clear(&coeff);ppf_special_iv_clear(&next);ppf_special_iv_clear(&cand);ppf_special_iv_clear(&partial);ppf_special_iv_clear(&tmp);return rc;
 }
 
+static int digamma_positive_interval(ppf_special_iv_t *out, const ppf_t *x,
+                                     ppf_prec_t work, ppf_context_t *ctx) {
+    ppf_special_iv_t input;
+    int rc = -1;
+    memset(&input, 0, sizeof(input));
+    if (ppf_special_iv_init(&input, work, ctx) ||
+        ppf_special_iv_set_exact(&input, x, ctx)) goto done;
+    rc = digamma_positive_input_interval(out, &input, work, ctx);
+done:
+    ppf_special_iv_clear(&input);
+    return rc;
+}
+
 static int build_digamma(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){
     unary_arg_t*a=opaque;if(a->x->sign>0)return digamma_positive_interval(out,a->x,work,ctx);
     if(ppf_integer_p(a->x))return -1;
-    ppf_t y;ppf_special_iv_t d,sp,cp,cot,pi,prod,tmp;int rc=-1;
+    ppf_special_iv_t y,d,sp,cp,cot,pi,prod,tmp;int rc=-1;
     memset(&y,0,sizeof(y));memset(&d,0,sizeof(d));memset(&sp,0,sizeof(sp));memset(&cp,0,sizeof(cp));memset(&cot,0,sizeof(cot));memset(&pi,0,sizeof(pi));memset(&prod,0,sizeof(prod));memset(&tmp,0,sizeof(tmp));
-    if(ppf_init2_ctx(&y,work,ctx))goto done;
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
-    INIT(d);INIT(sp);INIT(cp);INIT(cot);INIT(pi);INIT(prod);INIT(tmp);
+    INIT(y);INIT(d);INIT(sp);INIT(cp);INIT(cot);INIT(pi);INIT(prod);INIT(tmp);
 #undef INIT
-    if (ppf_set_ui(&y, 1, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
-        ppf_sub(&y, &y, a->x, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
-        digamma_positive_interval(&d, &y, work, ctx) ||
+    if (ppf_special_iv_set_ui(&y, 1, ctx) ||
+        ppf_special_iv_set_exact(&tmp, a->x, ctx) ||
+        ppf_special_iv_sub(&y, &y, &tmp, ctx) ||
+        digamma_positive_input_interval(&d, &y, work, ctx) ||
         iv_sinpi_exact(&sp, a->x, ctx) || iv_cospi_exact(&cp, a->x, ctx) ||
         ppf_special_iv_div(&cot, &cp, &sp, ctx) ||
         ppf_special_pi_interval(&pi, ctx) ||
         ppf_special_iv_mul(&prod, &pi, &cot, ctx) ||
         ppf_special_iv_sub(out, &d, &prod, ctx)) goto done;
     rc = 0;
-done:if(y.limbs)ppf_clear(&y);ppf_special_iv_clear(&d);ppf_special_iv_clear(&sp);ppf_special_iv_clear(&cp);ppf_special_iv_clear(&cot);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&prod);ppf_special_iv_clear(&tmp);return rc;
+done:ppf_special_iv_clear(&y);ppf_special_iv_clear(&d);ppf_special_iv_clear(&sp);ppf_special_iv_clear(&cp);ppf_special_iv_clear(&cot);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&prod);ppf_special_iv_clear(&tmp);return rc;
 }
 int ppf_digamma(ppf_t*rop,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){unary_arg_t a={x};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sp_error(rop,ctx);if(ppf_nan_p(x)||(ppf_inf_p(x)&&x->sign<0))return sp_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_inf(rop,1);return 0;}if(ppf_zero_p(x)){ppf_set_inf(rop,-x->sign);ppf_raise(ctx,PPF_FLAG_DIVBY0);return 0;}if(x->sign<0&&ppf_integer_p(x))return sp_nan(rop,ctx);return ppf_special_evaluate(rop,rnd,ctx,build_digamma,&a);}
 
@@ -240,7 +285,8 @@ static int build_beta(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_conte
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(la);INIT(lb);INIT(ls);INIT(t);INIT(val);INIT(neg);
 #undef INIT
-    if (ppf_add(&sum, x->a, x->b, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
+    /* A rounded point sum would lose the argument certificate. Retry until exact. */
+    if (ppf_add(&sum, x->a, x->b, PPF_RNDN, ctx) != 0 ||
         lgamma_abs_interval(&la, &sa, x->a, work, ctx) ||
         lgamma_abs_interval(&lb, &sb, x->b, work, ctx) ||
         lgamma_abs_interval(&ls, &ss, &sum, work, ctx) ||
@@ -256,7 +302,65 @@ static int build_beta(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_conte
     }
     rc = 0;
 done:if(sum.limbs)ppf_clear(&sum);ppf_special_iv_clear(&la);ppf_special_iv_clear(&lb);ppf_special_iv_clear(&ls);ppf_special_iv_clear(&t);ppf_special_iv_clear(&val);ppf_special_iv_clear(&neg);return rc;}
-int ppf_beta(ppf_t*rop,const ppf_t*a,const ppf_t*b,ppf_rnd_t rnd,ppf_context_t*ctx){binary_arg_t x={a,b};ctx=ppf_resolve_context(ctx);if(!rop||!a||!b||!ctx)return sp_error(rop,ctx);if(ppf_nan_p(a)||ppf_nan_p(b))return sp_nan(rop,ctx);if((a->sign<0&&ppf_integer_p(a))||(b->sign<0&&ppf_integer_p(b)))return sp_error(rop,ctx);return ppf_special_evaluate(rop,rnd,ctx,build_beta,&x);}
+int ppf_beta(ppf_t *rop, const ppf_t *a, const ppf_t *b,
+              ppf_rnd_t rnd, ppf_context_t *ctx) {
+    binary_arg_t x = {a, b};
+    ctx = ppf_resolve_context(ctx);
+    if (!rop || !a || !b || !ctx) return sp_error(rop, ctx);
+    if (ppf_nan_p(a) || ppf_nan_p(b)) return sp_nan(rop, ctx);
+    /* Ambiguous finite pole combinations retain the documented error policy. */
+    if ((a->sign < 0 && ppf_integer_p(a) && !ppf_zero_p(a)) ||
+        (b->sign < 0 && ppf_integer_p(b) && !ppf_zero_p(b))) return sp_error(rop, ctx);
+    if (ppf_cmp_ui(a, 1, ctx) == 0) return ppf_ui_div(rop, 1, b, rnd, ctx);
+    if (ppf_cmp_ui(b, 1, ctx) == 0) return ppf_ui_div(rop, 1, a, rnd, ctx);
+    if (ppf_inf_p(a) || ppf_inf_p(b)) {
+        const ppf_t *infinite = ppf_inf_p(a) ? a : b;
+        const ppf_t *other = ppf_inf_p(a) ? b : a;
+        if (ppf_zero_p(other) || (ppf_inf_p(other) &&
+            (infinite->sign < 0 || other->sign < 0))) return sp_nan(rop, ctx);
+        if (infinite->sign > 0) {
+            if (other->sign > 0) ppf_set_zero(rop, 1);
+            else ppf_set_inf(rop, 1);
+            return 0;
+        }
+        if (other->sign > 0 && ppf_integer_p(other)) {
+            mpz_t integer;
+            mpz_init(integer);
+            /* Read parity from the stored dyadic significand, without expanding
+               a potentially enormous integer solely to decide its sign. */
+            ppf_exp_t exponent = ppf_get_z_2exp(integer, other);
+            int odd = exponent > 0 ? 0 :
+                      (int)mpz_tstbit(integer, (mp_bitcnt_t)(-exponent));
+            int sign = odd ? -1 : 1;
+            mpz_clear(integer); ppf_set_zero(rop, sign); return 0;
+        }
+        return sp_nan(rop, ctx);
+    }
+    if (ppf_zero_p(a) || ppf_zero_p(b)) {
+        const ppf_t *zero = ppf_zero_p(a) ? a : b;
+        if (ppf_zero_p(a) && ppf_zero_p(b) && a->sign != b->sign) return sp_nan(rop, ctx);
+        ppf_set_inf(rop, zero->sign); ppf_raise(ctx, PPF_FLAG_DIVBY0); return 0;
+    }
+    if (a->sign > 0 && b->sign > 0 && ppf_integer_p(a) && ppf_integer_p(b) &&
+        ppf_cmp_ui(a, 100000, ctx) <= 0 && ppf_cmp_ui(b, 100000, ctx) <= 0) {
+        long ai, bi;
+        if (!ppf_special_get_long_if_integer(a, &ai, ctx) ||
+            !ppf_special_get_long_if_integer(b, &bi, ctx)) return sp_error(rop, ctx);
+        if (ai + bi <= 100000L) {
+            mpq_t exact;
+            mpz_t factorial;
+            mpq_init(exact); mpz_init(factorial);
+            mpz_fac_ui(mpq_numref(exact), (unsigned long)(ai - 1));
+            mpz_fac_ui(factorial, (unsigned long)(bi - 1));
+            mpz_mul(mpq_numref(exact), mpq_numref(exact), factorial);
+            mpz_fac_ui(mpq_denref(exact), (unsigned long)(ai + bi - 1));
+            mpq_canonicalize(exact);
+            int result = ppf_set_q(rop, exact, rnd, ctx);
+            mpq_clear(exact); mpz_clear(factorial); return result;
+        }
+    }
+    return ppf_special_evaluate(rop, rnd, ctx, build_beta, &x);
+}
 
 static int build_gamma_inc_positive(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){
     binary_arg_t*x=opaque;
@@ -355,14 +459,15 @@ static int build_gamma_inc(ppf_special_iv_t *out, ppf_prec_t work,
         ppf_special_iv_init(&tmp, work, ctx) ||
         ppf_special_iv_init(&neg_x, work, ctx)) goto done;
 
-    if (ppf_neg(&neg_a, arg->a, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
+    /* All scalar recurrence arguments must remain exact at this work precision. */
+    if (ppf_neg(&neg_a, arg->a, PPF_RNDN, ctx) != 0 ||
         ppf_get_z(steps_z, &neg_a, PPF_RNDU, ctx) == PPF_TERNARY_ERROR ||
         !mpz_fits_ulong_p(steps_z)) goto done;
     steps = mpz_get_ui(steps_z);
     if (steps > 100000UL) goto done;
 
-    if (ppf_set_z(&shift_integer, steps_z, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
-        ppf_add(&shifted_a, arg->a, &shift_integer, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
+    if (ppf_set_z(&shift_integer, steps_z, PPF_RNDN, ctx) != 0 ||
+        ppf_add(&shifted_a, arg->a, &shift_integer, PPF_RNDN, ctx) != 0 ||
         ppf_set_ui(&one, 1, PPF_RNDN, ctx) == PPF_TERNARY_ERROR ||
         ppf_special_iv_set_exact(&x_iv, arg->b, ctx) ||
         ppf_special_iv_neg(&neg_x, &x_iv, ctx) ||
@@ -379,7 +484,7 @@ static int build_gamma_inc(ppf_special_iv_t *out, ppf_prec_t work,
         rc = ppf_special_iv_copy(out, &current, ctx);
         goto done;
     }
-    if (ppf_sub(&target, &shifted_a, &one, PPF_RNDN, ctx) == PPF_TERNARY_ERROR)
+    if (ppf_sub(&target, &shifted_a, &one, PPF_RNDN, ctx) != 0)
         goto done;
 
     for (unsigned long i = 0; i < steps; ++i) {
@@ -393,7 +498,7 @@ static int build_gamma_inc(ppf_special_iv_t *out, ppf_prec_t work,
                 ppf_special_iv_div(&current, &tmp, &target_iv, ctx)) goto done;
         }
         if (i + 1UL < steps &&
-            ppf_sub(&target, &target, &one, PPF_RNDN, ctx) == PPF_TERNARY_ERROR)
+            ppf_sub(&target, &target, &one, PPF_RNDN, ctx) != 0)
             goto done;
     }
     rc = ppf_special_iv_copy(out, &current, ctx);

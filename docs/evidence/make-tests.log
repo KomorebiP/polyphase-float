@@ -1,0 +1,11 @@
+random urandomb: 1 fail-at-N positions passed
+random urandom: 1 fail-at-N positions passed
+random erandom: 16 fail-at-N positions passed
+random nrandom: 197 fail-at-N positions passed
+random grandom: 199 fail-at-N positions passed
+reldiff: 2 fail-at-N positions passed with ordinary, alias, and external outputs
+API lifecycle audit regressions passed
+precision, sign rounding, and remainder failure regressions: PASS
+special edge audit passed: 1460 oracle comparisons
+special interval audit passed: 20 independent Gamma certificates and 3 positive-tail certificates
+independent changed-path review sweep passed: 1240 oracle comparisons

@@ -138,7 +138,7 @@ static int make_wide_context(ppf_context_t *wide,
     return 0;
 }
 
-int ppf_urandomb(ppf_t *rop, gmp_randstate_t state) {
+static int urandomb_uncommitted(ppf_t *rop, gmp_randstate_t state) {
     ppf_context_t wide;
     ppf_context_t *ctx = ppf_default_context();
     ppf_t temp;
@@ -173,7 +173,7 @@ done:
     return rc;
 }
 
-int ppf_urandom(ppf_t *rop, gmp_randstate_t state,
+static int urandom_uncommitted(ppf_t *rop, gmp_randstate_t state,
                 ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_context_t wide;
     ppf_t temp;
@@ -242,7 +242,7 @@ static int exponential_from_prefix(ppf_t *rop,
         ppf_prec_t work = rop->precision + PPF_RANDOM_GUARD_BITS +
                           (ppf_prec_t)attempt * 64u;
         ppf_context_t wide;
-        ppf_t ul, uh, ll, lu, lo, hi;
+        ppf_t ul = {0}, uh = {0}, ll = {0}, lu = {0}, lo = {0}, hi = {0};
         int t, status;
         if (work < rop->precision || make_wide_context(&wide, ctx, work) != 0)
             return PPF_TERNARY_ERROR;
@@ -252,6 +252,8 @@ static int exponential_from_prefix(ppf_t *rop,
             ppf_init2_ctx(&lu, work, &wide) != 0 ||
             ppf_init2_ctx(&lo, work, &wide) != 0 ||
             ppf_init2_ctx(&hi, work, &wide) != 0) {
+            ppf_clear(&ul); ppf_clear(&uh); ppf_clear(&ll); ppf_clear(&lu);
+            ppf_clear(&lo); ppf_clear(&hi);
             ppf_context_clear(&wide); return PPF_TERNARY_ERROR;
         }
         status = -1;
@@ -276,7 +278,7 @@ cleanup:
     return PPF_TERNARY_ERROR;
 }
 
-int ppf_erandom(ppf_t *rop, gmp_randstate_t state,
+static int erandom_uncommitted(ppf_t *rop, gmp_randstate_t state,
                 ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_random_prefix_t u;
     int t;
@@ -352,7 +354,7 @@ static int normal_pair(ppf_t *rop1, ppf_t *rop2,
         ppf_t u1l,u1h,u2l,u2h,logl,logh,al,ah,rl,rh;
         ppf_t pi,mid,theta_l,theta_h,width,slo,shi,clo,chi,tmp;
         ppf_t z1l,z1h,z2l,z2h;
-        int s1, s2 = 1, astatus;
+        int s1, s2 = 1, astatus, initialization_failed = 0;
 #define INITV(v) do { if (ppf_init2_ctx(&(v),work,&wide)!=0) goto init_fail; } while(0)
         if (make_wide_context(&wide, ctx, work) != 0) break;
         memset(&u1l,0,sizeof(u1l)); memset(&u1h,0,sizeof(u1h));
@@ -419,12 +421,15 @@ iter_cleanup_done:
         CLEARV(clo);CLEARV(chi);CLEARV(tmp);CLEARV(z1l);CLEARV(z1h);
         CLEARV(z2l);CLEARV(z2h);ppf_context_clear(&wide);
         if (result==0) break;
+        if (initialization_failed) break;
         if (prefix_extend(&u1,64u,state)!=0 || prefix_extend(&u2,64u,state)!=0)
             break;
         continue;
 init_fail:
-        ppf_context_clear(&wide);
-        break;
+        /* All local objects start zeroed, so the ordinary cleanup also
+           releases the prefix initialized before the failing allocation. */
+        initialization_failed = 1;
+        goto iter_cleanup;
 #undef INITV
 #undef CLEARV
     }
@@ -433,7 +438,7 @@ done:
     return result;
 }
 
-int ppf_nrandom(ppf_t *rop, gmp_randstate_t state,
+static int nrandom_uncommitted(ppf_t *rop, gmp_randstate_t state,
                 ppf_rnd_t rnd, ppf_context_t *ctx) {
     int t1=0,t2=0;
     ctx=ppf_resolve_context(ctx);
@@ -452,7 +457,7 @@ static int encode_pair_ternary(int t1,int t2){
     return s+4*c;
 }
 
-int ppf_grandom(ppf_t *rop1, ppf_t *rop2,
+static int grandom_uncommitted(ppf_t *rop1, ppf_t *rop2,
                 gmp_randstate_t state, ppf_rnd_t rnd,
                 ppf_context_t *ctx) {
     int t1=0,t2=0;
@@ -469,4 +474,81 @@ int ppf_grandom(ppf_t *rop1, ppf_t *rop2,
         ppf_raise(ctx,PPF_FLAG_ERANGE);return PPF_TERNARY_ERROR;
     }
     return encode_pair_ternary(t1,rop2?t2:0);
+}
+
+/* Random-state consumption cannot be rolled back, but every caller-visible
+   floating destination is staged until all project allocations succeed. */
+int ppf_urandomb(ppf_t *rop, gmp_randstate_t state) {
+    ppf_result_transaction_t tx;
+    ppf_context_t *ctx = ppf_default_context();
+    int result;
+    if (!rop || !ctx) return 1;
+    if (ppf_result_transaction_begin_inline_internal(&tx, rop, ctx) != 0)
+        return 1;
+    result = urandomb_uncommitted(&tx.staged, state);
+    result = ppf_result_transaction_finish_internal(&tx, rop, result);
+    return result == PPF_TERNARY_ERROR ? 1 : result;
+}
+
+typedef int (*random_single_fn)(ppf_t *, gmp_randstate_t,
+                                ppf_rnd_t, ppf_context_t *);
+
+static int random_single_transaction(ppf_t *rop, gmp_randstate_t state,
+                                      ppf_rnd_t rnd, ppf_context_t *ctx,
+                                      random_single_fn fn) {
+    ppf_result_transaction_t tx;
+    int result;
+    ctx = ppf_resolve_context(ctx);
+    if (!rop || !ctx) return PPF_TERNARY_ERROR;
+    rnd = random_rnd(rnd, ctx);
+    if (!ppf_rounding_valid(rnd)) return PPF_TERNARY_ERROR;
+    if (ppf_result_transaction_begin_inline_internal(&tx, rop, ctx) != 0)
+        return PPF_TERNARY_ERROR;
+    result = fn(&tx.staged, state, rnd, ctx);
+    return ppf_result_transaction_finish_internal(&tx, rop, result);
+}
+
+static int grandom_single_uncommitted(ppf_t *rop, gmp_randstate_t state,
+                                      ppf_rnd_t rnd, ppf_context_t *ctx) {
+    return grandom_uncommitted(rop, NULL, state, rnd, ctx);
+}
+
+int ppf_urandom(ppf_t *rop, gmp_randstate_t state,
+                ppf_rnd_t rnd, ppf_context_t *ctx) {
+    return random_single_transaction(rop, state, rnd, ctx, urandom_uncommitted);
+}
+
+int ppf_erandom(ppf_t *rop, gmp_randstate_t state,
+                ppf_rnd_t rnd, ppf_context_t *ctx) {
+    return random_single_transaction(rop, state, rnd, ctx, erandom_uncommitted);
+}
+
+int ppf_nrandom(ppf_t *rop, gmp_randstate_t state,
+                ppf_rnd_t rnd, ppf_context_t *ctx) {
+    return random_single_transaction(rop, state, rnd, ctx, nrandom_uncommitted);
+}
+
+int ppf_grandom(ppf_t *rop1, ppf_t *rop2,
+                gmp_randstate_t state, ppf_rnd_t rnd, ppf_context_t *ctx) {
+    ppf_result_transaction_t first, second;
+    int result;
+    ctx = ppf_resolve_context(ctx);
+    if (!rop1 || !ctx) return PPF_TERNARY_ERROR;
+    if (rop2 && rop1 == rop2) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
+    rnd = random_rnd(rnd, ctx);
+    if (!ppf_rounding_valid(rnd)) return PPF_TERNARY_ERROR;
+    if (!rop2)
+        return random_single_transaction(rop1, state, rnd, ctx, grandom_single_uncommitted);
+    if (ppf_result_transaction_begin_inline_internal(&first, rop1, ctx) != 0)
+        return PPF_TERNARY_ERROR;
+    if (ppf_result_transaction_begin_inline_internal(&second, rop2, ctx) != 0) {
+        ppf_result_transaction_abort_internal(&first);
+        return PPF_TERNARY_ERROR;
+    }
+    result = grandom_uncommitted(&first.staged, &second.staged, state, rnd, ctx);
+    return ppf_result_transaction_pair_finish_internal(
+        &first, rop1, &second, rop2, result);
 }

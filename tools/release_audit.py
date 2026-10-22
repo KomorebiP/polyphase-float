@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import argparse
-import ctypes
 import csv
 import hashlib
 import json
@@ -16,8 +15,33 @@ import subprocess
 import sys
 from pathlib import Path
 
+from library_surface import enabled_core_declarations
+
 SPDX = "SPDX-License-Identifier: LGPL-3.0-or-later"
+CURRENT_RELEASE = "0.20.0"
+PREVIOUS_RELEASE = "0.19.0"
+REVIEWED_BASELINE_MANIFEST_SHA256 = (
+    "561b8f906a7c8b7d9a2cf5fd4e4c1d4df67ec27a1a301557f585e81d3a94b805"
+)
+REVIEWED_CHANGED_SOURCE_FILES = (
+    "assignment.c",
+    "conditional_formats.c",
+    "io.c",
+    "polyphase_chudnovsky_core.c",
+    "special_bessel.c",
+)
 REQUIRED_FILES = (
+    "abi/0.19.0-to-0.20.0-comparison.json",
+    "docs/PRODUCTION_CHANGESET_0.20.0.json",
+    "tools/qualify_release.py",
+    "docs/QUALIFICATION.md",
+    "docs/BRANCH_REVIEW_0.20.0.md",
+    "docs/ALLOCATION_COMPLETION_0.20.0.md",
+    "docs/FPIF_RESOURCE_CONTRACT.md",
+    "tests/test_release_boundaries.c",
+    "tests/test_allocation_completion.c",
+    "tests/test_fpif_resource_bounds.c",
+    "tools/tests/test_release_api_audit.py",
     "LICENSE",
     "COPYING",
     "LICENSE.md",
@@ -70,7 +94,6 @@ REQUIRED_FILES = (
     "tests/test_benchmark_json_schema.py",
     "tests/test_product_profile.c",
     "tests/test_generate_product_profile.py",
-    "tools/tests/test_release_api_audit.py",
     "src/product_planner.c",
     "src/ppf_product_profile_build.h",
     "src/ppf_openmp_compat.h",
@@ -197,6 +220,11 @@ REQUIRED_FILES = (
     "docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md",
     "docs/COMPLETION_STATUS_0.18.0.md",
     "docs/PRODUCTION_CHANGESET_0.18.0.json",
+    "docs/PRODUCTION_CHANGESET_0.19.0.json",
+    "abi/0.18.0-to-0.19.0-comparison.json",
+    "abi/baselines/0.18.0-contract.json",
+    "tests/test_install_packaging.py",
+    "tools/library_surface.py",
     ".github/workflows/abi.yml",
 )
 
@@ -543,32 +571,31 @@ def audit_product_planner_changeset(root: Path, failures: list[str]) -> None:
 
 
 def audit_current_production_changeset(root: Path, failures: list[str]) -> tuple[int, int, int]:
-    path = root / "docs/PRODUCTION_CHANGESET_0.18.0.json"
+    path = root / f"docs/PRODUCTION_CHANGESET_{CURRENT_RELEASE}.json"
     try:
         record = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         fail(f"invalid current production changeset record: {exc}", failures)
         return 0, 0, 0
-    if record.get("version") != "0.18.0" or record.get("baseline_version") != "0.17.0":
+    if record.get("version") != CURRENT_RELEASE or record.get("baseline_version") != PREVIOUS_RELEASE:
         fail("current production changeset version boundary is incorrect", failures)
     if record.get("production_source_unchanged") is not False:
         fail("current production changeset incorrectly claims unchanged source", failures)
-    if record.get("numerical_formula_changes") is not False:
-        fail("current changeset does not preserve the numerical-formula boundary", failures)
+    if record.get("numerical_formula_changes") is not False or record.get("numerical_behavior_changes") is not True:
+        fail("current changeset must distinguish domain/input behavior corrections from unchanged numerical formulas", failures)
     changed = record.get("changed_files")
     added = record.get("added_files")
     removed = record.get("removed_files")
     if not all(isinstance(value, list) for value in (changed, added, removed)):
         fail("current production changeset has invalid file lists", failures)
         return 0, 0, 0
-    if changed != [
-        "polyphase_chudnovsky_core.c", "ppf_internal.h",
-        "result_transaction.c", "transactional_impl_prototypes.h"
-    ] or added != [
-        "arithmetic_root_transaction.c",
-        "transactional_arithmetic_root_names.h"
-    ] or removed != []:
+    if changed != list(REVIEWED_CHANGED_SOURCE_FILES) or added != [] or removed != []:
         fail("current production changeset has an unexpected production-source boundary", failures)
+    boundary = record.get("change_boundary")
+    if not isinstance(boundary, dict) or set(boundary) != set(REVIEWED_CHANGED_SOURCE_FILES):
+        fail("current changeset does not describe every reviewed production change", failures)
+    elif any(not isinstance(value, str) or not value.strip() for value in boundary.values()):
+        fail("current changeset contains an empty production-change description", failures)
     expected = record.get("files")
     if not isinstance(expected, dict):
         fail("current production changeset has no file hash map", failures)
@@ -590,7 +617,35 @@ def audit_current_production_changeset(root: Path, failures: list[str]) -> tuple
             fail(f"production source hash differs from current record: src/{relative}", failures)
         if wanted_bytes != source.stat().st_size:
             fail(f"production source size differs from current record: src/{relative}", failures)
+    # A new self-consistent manifest must not conceal changes outside the
+    # reviewed boundary. Compare against the frozen prior-release hash map.
+    baseline_path = root / f"docs/PRODUCTION_CHANGESET_{PREVIOUS_RELEASE}.json"
+    try:
+        baseline_bytes = baseline_path.read_bytes()
+        baseline = json.loads(baseline_bytes)
+    except (OSError, json.JSONDecodeError) as exc:
+        fail(f"invalid frozen prior-release source manifest: {exc}", failures)
+    else:
+        if hashlib.sha256(baseline_bytes).hexdigest() != REVIEWED_BASELINE_MANIFEST_SHA256:
+            fail("frozen prior-release source manifest hash changed", failures)
+        baseline_files = baseline.get("files", {})
+        if not isinstance(baseline_files, dict) or set(baseline_files) != set(actual_paths):
+            fail("prior-release source inventory does not match reviewed no-addition boundary", failures)
+        else:
+            actual_changed = sorted(
+                relative for relative, source in actual_paths.items()
+                if baseline_files[relative].get("sha256") != hashlib.sha256(source.read_bytes()).hexdigest()
+            )
+            if actual_changed != list(REVIEWED_CHANGED_SOURCE_FILES):
+                fail("actual production-source changes differ from reviewed prior-release boundary", failures)
     return len(changed), len(added), len(removed)
+
+def audit_install_packaging(root: Path, failures: list[str]) -> None:
+    cmake = (root / "CMakeLists.txt").read_text(encoding="utf-8")
+    for token in ("add_test(NAME install_packaging", "tests/test_install_packaging.py"):
+        if token not in cmake:
+            fail(f"installed-consumer packaging regression is not registered: {token}", failures)
+
 
 def audit_product_profile(root: Path, failures: list[str]) -> None:
     header = (root / "include/polyphase_float.h").read_text(encoding="utf-8")
@@ -729,7 +784,8 @@ def audit_allocation_hardening(root: Path, failures: list[str]) -> None:
         ("src/roots.c", roots,
          ("root_memory_or_error", "PPF_FLAG_ALLOC")),
         ("src/io.c", io,
-         ("ppf_context_malloc_internal(ctx, (size_t)payload64)",
+         ("ppf_context_malloc_internal(ctx, payload_capacity)",
+          "PPF_FPIF_MAX_IMPORT_BYTES", "PPF_FPIF_READ_CHUNK_BYTES",
           "ppf_context_free_internal(ctx, payload")),
     ):
         for token in tokens:
@@ -1017,8 +1073,8 @@ def audit_abi_stability(root: Path, failures: list[str]) -> None:
 
     contract = root / "abi/contract-v1.json"
     epoch_baseline = root / "abi/baselines/0.11.0-contract.json"
-    previous_baseline = root / "abi/baselines/0.17.0-contract.json"
-    compare = root / "abi/0.17.0-to-0.18.0-comparison.json"
+    previous_baseline = root / f"abi/baselines/{PREVIOUS_RELEASE}-contract.json"
+    compare = root / f"abi/{PREVIOUS_RELEASE}-to-{CURRENT_RELEASE}-comparison.json"
     commands = (
         [sys.executable, str(root / "tools/abi_contract.py"), "verify",
          "--contract", str(contract), "--root", str(root)],
@@ -1038,13 +1094,13 @@ def audit_abi_stability(root: Path, failures: list[str]) -> None:
         fail(f"invalid ABI comparison report: {exc}", failures)
     else:
         if comparison.get("compatible") is not True or comparison.get("breaking") != []:
-            fail("0.18.0 previous-release ABI comparison is not additive", failures)
+            fail(f"{CURRENT_RELEASE} previous-release ABI comparison is not additive", failures)
         additions = {
             (item.get("category"), item.get("name"))
             for item in comparison.get("compatible_additions", [])
         }
         if additions != set():
-            fail("0.18.0 ABI comparison has unexpected additions", failures)
+            fail(f"{CURRENT_RELEASE} ABI comparison has unexpected additions", failures)
         metadata = {
             (item.get("category"), item.get("name"))
             for item in comparison.get("compatible_metadata_changes", [])
@@ -1053,7 +1109,7 @@ def audit_abi_stability(root: Path, failures: list[str]) -> None:
             ("constants", "PPF_SEMANTIC_CONTRACT_SHA256"),
             ("constants", "PPF_ALIASING_CONTRACT_SHA256"),
         }:
-            fail("0.18.0 ABI comparison has unexpected metadata changes", failures)
+            fail(f"{CURRENT_RELEASE} ABI comparison has unexpected metadata changes", failures)
 
     contract_data = json.loads(contract.read_text(encoding="utf-8"))
     contract_data.pop("contract_sha256", None)
@@ -1068,9 +1124,9 @@ def audit_abi_stability(root: Path, failures: list[str]) -> None:
     if not macro or macro.group(1) != expected_hash:
         fail("public ABI contract hash macro does not match abi/contract-v1.json", failures)
 
-    previous_contract_token = "abi/baselines/0.17.0-contract.json"
+    previous_contract_token = f"abi/baselines/{PREVIOUS_RELEASE}-contract.json"
     if previous_contract_token not in cmake or previous_contract_token not in makefile:
-        fail("configured ABI checks do not target the 0.17.0 previous release", failures)
+        fail(f"configured ABI checks do not target the {PREVIOUS_RELEASE} previous release", failures)
 
     for token in ("PPF_0.11", "PPF_0.12", "local:", "*;"):
         if token not in core_map:
@@ -1118,24 +1174,23 @@ def audit_semantic_contract(root: Path, failures: list[str]) -> tuple[int, int, 
     function_count = summary.get("function_count", 0)
     direct_tests = summary.get("functions_with_direct_test_reference", 0)
     gap_entries = summary.get("entries_with_explicit_gaps", 0)
-    if data.get("release_version") != "0.18.0" or data.get("contract_version") != 1:
+    if data.get("release_version") != CURRENT_RELEASE or data.get("contract_version") != 1:
         fail("semantic contract version boundary is incorrect", failures)
-    if alias_data.get("release_version") != "0.18.0" or alias_data.get("contract_version") != 1:
+    if alias_data.get("release_version") != CURRENT_RELEASE or alias_data.get("contract_version") != 1:
         fail("aliasing contract version boundary is incorrect", failures)
     if function_count != 437 or direct_tests != 437 or alias_summary.get("function_count") != 437:
         fail("semantic and aliasing contracts do not cover all 437 public functions", failures)
     if summary.get("conditional_functions") != 6:
         fail("semantic contract conditional-function count is not six", failures)
     if summary.get("explicit_gap_counts") != {
-        "allocation_failure_atomicity_incomplete": 81,
-        "bounded_implementation_path": 112,
+        "bounded_implementation_path": 105,
         "conditional_build_surface": 6,
     }:
-        fail("semantic contract gap counts differ from the reviewed 0.18.0 ledger", failures)
-    if gap_entries != 191 or alias_summary.get("unverified_aliasing_functions") != 0:
-        fail("semantic or aliasing gap summary differs from the reviewed 0.18.0 ledger", failures)
-    if summary.get("atomicity_classes", {}).get("verified_transactional") != 213:
-        fail("semantic contract transactional-function count differs from the reviewed 0.18.0 ledger", failures)
+        fail(f"semantic contract gap counts differ from the reviewed {CURRENT_RELEASE} ledger", failures)
+    if gap_entries != 111 or alias_summary.get("unverified_aliasing_functions") != 0:
+        fail(f"semantic or aliasing gap summary differs from the reviewed {CURRENT_RELEASE} ledger", failures)
+    if summary.get("atomicity_classes", {}).get("verified_transactional") != 192:
+        fail(f"semantic contract transactional-function count differs from the reviewed {CURRENT_RELEASE} ledger", failures)
 
     macro_version = re.search(r"#define\s+PPF_SEMANTIC_CONTRACT_VERSION\s+(\d+)", header)
     macro_hash = re.search(
@@ -1219,34 +1274,6 @@ def audit_current_claims(root: Path, failures: list[str]) -> None:
                 fail(f"stale top-level claim {pattern!r} in {relative}", failures)
 
 
-def active_api_declarations(library: Path, declarations: set[str]) -> set[str]:
-    """Match compiler-conditional declarations to the library's feature probes.
-
-    Use the audited library's build options, rather than the compiler running
-    this Python process or the presence of optional symbols. Missing symbols
-    for an enabled feature must still fail the export comparison.
-    """
-    conditional_groups = {
-        "ppf_buildopt_float128_p": {"ppf_get_float128", "ppf_set_float128"},
-        "ppf_buildopt_decimal_p": {
-            "ppf_get_decimal64", "ppf_set_decimal64",
-            "ppf_get_decimal128", "ppf_set_decimal128",
-        },
-    }
-    built = ctypes.CDLL(str(library.resolve()))
-    active = declarations.copy()
-    for probe_name, symbols in conditional_groups.items():
-        probe = getattr(built, probe_name)
-        probe.argtypes = []
-        probe.restype = ctypes.c_int
-        enabled = probe()
-        if enabled not in (0, 1):
-            raise ValueError(f"{probe_name} returned invalid feature value {enabled}")
-        if not enabled:
-            active.difference_update(symbols)
-    return active
-
-
 def audit_api(root: Path, library: Path | None, failures: list[str]) -> tuple[int, int]:
     command = [sys.executable, str(root / "scripts/check_api_coverage.py")]
     result = subprocess.run(command, cwd=root, text=True, capture_output=True)
@@ -1285,17 +1312,19 @@ def audit_api(root: Path, library: Path | None, failures: list[str]) -> tuple[in
             exports = set(re.findall(r"\b(ppf_[a-z0-9_]+)(?:@@?[A-Za-z0-9_.-]+)?$", nm.stdout, re.M))
             export_count = len(exports)
             try:
-                active_declarations = active_api_declarations(library, declarations)
-            except (OSError, AttributeError, ValueError) as exc:
-                fail(f"unable to inspect shared-library optional-format features: {exc}", failures)
-                return len(declarations), export_count
-            if exports != active_declarations:
-                missing = sorted(active_declarations - exports)
-                extra = sorted(exports - active_declarations)
+                expected, features = enabled_core_declarations(library, declarations)
+            except (OSError, AttributeError, RuntimeError) as exc:
+                fail(f"unable to query native core-library conditional capabilities: {exc}", failures)
+                expected = declarations
+            else:
+                print("core_conditional_capabilities=" + json.dumps(features, sort_keys=True))
+                print(f"enabled_core_declarations={len(expected)}")
+            if exports != expected:
+                missing = sorted(expected - exports)
+                extra = sorted(exports - expected)
                 fail(
                     "header/export mismatch: "
-                    f"declared={len(declarations)} active={len(active_declarations)} "
-                    f"exported={len(exports)} "
+                    f"indexed={len(declarations)} enabled={len(expected)} exported={len(exports)} "
                     f"missing={missing[:10]} extra={extra[:10]}",
                     failures,
                 )
@@ -1334,6 +1363,7 @@ def main() -> int:
     audit_benchmark_evidence(root, failures)
     audit_product_planner_changeset(root, failures)
     changed_count, added_count, removed_count = audit_current_production_changeset(root, failures)
+    audit_install_packaging(root, failures)
     audit_product_profile(root, failures)
     audit_allocation_hardening(root, failures)
     audit_optional_openmp_and_fuzzers(root, failures)
@@ -1370,10 +1400,12 @@ def main() -> int:
     print("benchmark_schema_smoke_test=present")
     print("product_planner_changeset=verified_historical")
     print("current_production_changeset=verified")
+    print("relocated_installed_consumer_regression=registered")
     print(f"production_source_files={len([p for p in (root / 'src').rglob('*') if p.is_file()])}")
-    print(f"production_source_files_changed_from_0_17_0={changed_count}")
-    print(f"production_source_files_added_from_0_17_0={added_count}")
-    print(f"production_source_files_removed_from_0_17_0={removed_count}")
+    baseline_token = PREVIOUS_RELEASE.replace(".", "_")
+    print(f"production_source_files_changed_from_{baseline_token}={changed_count}")
+    print(f"production_source_files_added_from_{baseline_token}={added_count}")
+    print(f"production_source_files_removed_from_{baseline_token}={removed_count}")
     print("allocation_failure_flag=present")
     print("allocation_transaction_test=present")
     print("io_allocation_commit_matrix=present")

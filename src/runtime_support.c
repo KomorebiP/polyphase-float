@@ -34,7 +34,7 @@ int ppf_can_round(const ppf_t *b, ppf_exp_t err,
                   ppf_rnd_t rnd1, ppf_rnd_t rnd2,
                   ppf_prec_t precision) {
     ppf_context_t ctx;
-    ppf_t lo_round, hi_round, d0, d1;
+    ppf_t lo_round = {0}, hi_round = {0}, d0 = {0}, d1 = {0};
     mpz_t center, lo, hi, error;
     ppf_exp_t ce, ee, common;
     int sign, decided = 0;
@@ -47,6 +47,8 @@ int ppf_can_round(const ppf_t *b, ppf_exp_t err,
         ppf_init2_ctx(&hi_round, precision, &ctx) != 0 ||
         ppf_init2_ctx(&d0, precision, &ctx) != 0 ||
         ppf_init2_ctx(&d1, precision, &ctx) != 0) {
+        ppf_clear(&lo_round); ppf_clear(&hi_round);
+        ppf_clear(&d0); ppf_clear(&d1);
         ppf_context_clear(&ctx);
         return 0;
     }
@@ -241,8 +243,8 @@ int ppf_eq(const ppf_t *a, const ppf_t *b, unsigned long bits) {
     }
 }
 
-void ppf_reldiff(ppf_t *rop, const ppf_t *a, const ppf_t *b,
-                 ppf_rnd_t rnd, ppf_context_t *ctx) {
+static void reldiff_uncommitted(ppf_t *rop, const ppf_t *a, const ppf_t *b,
+                                ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_t temp;
     ctx = ppf_resolve_context(ctx);
     if (!rop || !a || !b || !ctx ||
@@ -256,6 +258,20 @@ void ppf_reldiff(ppf_t *rop, const ppf_t *a, const ppf_t *b,
         ppf_div(rop, &temp, a, rnd, ctx) == PPF_TERNARY_ERROR)
         ppf_set_nan(rop, 1);
     ppf_clear(&temp);
+}
+
+void ppf_reldiff(ppf_t *rop, const ppf_t *a, const ppf_t *b,
+                 ppf_rnd_t rnd, ppf_context_t *ctx) {
+    ppf_result_transaction_t tx;
+    ctx = ppf_resolve_context(ctx);
+    if (!rop || !a || !b || !ctx) {
+        reldiff_uncommitted(rop, a, b, rnd, ctx);
+        return;
+    }
+    if (ppf_result_transaction_begin_inline_internal(&tx, rop, ctx) != 0)
+        return;
+    reldiff_uncommitted(&tx.staged, a, b, rnd, ctx);
+    (void)ppf_result_transaction_finish_internal(&tx, rop, 0);
 }
 
 int ppf_mul_2exp(ppf_t *rop, const ppf_t *op, unsigned long exponent,
@@ -315,8 +331,12 @@ void ppf_custom_init(void *significand, ppf_prec_t precision) {
 
 int ppf_custom_init_set(ppf_t *x, int kind, ppf_exp_t exponent,
                         ppf_prec_t precision, void *significand) {
-    int magnitude = kind < 0 ? -kind : kind;
+    int magnitude;
     size_t limbs;
+    /* Validate the signed code before taking its magnitude.  In particular,
+       negating INT_MIN would be undefined even for an invalid request. */
+    if (kind < -PPF_REGULAR_KIND || kind > PPF_REGULAR_KIND) return -1;
+    magnitude = kind < 0 ? -kind : kind;
     if (!x || !significand || !ppf_precision_valid(precision) ||
         magnitude < PPF_NAN_KIND || magnitude > PPF_REGULAR_KIND)
         return -1;

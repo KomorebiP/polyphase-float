@@ -1,0 +1,60 @@
+-- Polyphase Float 0.19.0
+--   shared library: OFF
+--   static library: ON
+--   MPFR support:   FALSE (OFF)
+--   MPFR header:    
+--   OpenMP support: FALSE (OFF)
+--   ELF symbol versions: TRUE (AUTO)
+--   examples:       OFF
+--   benchmarks:     OFF
+--   fuzzers:        ON
+--   ThreadSanitizer:OFF
+--   native tuning:  OFF
+--   product profile:/workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/src/ppf_product_profile_build.h
+-- Configuring done (0.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-fuzz
+[  2%] Building C object CMakeFiles/polyphase_float_static.dir/src/context.c.o
+[  4%] Building C object CMakeFiles/polyphase_float_static.dir/src/result_transaction.c.o
+[  7%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic_root_transaction.c.o
+[  9%] Building C object CMakeFiles/polyphase_float_static.dir/src/abi.c.o
+[ 12%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental_special_transaction.c.o
+[ 14%] Building C object CMakeFiles/polyphase_float_static.dir/src/object.c.o
+[ 17%] Building C object CMakeFiles/polyphase_float_static.dir/src/round.c.o
+[ 19%] Building C object CMakeFiles/polyphase_float_static.dir/src/limb_round.c.o
+[ 21%] Building C object CMakeFiles/polyphase_float_static.dir/src/toom3.c.o
+[ 24%] Building C object CMakeFiles/polyphase_float_static.dir/src/window_product.c.o
+[ 26%] Building C object CMakeFiles/polyphase_float_static.dir/src/product_planner.c.o
+[ 29%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic.c.o
+[ 31%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic_variants.c.o
+[ 34%] Building C object CMakeFiles/polyphase_float_static.dir/src/assignment.c.o
+[ 36%] Building C object CMakeFiles/polyphase_float_static.dir/src/io.c.o
+[ 39%] Building C object CMakeFiles/polyphase_float_static.dir/src/format.c.o
+[ 41%] Building C object CMakeFiles/polyphase_float_static.dir/src/utilities.c.o
+[ 43%] Building C object CMakeFiles/polyphase_float_static.dir/src/remainder.c.o
+[ 46%] Building C object CMakeFiles/polyphase_float_static.dir/src/range_flags.c.o
+[ 48%] Building C object CMakeFiles/polyphase_float_static.dir/src/roots.c.o
+[ 51%] Building C object CMakeFiles/polyphase_float_static.dir/src/divisor_plan.c.o
+[ 53%] Building C object CMakeFiles/polyphase_float_static.dir/src/constants.c.o
+[ 56%] Building C object CMakeFiles/polyphase_float_static.dir/src/constant_pi.c.o
+[ 58%] Building C object CMakeFiles/polyphase_float_static.dir/src/constant_log2.c.o
+[ 60%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental_fast.c.o
+[ 63%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental.c.o
+[ 65%] Building C object CMakeFiles/polyphase_float_static.dir/src/trig_fast.c.o
+[ 68%] Building C object CMakeFiles/polyphase_float_static.dir/src/inverse_angle_fast.c.o
+[ 70%] Building C object CMakeFiles/polyphase_float_static.dir/src/trig_hyperbolic.c.o
+[ 73%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_common.c.o
+[ 75%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_gamma.c.o
+[ 78%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_misc.c.o
+[ 80%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_bessel.c.o
+[ 82%] Building C object CMakeFiles/polyphase_float_static.dir/src/runtime_support.c.o
+[ 85%] Building C object CMakeFiles/polyphase_float_static.dir/src/random.c.o
+[ 87%] Building C object CMakeFiles/polyphase_float_static.dir/src/conditional_formats.c.o
+[ 90%] Linking C static library libpolyphase_float.a
+[ 90%] Built target polyphase_float_static
+[ 92%] Building C object CMakeFiles/fuzz_text_parser.dir/fuzz/fuzz_text_parser.c.o
+[ 95%] Building C object CMakeFiles/fuzz_fpif_import.dir/fuzz/fuzz_fpif_import.c.o
+[ 97%] Linking C executable fuzz_text_parser
+[100%] Linking C executable fuzz_fpif_import
+[100%] Built target fuzz_text_parser
+[100%] Built target fuzz_fpif_import

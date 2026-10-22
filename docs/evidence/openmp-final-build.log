@@ -1,0 +1,262 @@
+-- MPFR binary128 conversion API: 1
+-- MPFR decimal conversion API: 1
+-- Polyphase Float 0.19.0
+--   shared library: ON
+--   static library: ON
+--   MPFR support:   TRUE (ON)
+--   MPFR header:    TRUE
+--   OpenMP support: TRUE (ON)
+--   ELF symbol versions: TRUE (AUTO)
+--   examples:       OFF
+--   benchmarks:     OFF
+--   fuzzers:        OFF
+--   ThreadSanitizer:OFF
+--   native tuning:  OFF
+--   product profile:/workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/src/ppf_product_profile_build.h
+-- Configuring done (0.8s)
+-- Generating done (0.9s)
+-- Build files have been written to: /workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-openmp
+[  0%] Building C object CMakeFiles/abi_layout_probe.dir/tools/abi_layout_probe.c.o
+[  0%] Building C object CMakeFiles/polyphase_float.dir/src/abi.c.o
+[  0%] Building C object CMakeFiles/polyphase_float_static.dir/src/abi.c.o
+[  1%] Building C object CMakeFiles/polyphase_float_static.dir/src/context.c.o
+[  2%] Linking C executable abi_layout_probe
+[  3%] Building C object CMakeFiles/polyphase_float.dir/src/context.c.o
+[  3%] Building C object CMakeFiles/polyphase_float_static.dir/src/result_transaction.c.o
+[  3%] Built target abi_layout_probe
+[  4%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic_root_transaction.c.o
+[  4%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental_special_transaction.c.o
+[  5%] Building C object CMakeFiles/polyphase_float_static.dir/src/object.c.o
+[  5%] Building C object CMakeFiles/polyphase_float.dir/src/result_transaction.c.o
+[  5%] Building C object CMakeFiles/polyphase_float_static.dir/src/round.c.o
+[  6%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic_root_transaction.c.o
+[  7%] Building C object CMakeFiles/polyphase_float_static.dir/src/limb_round.c.o
+[  7%] Building C object CMakeFiles/polyphase_float_static.dir/src/toom3.c.o
+[  8%] Building C object CMakeFiles/polyphase_float_static.dir/src/window_product.c.o
+[  9%] Building C object CMakeFiles/polyphase_float_static.dir/src/product_planner.c.o
+[  9%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental_special_transaction.c.o
+[  9%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic.c.o
+[ 10%] Building C object CMakeFiles/polyphase_float_static.dir/src/arithmetic_variants.c.o
+[ 11%] Building C object CMakeFiles/polyphase_float.dir/src/object.c.o
+[ 11%] Building C object CMakeFiles/polyphase_float_static.dir/src/assignment.c.o
+[ 11%] Building C object CMakeFiles/polyphase_float.dir/src/round.c.o
+[ 12%] Building C object CMakeFiles/polyphase_float_static.dir/src/io.c.o
+[ 12%] Building C object CMakeFiles/polyphase_float_static.dir/src/format.c.o
+[ 13%] Building C object CMakeFiles/polyphase_float_static.dir/src/utilities.c.o
+[ 14%] Building C object CMakeFiles/polyphase_float.dir/src/limb_round.c.o
+[ 14%] Building C object CMakeFiles/polyphase_float.dir/src/toom3.c.o
+[ 14%] Building C object CMakeFiles/polyphase_float_static.dir/src/remainder.c.o
+[ 15%] Building C object CMakeFiles/polyphase_float_static.dir/src/range_flags.c.o
+[ 16%] Building C object CMakeFiles/polyphase_float.dir/src/window_product.c.o
+[ 16%] Building C object CMakeFiles/polyphase_float.dir/src/product_planner.c.o
+[ 17%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic.c.o
+[ 17%] Building C object CMakeFiles/polyphase_float_static.dir/src/roots.c.o
+[ 18%] Building C object CMakeFiles/polyphase_float_static.dir/src/divisor_plan.c.o
+[ 19%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic_variants.c.o
+[ 19%] Building C object CMakeFiles/polyphase_float_static.dir/src/constants.c.o
+[ 20%] Building C object CMakeFiles/polyphase_float_static.dir/src/constant_pi.c.o
+[ 20%] Building C object CMakeFiles/polyphase_float.dir/src/assignment.c.o
+[ 21%] Building C object CMakeFiles/polyphase_float_static.dir/src/constant_log2.c.o
+[ 22%] Building C object CMakeFiles/polyphase_float.dir/src/io.c.o
+[ 22%] Building C object CMakeFiles/polyphase_float.dir/src/format.c.o
+[ 22%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental_fast.c.o
+[ 23%] Building C object CMakeFiles/polyphase_float.dir/src/utilities.c.o
+[ 23%] Building C object CMakeFiles/polyphase_float.dir/src/remainder.c.o
+[ 24%] Building C object CMakeFiles/polyphase_float.dir/src/range_flags.c.o
+[ 24%] Building C object CMakeFiles/polyphase_float.dir/src/roots.c.o
+[ 25%] Building C object CMakeFiles/polyphase_float.dir/src/divisor_plan.c.o
+[ 25%] Building C object CMakeFiles/polyphase_float.dir/src/constants.c.o
+[ 26%] Building C object CMakeFiles/polyphase_float.dir/src/constant_pi.c.o
+[ 27%] Building C object CMakeFiles/polyphase_float_static.dir/src/transcendental.c.o
+[ 27%] Building C object CMakeFiles/polyphase_float_static.dir/src/trig_fast.c.o
+[ 28%] Building C object CMakeFiles/polyphase_float_static.dir/src/inverse_angle_fast.c.o
+[ 28%] Building C object CMakeFiles/polyphase_float_static.dir/src/trig_hyperbolic.c.o
+[ 29%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_common.c.o
+[ 29%] Building C object CMakeFiles/polyphase_float.dir/src/constant_log2.c.o
+[ 29%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_gamma.c.o
+[ 30%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_misc.c.o
+[ 30%] Building C object CMakeFiles/polyphase_float_static.dir/src/special_bessel.c.o
+[ 31%] Building C object CMakeFiles/polyphase_float_static.dir/src/runtime_support.c.o
+[ 32%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental_fast.c.o
+[ 32%] Building C object CMakeFiles/polyphase_float_static.dir/src/random.c.o
+[ 33%] Building C object CMakeFiles/polyphase_float_static.dir/src/conditional_formats.c.o
+[ 34%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental.c.o
+[ 34%] Building C object CMakeFiles/polyphase_float.dir/src/trig_fast.c.o
+[ 35%] Linking C static library libpolyphase_float.a
+[ 35%] Built target polyphase_float_static
+[ 36%] Building C object CMakeFiles/polyphase_float.dir/src/inverse_angle_fast.c.o
+[ 36%] Building C object CMakeFiles/polyphase_float.dir/src/trig_hyperbolic.c.o
+[ 37%] Building C object CMakeFiles/polyphase_float.dir/src/special_common.c.o
+[ 37%] Building C object CMakeFiles/polyphase_float.dir/src/special_gamma.c.o
+[ 38%] Building C object CMakeFiles/polyphase_float.dir/src/special_misc.c.o
+[ 38%] Building C object CMakeFiles/polyphase_float.dir/src/special_bessel.c.o
+[ 39%] Building C object CMakeFiles/polyphase_float.dir/src/runtime_support.c.o
+[ 39%] Building C object CMakeFiles/polyphase_float.dir/src/random.c.o
+[ 40%] Building C object CMakeFiles/polyphase_float.dir/src/conditional_formats.c.o
+[ 40%] Building C object CMakeFiles/polyphase_float_mpfr_static.dir/adapter/mpfr_adapter.c.o
+[ 41%] Linking C static library libpolyphase_float_mpfr.a
+[ 41%] Built target polyphase_float_mpfr_static
+[ 42%] Building C object CMakeFiles/test_special_interval_audit.dir/tests/test_special_interval_audit.c.o
+[ 42%] Linking C executable test_special_interval_audit
+[ 42%] Built target test_special_interval_audit
+[ 42%] Linking C shared library libpolyphase_float.so
+[ 42%] Built target polyphase_float
+[ 43%] Building C object CMakeFiles/test_object.dir/tests/test_object.c.o
+[ 44%] Building C object CMakeFiles/polyphase_float_mpfr.dir/adapter/mpfr_adapter.c.o
+[ 44%] Building C object CMakeFiles/test_allocation_failure.dir/tests/test_allocation_failure.c.o
+[ 44%] Building C object CMakeFiles/test_io_allocation_failure.dir/tests/test_io_allocation_failure.c.o
+[ 45%] Linking C shared library libpolyphase_float_mpfr.so
+[ 45%] Built target polyphase_float_mpfr
+[ 46%] Building C object CMakeFiles/test_constant_allocation_failure.dir/tests/test_constant_allocation_failure.c.o
+[ 46%] Linking C executable test_object
+[ 46%] Built target test_object
+[ 46%] Building C object CMakeFiles/test_transcendental_special_allocation_failure.dir/tests/test_transcendental_special_allocation_failure.c.o
+[ 46%] Linking C executable test_constant_allocation_failure
+[ 46%] Built target test_constant_allocation_failure
+[ 47%] Linking C executable test_io_allocation_failure
+[ 48%] Building C object CMakeFiles/test_arithmetic_root_allocation_failure.dir/tests/test_arithmetic_root_allocation_failure.c.o
+[ 48%] Built target test_io_allocation_failure
+[ 49%] Linking C executable test_allocation_failure
+[ 49%] Building C object CMakeFiles/test_thread_safety.dir/tests/test_thread_safety.c.o
+[ 49%] Built target test_allocation_failure
+[ 49%] Building C object CMakeFiles/test_format_errno.dir/tests/test_format_errno.c.o
+[ 50%] Linking C executable test_transcendental_special_allocation_failure
+[ 51%] Linking C executable test_format_errno
+[ 51%] Built target test_transcendental_special_allocation_failure
+[ 52%] Building C object CMakeFiles/test_product_profile.dir/tests/test_product_profile.c.o
+[ 52%] Built target test_format_errno
+[ 52%] Building C object CMakeFiles/test_abi_runtime.dir/tests/test_abi_runtime.c.o
+[ 52%] Linking C executable test_arithmetic_root_allocation_failure
+[ 52%] Linking C executable test_product_profile
+[ 52%] Built target test_arithmetic_root_allocation_failure
+[ 53%] Linking C executable test_abi_runtime
+[ 54%] Linking C executable test_thread_safety
+[ 54%] Building C object CMakeFiles/test_semantic_surface.dir/tests/test_semantic_surface.c.o
+[ 54%] Built target test_product_profile
+[ 54%] Building C object CMakeFiles/test_aliasing_matrix.dir/tests/test_aliasing_matrix.c.o
+[ 54%] Built target test_abi_runtime
+[ 54%] Building C object CMakeFiles/test_api_lifecycle_audit.dir/tests/test_api_lifecycle_audit.c.o
+[ 54%] Built target test_thread_safety
+[ 55%] Building C object CMakeFiles/test_precision_remainder_failure.dir/tests/test_precision_remainder_failure.c.o
+[ 56%] Linking C executable test_semantic_surface
+[ 56%] Built target test_semantic_surface
+[ 57%] Building C object CMakeFiles/test_special_edge_audit.dir/tests/test_special_edge_audit.c.o
+[ 58%] Linking C executable test_api_lifecycle_audit
+[ 58%] Linking C executable test_precision_remainder_failure
+[ 58%] Built target test_api_lifecycle_audit
+[ 58%] Building C object CMakeFiles/test_independent_special_review.dir/tests/test_independent_special_review.c.o
+[ 58%] Built target test_precision_remainder_failure
+[ 59%] Building C object CMakeFiles/test_mpfr_adapter.dir/tests/test_mpfr_adapter.c.o
+[ 59%] Linking C executable test_mpfr_adapter
+[ 59%] Linking C executable test_special_edge_audit
+[ 59%] Built target test_mpfr_adapter
+[ 60%] Linking C executable test_aliasing_matrix
+[ 61%] Building C object CMakeFiles/test_mpfr_type_model.dir/tests/test_mpfr_type_model.c.o
+[ 61%] Built target test_special_edge_audit
+[ 61%] Building C object CMakeFiles/test_arithmetic_range.dir/tests/test_arithmetic_range.c.o
+[ 61%] Linking C executable test_mpfr_type_model
+[ 61%] Built target test_aliasing_matrix
+[ 61%] Built target test_mpfr_type_model
+[ 62%] Building C object CMakeFiles/test_arithmetic_special.dir/tests/test_arithmetic_special.c.o
+[ 62%] Building C object CMakeFiles/test_arithmetic.dir/tests/test_arithmetic.c.o
+[ 63%] Linking C executable test_arithmetic_range
+[ 63%] Built target test_arithmetic_range
+[ 64%] Linking C executable test_independent_special_review
+[ 65%] Building C object CMakeFiles/test_arithmetic_variants.dir/tests/test_arithmetic_variants.c.o
+[ 65%] Linking C executable test_arithmetic_special
+[ 65%] Built target test_independent_special_review
+[ 66%] Building C object CMakeFiles/test_assignment_conversion.dir/tests/test_assignment_conversion.c.o
+[ 66%] Built target test_arithmetic_special
+[ 66%] Building C object CMakeFiles/test_io.dir/tests/test_io.c.o
+[ 67%] Linking C executable test_arithmetic
+[ 67%] Built target test_arithmetic
+[ 67%] Building C object CMakeFiles/test_format.dir/tests/test_format.c.o
+[ 68%] Linking C executable test_io
+[ 68%] Linking C executable test_assignment_conversion
+[ 68%] Built target test_io
+[ 68%] Built target test_assignment_conversion
+[ 69%] Linking C executable test_format
+[ 70%] Building C object CMakeFiles/test_utilities.dir/tests/test_utilities.c.o
+[ 71%] Building C object CMakeFiles/test_utilities_remainder.dir/tests/test_utilities_remainder.c.o
+[ 71%] Built target test_format
+[ 71%] Linking C executable test_arithmetic_variants
+[ 71%] Building C object CMakeFiles/test_range_flags.dir/tests/test_range_flags.c.o
+[ 71%] Built target test_arithmetic_variants
+[ 71%] Building C object CMakeFiles/test_roots.dir/tests/test_roots.c.o
+[ 72%] Linking C executable test_range_flags
+[ 72%] Built target test_range_flags
+[ 73%] Building C object CMakeFiles/test_divisor_plan.dir/tests/test_divisor_plan.c.o
+[ 73%] Linking C executable test_utilities
+[ 73%] Built target test_utilities
+[ 74%] Building C object CMakeFiles/test_product_planner.dir/tests/test_product_planner.c.o
+[ 75%] Linking C executable test_utilities_remainder
+[ 76%] Linking C executable test_divisor_plan
+[ 77%] Linking C executable test_roots
+[ 77%] Built target test_utilities_remainder
+[ 77%] Built target test_roots
+[ 77%] Built target test_divisor_plan
+[ 78%] Building C object CMakeFiles/test_constants.dir/tests/test_constants.c.o
+[ 78%] Building C object CMakeFiles/test_transcendental_complete.dir/tests/test_transcendental_complete.c.o
+[ 78%] Building C object CMakeFiles/test_transcendental_range.dir/tests/test_transcendental_range.c.o
+[ 78%] Linking C executable test_product_planner
+[ 79%] Linking C executable test_transcendental_range
+[ 79%] Built target test_product_planner
+[ 79%] Built target test_transcendental_range
+[ 79%] Building C object CMakeFiles/test_transcendental_random.dir/tests/test_transcendental_random.c.o
+[ 79%] Building C object CMakeFiles/test_transcendental_large.dir/tests/test_transcendental_large.c.o
+[ 80%] Linking C executable test_transcendental_complete
+[ 80%] Linking C executable test_constants
+[ 80%] Built target test_transcendental_complete
+[ 81%] Building C object CMakeFiles/test_trig_hyperbolic.dir/tests/test_trig_hyperbolic.c.o
+[ 81%] Built target test_constants
+[ 82%] Building C object CMakeFiles/test_trig_hyperbolic_special.dir/tests/test_trig_hyperbolic_special.c.o
+[ 83%] Linking C executable test_transcendental_random
+[ 84%] Linking C executable test_transcendental_large
+[ 84%] Built target test_transcendental_random
+[ 84%] Built target test_transcendental_large
+[ 85%] Building C object CMakeFiles/test_trig_hyperbolic_random.dir/tests/test_trig_hyperbolic_random.c.o
+[ 86%] Building C object CMakeFiles/test_trig_hyperbolic_alias.dir/tests/test_trig_hyperbolic_alias.c.o
+[ 86%] Linking C executable test_trig_hyperbolic_random
+[ 86%] Linking C executable test_trig_hyperbolic_alias
+[ 86%] Built target test_trig_hyperbolic_random
+[ 87%] Building C object CMakeFiles/test_trig_hyperbolic_large.dir/tests/test_trig_hyperbolic_large.c.o
+[ 87%] Built target test_trig_hyperbolic_alias
+[ 87%] Linking C executable test_trig_hyperbolic_special
+[ 88%] Building C object CMakeFiles/test_special_functions.dir/tests/test_special_functions.c.o
+[ 88%] Built target test_trig_hyperbolic_special
+[ 88%] Linking C executable test_trig_hyperbolic
+[ 89%] Building C object CMakeFiles/test_special_values.dir/tests/test_special_values.c.o
+[ 89%] Built target test_trig_hyperbolic
+[ 90%] Linking C executable test_special_values
+[ 91%] Building C object CMakeFiles/test_special_faithful.dir/tests/test_special_faithful.c.o
+[ 91%] Built target test_special_values
+[ 91%] Linking C executable test_trig_hyperbolic_large
+[ 91%] Building C object CMakeFiles/test_special_constants.dir/tests/test_special_constants.c.o
+[ 91%] Linking C executable test_special_faithful
+[ 91%] Built target test_special_faithful
+[ 91%] Linking C executable test_special_functions
+[ 91%] Built target test_trig_hyperbolic_large
+[ 92%] Building C object CMakeFiles/test_special_random.dir/tests/test_special_random.c.o
+[ 92%] Building C object CMakeFiles/test_special_alias.dir/tests/test_special_alias.c.o
+[ 92%] Built target test_special_functions
+[ 92%] Linking C executable test_special_random
+[ 93%] Building C object CMakeFiles/test_special_large.dir/tests/test_special_large.c.o
+[ 94%] Linking C executable test_special_constants
+[ 94%] Built target test_special_random
+[ 94%] Built target test_special_constants
+[ 94%] Building C object CMakeFiles/test_runtime_support.dir/tests/test_runtime_support.c.o
+[ 95%] Building C object CMakeFiles/test_random_runtime.dir/tests/test_random_runtime.c.o
+[ 96%] Linking C executable test_special_alias
+[ 96%] Linking C executable test_special_large
+[ 96%] Built target test_special_alias
+[ 96%] Built target test_special_large
+[ 97%] Linking C executable test_runtime_support
+[ 98%] Building C object CMakeFiles/test_conditional_formats.dir/tests/test_conditional_formats.c.o
+[ 99%] Linking C executable test_random_runtime
+[ 99%] Building C object CMakeFiles/test_exhaustive_small.dir/tests/test_exhaustive_small.c.o
+[ 99%] Built target test_runtime_support
+[ 99%] Built target test_random_runtime
+[ 99%] Linking C executable test_conditional_formats
+[100%] Linking C executable test_exhaustive_small
+[100%] Built target test_conditional_formats
+[100%] Built target test_exhaustive_small

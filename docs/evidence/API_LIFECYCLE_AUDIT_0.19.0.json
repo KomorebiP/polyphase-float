@@ -1,0 +1,58 @@
+{
+  "source_archive": "polyphase-float-0.18.0_GITHUB_READY_CANONICAL.zip",
+  "source_archive_sha256": "73888e965a2a3c8978462133f78403ebb40967870691b136ba5f54953aa2be6f",
+  "negative_control_method": "Restore five implementation files from canonical 0.18.0 into a copy of the current sanitizer static library. The focused regression and remaining library implementations stay unchanged.",
+  "restored_source_sha256": {
+    "format.c": "505e720107572c41a546e09b1a46b2b112f877abeb494e8cd18a6883ac2f8ca3",
+    "object.c": "887832b20af63b7734a6456ab8fe00e2dd1b509ff6554f154653d13b1cd7bbc3",
+    "runtime_support.c": "7dc1ae927fdcbb82c7d672d19bacd8489214ba46cc897eaf1a09ab2d9d8d87df",
+    "assignment.c": "3e0b903e9c56f049f707f3c5e27305551c318920c21a5c450547cc5633826d0e",
+    "random.c": "99d8c38dce6e7aace2638e3b5499e5ec05876ef1a69321fae67250f3df8f8a6b"
+  },
+  "test_file": "tests/test_api_lifecycle_audit.c",
+  "test_file_sha256": "d5dcfc55eca19053c9c7dd3ba4abd182ec224161bb14edc02366302bdc9a09d3",
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_sanitizer": "Could not run: /proc task introspection inaccessible in audit container. Successful execution disables detect_leaks; custom allocator balance is verified directly.",
+  "negative_controls": {
+    "kind": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "<restored-source>/runtime_support.c:318:9: runtime error: negation of -2147483648 cannot be represented in type 'int'; cast to an unsigned type to negate this value to itself\n"
+    },
+    "parser": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "CHECK FAILED <current-source>/tests/test_api_lifecycle_audit.c:291: ppf_set_str(&x, invalid[i], 0, PPF_RNDN, &ctx) == -1\n"
+    },
+    "width": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "<restored-source>/format.c:221:59: runtime error: negation of -2147483648 cannot be represented in type 'int'; cast to an unsigned type to negate this value to itself\n"
+    },
+    "finite": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "CHECK FAILED <current-source>/tests/test_api_lifecycle_audit.c:327: !ppf_number_p(&x)\n"
+    },
+    "range": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "CHECK FAILED <current-source>/tests/test_api_lifecycle_audit.c:363: (result > 0) - (result < 0) == (oracle > 0) - (oracle < 0)\n"
+    },
+    "random": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "CHECK FAILED <current-source>/tests/test_api_lifecycle_audit.c:172: s.live_blocks == 0 && s.live_bytes == 0\n"
+    },
+    "reldiff": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "CHECK FAILED <current-source>/tests/test_api_lifecycle_audit.c:249: memcmp(destination, &before, sizeof(before)) == 0\n"
+    }
+  },
+  "positive_exit_code": 0,
+  "positive_output": "random urandomb: 1 fail-at-N positions passed\nrandom urandom: 1 fail-at-N positions passed\nrandom erandom: 16 fail-at-N positions passed\nrandom nrandom: 197 fail-at-N positions passed\nrandom grandom: 199 fail-at-N positions passed\nreldiff: 2 fail-at-N positions passed with ordinary, alias, and external outputs\nAPI lifecycle audit regressions passed\n"
+}

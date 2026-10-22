@@ -1,0 +1,56 @@
+Test project /workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-sanitize
+      Start  2: allocation_failure
+      Start  3: io_allocation_failure
+ 1/22 Test  #2: allocation_failure ..........................   Passed    0.04 sec
+      Start  4: constant_allocation_failure
+ 2/22 Test  #3: io_allocation_failure .......................   Passed    0.03 sec
+      Start  5: transcendental_special_allocation_failure
+ 3/22 Test  #4: constant_allocation_failure .................   Passed   11.54 sec
+      Start  6: arithmetic_root_allocation_failure
+ 4/22 Test  #6: arithmetic_root_allocation_failure ..........   Passed    0.02 sec
+      Start 10: abi_runtime
+ 5/22 Test #10: abi_runtime .................................   Passed    0.02 sec
+      Start 12: aliasing_matrix
+ 6/22 Test #12: aliasing_matrix .............................   Passed    0.18 sec
+      Start 13: api_lifecycle_audit
+ 7/22 Test #13: api_lifecycle_audit .........................   Passed    2.53 sec
+      Start 14: precision_remainder_failure
+ 8/22 Test #14: precision_remainder_failure .................   Passed    0.02 sec
+      Start 15: special_edge_audit
+ 9/22 Test #15: special_edge_audit ..........................   Passed    7.27 sec
+      Start 16: independent_special_review
+10/22 Test #16: independent_special_review ..................   Passed    9.96 sec
+      Start 17: special_interval_audit
+11/22 Test #17: special_interval_audit ......................   Passed    0.75 sec
+      Start 56: semantic_contract_current
+12/22 Test #56: semantic_contract_current ...................   Passed    9.42 sec
+      Start 57: semantic_contract_policy
+13/22 Test #57: semantic_contract_policy ....................   Passed    9.88 sec
+      Start 58: aliasing_contract_current
+14/22 Test #58: aliasing_contract_current ...................   Passed    9.17 sec
+      Start 59: aliasing_contract_policy
+15/22 Test #59: aliasing_contract_policy ....................   Passed    9.06 sec
+      Start 60: abi_contract_current
+16/22 Test #60: abi_contract_current ........................   Passed    0.13 sec
+      Start 61: abi_contract_compatibility
+17/22 Test #61: abi_contract_compatibility ..................   Passed    0.07 sec
+      Start 62: abi_contract_previous_release
+18/22 Test #62: abi_contract_previous_release ...............   Passed    0.09 sec
+      Start 63: abi_layout_compatibility
+19/22 Test #63: abi_layout_compatibility ....................   Passed    0.08 sec
+      Start 64: abi_exports
+20/22 Test #64: abi_exports .................................   Passed    0.09 sec
+21/22 Test  #5: transcendental_special_allocation_failure ...   Passed  641.47 sec
+      Start  7: thread_safety
+22/22 Test  #7: thread_safety ...............................   Passed    0.28 sec
+
+100% tests passed out of 22
+
+Label Time Summary:
+aliasing     =  18.23 sec*proc (2 tests)
+fast         =  58.71 sec*proc (16 tests)
+hardening    = 712.08 sec*proc (22 tests)
+semantic     = 693.31 sec*proc (11 tests)
+threading    =   0.28 sec*proc (1 test)
+
+Total Test time (real) = 641.79 sec

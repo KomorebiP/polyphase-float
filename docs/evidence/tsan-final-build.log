@@ -1,0 +1,58 @@
+-- MPFR adapter not built: differential and extended MPFR tests are omitted
+-- Polyphase Float 0.19.0
+--   shared library: ON
+--   static library: ON
+--   MPFR support:   FALSE (OFF)
+--   MPFR header:    
+--   OpenMP support: FALSE (OFF)
+--   ELF symbol versions: TRUE (AUTO)
+--   examples:       OFF
+--   benchmarks:     OFF
+--   fuzzers:        OFF
+--   ThreadSanitizer:ON
+--   native tuning:  OFF
+--   product profile:/workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/src/ppf_product_profile_build.h
+-- Configuring done (0.4s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-tsan
+[  2%] Building C object CMakeFiles/polyphase_float.dir/src/abi.c.o
+[  5%] Building C object CMakeFiles/polyphase_float.dir/src/context.c.o
+[  7%] Building C object CMakeFiles/polyphase_float.dir/src/result_transaction.c.o
+[ 10%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic_root_transaction.c.o
+[ 13%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental_special_transaction.c.o
+[ 15%] Building C object CMakeFiles/polyphase_float.dir/src/object.c.o
+[ 18%] Building C object CMakeFiles/polyphase_float.dir/src/round.c.o
+[ 21%] Building C object CMakeFiles/polyphase_float.dir/src/limb_round.c.o
+[ 23%] Building C object CMakeFiles/polyphase_float.dir/src/toom3.c.o
+[ 26%] Building C object CMakeFiles/polyphase_float.dir/src/window_product.c.o
+[ 31%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic.c.o
+[ 31%] Building C object CMakeFiles/polyphase_float.dir/src/product_planner.c.o
+[ 34%] Building C object CMakeFiles/polyphase_float.dir/src/arithmetic_variants.c.o
+[ 36%] Building C object CMakeFiles/polyphase_float.dir/src/assignment.c.o
+[ 39%] Building C object CMakeFiles/polyphase_float.dir/src/io.c.o
+[ 42%] Building C object CMakeFiles/polyphase_float.dir/src/format.c.o
+[ 44%] Building C object CMakeFiles/polyphase_float.dir/src/utilities.c.o
+[ 47%] Building C object CMakeFiles/polyphase_float.dir/src/remainder.c.o
+[ 50%] Building C object CMakeFiles/polyphase_float.dir/src/range_flags.c.o
+[ 52%] Building C object CMakeFiles/polyphase_float.dir/src/roots.c.o
+[ 55%] Building C object CMakeFiles/polyphase_float.dir/src/divisor_plan.c.o
+[ 57%] Building C object CMakeFiles/polyphase_float.dir/src/constants.c.o
+[ 60%] Building C object CMakeFiles/polyphase_float.dir/src/constant_pi.c.o
+[ 63%] Building C object CMakeFiles/polyphase_float.dir/src/constant_log2.c.o
+[ 63%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental_fast.c.o
+[ 65%] Building C object CMakeFiles/polyphase_float.dir/src/transcendental.c.o
+[ 68%] Building C object CMakeFiles/polyphase_float.dir/src/trig_fast.c.o
+[ 71%] Building C object CMakeFiles/polyphase_float.dir/src/inverse_angle_fast.c.o
+[ 73%] Building C object CMakeFiles/polyphase_float.dir/src/trig_hyperbolic.c.o
+[ 76%] Building C object CMakeFiles/polyphase_float.dir/src/special_common.c.o
+[ 78%] Building C object CMakeFiles/polyphase_float.dir/src/special_gamma.c.o
+[ 81%] Building C object CMakeFiles/polyphase_float.dir/src/special_misc.c.o
+[ 84%] Building C object CMakeFiles/polyphase_float.dir/src/special_bessel.c.o
+[ 86%] Building C object CMakeFiles/polyphase_float.dir/src/runtime_support.c.o
+[ 89%] Building C object CMakeFiles/polyphase_float.dir/src/random.c.o
+[ 92%] Building C object CMakeFiles/polyphase_float.dir/src/conditional_formats.c.o
+[ 94%] Linking C shared library libpolyphase_float.so
+[ 94%] Built target polyphase_float
+[ 97%] Building C object CMakeFiles/test_thread_safety.dir/tests/test_thread_safety.c.o
+[100%] Linking C executable test_thread_safety
+[100%] Built target test_thread_safety

@@ -123,7 +123,7 @@ separately.
 
 ## Automated checks
 
-The release process performs four independent checks:
+The release process performs five independent checks:
 
 1. **Source contract comparison.** The normalized declarations, types, layouts,
    enums, and constants are compared with the frozen 0.11.0 baseline.
@@ -133,7 +133,7 @@ The release process performs four independent checks:
    the declared core surface with the required version nodes.
 4. **Previous-release comparison.** The current source contract is checked
    against both the frozen 0.11.0 epoch baseline and the immediately previous
-   0.12.0 contract.
+   release contract.
 5. **Old-binary execution.** A consumer compiled and linked against the actual
    0.11.0 library is run unchanged with the current epoch-1 shared library.
 

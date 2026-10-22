@@ -1,6 +1,40 @@
 # Release notes
 
 
+## 0.20.0 allocation closeout and integrated resource repair
+
+- Integrate PPFIF payload/significand admission limits and bounded streaming.
+- Reject Airy inputs above the supported bound using exact comparison.
+- Validate floating-setter rounding modes before special-value mutation.
+- Resolve 79 allocation-evidence entries with explicit source contracts and
+  focused lifecycle and transaction tests.
+- Add reviewed numerical boundaries, deterministic retry-exhaustion tests and
+  an offline qualification runner.
+- Preserve the remote repository's private CodeQL and temporary-build fixes.
+
+The candidate preserves ABI epoch 1 and the existing SONAME. External
+correctness replication and independent mathematical review remain open.
+See `docs/COMPLETION_SCOPE_0.20.0.md` and `docs/QUALIFICATION.md`.
+
+## 0.19.0 deep audit and corrected contracts — 2026-10-09
+
+- Correct directed rounding when sign changes and precision shrinks.
+- Preserve destinations and report allocation failure in precision rounding,
+  scalar remainder, random generation, and relative difference.
+- Fix partial initialization cleanup and extreme signed-integer arguments.
+- Reject empty numeric text, validate rounding, and correct extreme-exponent
+  range classification.
+- Correct Gamma/log-Gamma poles, infinities, integer identities, Bessel signed
+  zeros and interval construction, and special-function remainder enclosures.
+- Fix multiarch pkg-config relocation and installed CMake component dependencies.
+- Replace token-reference inference with explicit allocation evidence lists.
+- Add focused regressions to both CMake and Make. Preserve epoch-1 declarations,
+  layouts, symbol versions, and SONAME on the governed baseline.
+
+See `docs/DEEP_AUDIT_0.19.0.md` and `docs/COMPLETION_SCOPE_0.19.0.md`. This is a
+pre-1.0 release; API inventory completion is not a claim of universal correct
+rounding or unrestricted numerical domains.
+
 ## 0.18.0 arithmetic, fused-operation, and root allocation transactions — 2026-08-31
 
 - added transactional public wrappers for 56 arithmetic, fused/planned-operation, and root endpoints

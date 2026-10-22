@@ -299,6 +299,26 @@ int ppf_special_iv_pow_positive(ppf_special_iv_t *out,
 done: ppf_special_iv_clear(&l); ppf_special_iv_clear(&p); return rc;
 }
 
+int ppf_special_iv_add_positive_tail(ppf_special_iv_t *out,
+                                     const ppf_special_iv_t *sum,
+                                     const ppf_special_iv_t *tail,
+                                     ppf_context_t *ctx) {
+    if (ppf_sgn(&tail->lo, ctx) < 0 || ppf_cmp(&tail->lo, &tail->hi, ctx) > 0)
+        return -1;
+    return ppf_set(&out->lo, &sum->lo, PPF_RNDD, ctx) == PPF_TERNARY_ERROR ||
+           ppf_add(&out->hi, &sum->hi, &tail->hi, PPF_RNDU, ctx) == PPF_TERNARY_ERROR ? -1 : 0;
+}
+
+int ppf_special_iv_gamma_decreasing(ppf_special_iv_t *out,
+                                    const ppf_special_iv_t *argument,
+                                    ppf_context_t *ctx) {
+    if (ppf_cmp_ui(&argument->lo, 0, ctx) <= 0 ||
+        ppf_cmp_ui(&argument->hi, 1, ctx) > 0 ||
+        ppf_cmp(&argument->lo, &argument->hi, ctx) > 0) return -1;
+    return ppf_gamma(&out->lo, &argument->hi, PPF_RNDD, ctx) == PPF_TERNARY_ERROR ||
+           ppf_gamma(&out->hi, &argument->lo, PPF_RNDU, ctx) == PPF_TERNARY_ERROR ? -1 : 0;
+}
+
 int ppf_special_iv_to_dyadic(mpz_ptr lower, mpz_ptr upper,
                              ppf_exp_t *exponent,
                              const ppf_special_iv_t *x) {

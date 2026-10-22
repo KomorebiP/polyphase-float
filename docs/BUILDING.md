@@ -136,7 +136,11 @@ DESTDIR="$PWD/stage" cmake --install build/release --prefix /usr
 ```
 
 The generated `pkg-config` file computes its prefix relative to its installed
-location. The exported CMake package is installed below
+location, including nested library directories such as
+`lib/x86_64-linux-gnu`. Relative install directories support relocation of the
+complete prefix. Absolute `CMAKE_INSTALL_LIBDIR` or
+`CMAKE_INSTALL_INCLUDEDIR` values retain those explicit absolute locations.
+The exported CMake package is installed below
 `${libdir}/cmake/PolyphaseFloat`.
 
 ## Downstream CMake use
@@ -151,6 +155,26 @@ target_link_libraries(example PRIVATE PolyphaseFloat::shared)
 
 Use `PolyphaseFloat::static` for a static build. GMP and Threads are propagated.
 OpenMP is propagated only when the installed library was built with it.
+
+An unqualified `find_package` loads the core and any installed MPFR adapter,
+preserving the full-package behavior. Applications that use only the
+independent core can explicitly avoid the adapter dependency:
+
+```cmake
+find_package(PolyphaseFloat CONFIG REQUIRED COMPONENTS core)
+target_link_libraries(example PRIVATE PolyphaseFloat::static)
+```
+
+Request `COMPONENTS mpfr` to require the installed adapter. The `mpfr`
+component also loads the core and exports `PolyphaseFloat::mpfr_shared` and/or
+`PolyphaseFloat::mpfr_static` according to the installed build. A required
+adapter component fails configuration when the adapter was not installed.
+
+Compatible 0.x releases in ABI epoch 1 accept CMake minimum-version requests
+from 0.11.0 onward. For example, a newer compatible package satisfies
+`find_package(PolyphaseFloat 0.11 CONFIG REQUIRED COMPONENTS core)`.
+Requests for interfaces before 0.11.0 or a different major series are outside
+that compatibility policy.
 
 ## ABI-governed Linux build
 

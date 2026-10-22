@@ -49,17 +49,18 @@ def main() -> None:
     failures = generator.validate(data)
     assert not failures, "\n".join(failures)
 
-    assert data["release_version"] == "0.18.0"
+    assert data["release_version"] == "0.20.0"
     assert data["contract_version"] == 1
     assert data["summary"]["function_count"] == 437
     assert data["summary"]["functions_with_direct_test_reference"] == 437
     assert data["summary"]["conditional_functions"] == 6
-    assert data["summary"]["explicit_gap_counts"] == {
-        "allocation_failure_atomicity_incomplete": 81,
-        "bounded_implementation_path": 112,
-        "conditional_build_surface": 6,
-    }
-    assert data["summary"]["atomicity_classes"]["verified_transactional"] == 213
+    assert "allocation_failure_atomicity_incomplete" not in data["summary"]["explicit_gap_counts"]
+    assert data["summary"]["explicit_gap_counts"]["bounded_implementation_path"] == 105
+    assert data["summary"]["explicit_gap_counts"]["conditional_build_surface"] == 6
+    assert data["summary"]["atomicity_classes"]["verified_transactional"] == 192
+    assert data["summary"]["atomicity_classes"]["reviewed_allocation_free"] == 63
+    assert data["summary"]["atomicity_classes"]["verified_initialization_lifecycle"] == 12
+    assert data["summary"]["atomicity_classes"]["verified_prefix_cleanup"] == 2
     assert "no_direct_test_reference" not in data["summary"]["explicit_gap_counts"]
 
     transactional_family = generator.TRANSCENDENTAL_SPECIAL_ALLOCATION_ATOMICITY_FUNCTIONS
@@ -93,7 +94,7 @@ def main() -> None:
     assert functions["ppf_get_str"]["ownership"]["classification"] == "caller_owned_string"
     assert functions["ppf_get_str"]["return_contract"]["kind"] == "owned_pointer"
     io_atomic = {
-        "ppf_set_str", "ppf_strtofr", "ppf_get_str", "ppf_free_str",
+        "ppf_set_str", "ppf_get_str", "ppf_free_str",
         "ppf_out_str", "ppf_inp_str", "ppf_fpif_export", "ppf_fpif_import",
         "ppf_asprintf", "ppf_vasprintf", "ppf_snprintf", "ppf_vsnprintf",
         "ppf_sprintf", "ppf_vsprintf", "ppf_fprintf", "ppf_vfprintf",
@@ -113,6 +114,45 @@ def main() -> None:
             "verified_transactional", name
         assert "tests/test_arithmetic_root_allocation_failure.c" in \
             functions[name]["evidence"]["tests"], name
+    for path, names in generator.ALLOCATION_ATOMICITY_TEST_FUNCTIONS.items():
+        assert (root / path).exists(), path
+        for name in names:
+            assert functions[name]["failure_atomicity"]["classification"] == \
+                "verified_transactional", name
+            assert path in functions[name]["evidence"]["tests"], (path, name)
+
+    # Setup/cleanup helpers mentioned in failure suites do not thereby gain
+    # an independently verified allocation-failure contract.
+    for name in {"ppf_set_ui", "ppf_set_d", "ppf_set_ui_2exp",
+                 "ppf_validate", "ppf_context_init", "ppf_clear"}:
+        assert functions[name]["failure_atomicity"]["classification"] != \
+            "verified_transactional", name
+    assert functions["ppf_strtofr"]["failure_atomicity"]["classification"] == \
+        "verified_transactional"
+    for name in generator.REVIEWED_ALLOCATION_FREE_FUNCTIONS:
+        assert functions[name]["failure_atomicity"]["classification"] == "reviewed_allocation_free", name
+        assert generator.ALLOCATION_COMPLETION_TEST in functions[name]["evidence"]["tests"], name
+        assert "GMP" in functions[name]["failure_atomicity"]["note"], name
+    for name in generator.INITIALIZATION_LIFECYCLE_FUNCTIONS:
+        assert functions[name]["failure_atomicity"]["classification"] == "verified_initialization_lifecycle", name
+        assert generator.ALLOCATION_COMPLETION_TEST in functions[name]["evidence"]["tests"], name
+    for name in generator.PREFIX_CLEANUP_FUNCTIONS:
+        assert functions[name]["failure_atomicity"]["classification"] == "verified_prefix_cleanup", name
+        assert "unvisited" in functions[name]["failure_atomicity"]["note"], name
+        assert "libc" in functions[name]["failure_atomicity"]["note"], name
+    # A token in an unrelated test must not grant a reviewed classification.
+    for function in generator.parse_header(root / "include" / "polyphase_float.h"):
+        if function["name"] in generator.REVIEWED_ALLOCATION_FREE_FUNCTIONS:
+            function["section"] = functions[function["name"]]["section"]
+            assert generator.atomicity_contract(function, ["tests/test_object.c"])["classification"] != "reviewed_allocation_free"
+    assert functions["ppf_fpif_import"]["practical_limits"]["classification"] == "implementation_bound"
+    assert "4096" in functions["ppf_fpif_import"]["practical_limits"]["summary"]
+    for name in {"ppf_set_trig_threads", "ppf_get_trig_threads",
+                 "ppf_clear_constant_cache", "ppf_free_constant_caches",
+                 "ppf_constant_cache_precision", "ppf_set_constant_threads",
+                 "ppf_get_constant_threads", "ppf_get_last_constant_stats"}:
+        assert functions[name]["practical_limits"]["classification"] == \
+            "none_declared", name
     assert functions["ppf_ai"]["practical_limits"]["classification"] == "implementation_bound"
     assert "500" in functions["ppf_ai"]["practical_limits"]["summary"]
 

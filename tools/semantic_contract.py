@@ -51,7 +51,8 @@ OWNERSHIP_CLASSES = {
 }
 ATOMICITY_CLASSES = {
     "not_applicable", "verified_transactional", "documented_partial",
-    "not_yet_verified", "initialization_safe_zero"
+    "not_yet_verified", "initialization_safe_zero", "reviewed_allocation_free",
+    "verified_initialization_lifecycle", "verified_prefix_cleanup"
 }
 
 STATUS_FUNCTIONS = {
@@ -663,10 +664,39 @@ def ownership_contract(name: str) -> dict[str, Any]:
     return {"classification": cls, "note": note}
 
 
-ALLOCATION_ATOMICITY_TESTS = {
-    "tests/test_allocation_failure.c",
-    "tests/test_io_allocation_failure.c",
-    "tests/test_constant_allocation_failure.c",
+# These allowlists describe operations actually subjected to injected
+# allocation failures. A token reference to a setup, cleanup, or assertion
+# helper in the same file is not evidence that its failure path was tested.
+ALLOCATION_ATOMICITY_TEST_FUNCTIONS = {
+    "tests/test_allocation_completion.c": {"ppf_strtofr", "ppf_dim"},
+    "tests/test_allocation_failure.c": {
+        "ppf_reserve", "ppf_set_prec", "ppf_arena_alloc",
+        "ppf_divisor_plan_create_ex", "ppf_div_with_plan", "ppf_sum",
+        "ppf_dot", "ppf_mul_algorithm_threads", "ppf_sqr", "ppf_div",
+        "ppf_sqrt_ui", "ppf_rec_sqrt", "ppf_fpif_import",
+    },
+    "tests/test_io_allocation_failure.c": {
+        "ppf_set_str", "ppf_get_str", "ppf_out_str", "ppf_inp_str",
+        "ppf_fpif_export", "ppf_asprintf", "ppf_vasprintf",
+        "ppf_snprintf", "ppf_vsnprintf", "ppf_sprintf", "ppf_vsprintf",
+        "ppf_fprintf", "ppf_vfprintf", "ppf_printf", "ppf_vprintf",
+    },
+    "tests/test_constant_allocation_failure.c": {
+        "ppf_const_pi", "ppf_const_pi_threads", "ppf_const_pi_uncached",
+        "ppf_const_log2", "ppf_const_log2_threads", "ppf_const_log2_uncached",
+        "ppf_const_euler", "ppf_const_euler_threads", "ppf_const_euler_uncached",
+        "ppf_const_catalan", "ppf_const_catalan_threads", "ppf_const_catalan_uncached",
+        "ppf_precompute_pi", "ppf_precompute_log2", "ppf_precompute_euler",
+        "ppf_precompute_catalan", "ppf_precompute_constant",
+        "ppf_get_constant_interval",
+    },
+    "tests/test_precision_remainder_failure.c": {
+        "ppf_prec_round", "ppf_fmod_ui", "ppf_set_dyadic_interval",
+    },
+    "tests/test_api_lifecycle_audit.c": {
+        "ppf_urandomb", "ppf_urandom", "ppf_erandom", "ppf_nrandom",
+        "ppf_grandom", "ppf_reldiff",
+    },
 }
 
 TRANSCENDENTAL_SPECIAL_ALLOCATION_ATOMICITY_TEST = \
@@ -775,12 +805,111 @@ ARITHMETIC_ROOT_ALLOCATION_ATOMICITY_FUNCTIONS = {
 }
 
 
+# Exact endpoint sets reviewed in docs/ALLOCATION_COMPLETION_0.20.0.md.
+# Allocation-free means no project allocator is reachable for valid initialized
+# storage and existing contexts. It never means GMP has no private allocation.
+ALLOCATION_COMPLETION_TEST = "tests/test_allocation_completion.c"
+REVIEWED_ALLOCATION_FREE_FUNCTIONS = {
+    "ppf_mul_2exp",
+    "ppf_div_2exp",
+    'ppf_abs',
+    'ppf_ceil',
+    'ppf_check_range',
+    'ppf_clear',
+    'ppf_clears',
+    'ppf_commit_regular',
+    'ppf_copysign',
+    'ppf_custom_init_set',
+    'ppf_custom_move',
+    'ppf_floor',
+    'ppf_fmod',
+    'ppf_fmodquo',
+    'ppf_frac',
+    'ppf_frexp',
+    'ppf_limbs_write',
+    'ppf_max',
+    'ppf_min',
+    'ppf_modf',
+    'ppf_neg',
+    'ppf_nextabove',
+    'ppf_nextbelow',
+    'ppf_nexttoward',
+    'ppf_remainder',
+    'ppf_remquo',
+    'ppf_rint',
+    'ppf_rint_ceil',
+    'ppf_rint_floor',
+    'ppf_rint_round',
+    'ppf_rint_roundeven',
+    'ppf_rint_trunc',
+    'ppf_round',
+    'ppf_round_nearest_away_finish',
+    'ppf_roundeven',
+    'ppf_set',
+    'ppf_set_d',
+    'ppf_set_decimal128',
+    'ppf_set_decimal64',
+    'ppf_set_exp',
+    'ppf_set_f',
+    'ppf_set_float128',
+    'ppf_set_flt',
+    'ppf_set_inf',
+    'ppf_set_ld',
+    'ppf_set_nan',
+    'ppf_set_prec_raw',
+    'ppf_set_q',
+    'ppf_set_si',
+    'ppf_set_si_2exp',
+    'ppf_set_sj',
+    'ppf_set_sj_2exp',
+    'ppf_set_ui',
+    'ppf_set_ui_2exp',
+    'ppf_set_uj',
+    'ppf_set_uj_2exp',
+    'ppf_set_z',
+    'ppf_set_z_2exp',
+    'ppf_set_zero',
+    'ppf_setsign',
+    'ppf_subnormalize',
+    'ppf_swap',
+    'ppf_trunc',
+}
+INITIALIZATION_LIFECYCLE_FUNCTIONS = {
+    'ppf_init_set',
+    'ppf_init_set_d',
+    'ppf_init_set_f',
+    'ppf_init_set_flt',
+    'ppf_init_set_ld',
+    'ppf_init_set_q',
+    'ppf_init_set_si',
+    'ppf_init_set_sj',
+    'ppf_init_set_str',
+    'ppf_init_set_ui',
+    'ppf_init_set_uj',
+    'ppf_init_set_z',
+}
+PREFIX_CLEANUP_FUNCTIONS = {"ppf_inits", "ppf_inits2"}
+
 def atomicity_contract(function: dict[str, Any], test_refs: list[str]) -> dict[str, Any]:
     name = function["name"]
     args = classify_arguments(function)
-    if name in {"ppf_init", "ppf_init2", "ppf_init2_ctx", "ppf_inits", "ppf_inits2"}:
+    if ALLOCATION_COMPLETION_TEST in test_refs:
+        if name in REVIEWED_ALLOCATION_FREE_FUNCTIONS:
+            return {"classification": "reviewed_allocation_free",
+                    "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"}
+        if name in INITIALIZATION_LIFECYCLE_FUNCTIONS:
+            return {"classification": "verified_initialization_lifecycle",
+                    "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"}
+        if name in PREFIX_CLEANUP_FUNCTIONS:
+            return {"classification": "verified_prefix_cleanup",
+                    "note": "on failure the initialized prefix is cleared and unvisited variadic destinations are untouched; every observed project allocation is tested; libc prefix-tracking realloc remains outside the recoverable project-allocator domain"}
+    if name in PREFIX_CLEANUP_FUNCTIONS:
+        return {"classification": "documented_partial",
+                "note": "prefix cleanup and unvisited destinations require direct evidence"}
+    if name in {"ppf_init", "ppf_init2", "ppf_init2_ctx"}:
         cls = "initialization_safe_zero"
-    elif (any(path in ALLOCATION_ATOMICITY_TESTS for path in test_refs) or
+    elif (any(name in ALLOCATION_ATOMICITY_TEST_FUNCTIONS.get(path, set())
+              for path in test_refs) or
           (name in TRANSCENDENTAL_SPECIAL_ALLOCATION_ATOMICITY_FUNCTIONS and
            TRANSCENDENTAL_SPECIAL_ALLOCATION_ATOMICITY_TEST in test_refs) or
           (name in ARITHMETIC_ROOT_ALLOCATION_ATOMICITY_FUNCTIONS and
@@ -800,6 +929,21 @@ def atomicity_contract(function: dict[str, Any], test_refs: list[str]) -> dict[s
 
 
 def practical_limit(section: str, name: str) -> dict[str, Any]:
+    # These control/query/cleanup operations do not execute the bounded
+    # numerical backend of the family in which their header places them.
+    if name in {
+        "ppf_set_trig_threads", "ppf_get_trig_threads",
+        "ppf_clear_constant_cache", "ppf_free_constant_caches",
+        "ppf_constant_cache_precision", "ppf_set_constant_threads",
+        "ppf_get_constant_threads", "ppf_get_last_constant_stats",
+    }:
+        return {"classification": "none_declared",
+                "summary": "metadata or cleanup operation; no numerical certification loop is executed",
+                "source": None}
+    if name == "ppf_fpif_import":
+        return {"classification": "implementation_bound",
+                "summary": "default 64 MiB cap independently bounds imported payload and rounded significand storage (536870912 ordinary precision bits on GMP64); PPF_FPIF_MAX_IMPORT_BYTES may configure another positive cap; initial staging is at most 4096 bytes, growing only after reserved bytes arrive; range rejection returns -1, raises ERANGE and preserves the destination",
+                "source": "src/io.c; docs/FPIF_RESOURCE_CONTRACT.md"}
     if name in {"ppf_set_str", "ppf_strtofr", "ppf_init_set_str"}:
         return {"classification": "implementation_bound", **PRACTICAL_LIMITS["assignment_text"]}
     if section == "Logarithms, exponentials, and powers":
@@ -1086,7 +1230,7 @@ def render_markdown(data: dict[str, Any], output: Path) -> None:
         "",
         "### Failure atomicity",
         "",
-        "`verified_transactional` means deterministic allocation-failure injection directly exercises the entry. `documented_partial` means a family-level transaction rule exists but fail-at-every-site coverage is incomplete for that exact wrapper. `not_yet_verified` is not promoted to a guarantee.",
+        "`verified_transactional` means deterministic allocation-failure injection directly exercises the entry and verifies destination preservation on unrecovered failure or an exact successful fallback. `reviewed_allocation_free` means reviewed valid initialized-storage paths contain no project-allocation site, with direct fixed-storage tests. `verified_initialization_lifecycle` and `verified_prefix_cleanup` state tested lifecycle outcomes, not preservation of an uninitialized old value. GMP, libc and kernel allocation domains remain separate. `documented_partial` and `not_yet_verified` are not promoted to stronger guarantees.",
         "",
         "### Practical limits",
         "",

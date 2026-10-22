@@ -43,7 +43,7 @@ def main() -> None:
     data = generator.generate(root)
     failures = generator.validate(data)
     assert not failures, "\n".join(failures)
-    assert data["release_version"] == "0.18.0"
+    assert data["release_version"] == "0.20.0"
     assert data["contract_version"] == 1
     assert data["summary"]["function_count"] == 437
     assert data["summary"]["unverified_aliasing_functions"] == 0

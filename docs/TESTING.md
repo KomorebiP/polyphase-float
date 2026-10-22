@@ -101,6 +101,13 @@ Run the exact configured count from CTest rather than relying on a historical to
 ctest --test-dir build/validation --show-only
 ```
 
+The `install_packaging` regression test builds a separate serial static
+installation under a nested library directory, moves the complete prefix,
+and compiles external CMake and `pkg-config` consumers. It checks explicit
+core consumption with MPFR discovery disabled, default package behavior, and
+the required adapter component when available. This test has the `fast` and
+`packaging` labels.
+
 The ABI checks can also be run directly:
 
 ```sh

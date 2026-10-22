@@ -41,7 +41,7 @@ static int build_eint(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_conte
             mpq_t q2;mpq_init(q2);mpq_set_ui(q2,k+1UL,(k+2UL)*(k+2UL));if(ppf_special_iv_set_q(&ratio,q2,ctx)||ppf_special_iv_mul(&ratio,&ratio,&ax,ctx)){mpq_clear(q2);goto done;}mpq_clear(q2);
             if(ppf_cmp_ui(&ratio.hi,1,ctx)<0&&ppf_special_small(&next.hi,work,28u)){
                 /* Explicit denominator avoids a compound-literal interval. */
-                ppf_special_iv_t den;memset(&den,0,sizeof(den));if(ppf_special_iv_init(&den,work,ctx)||ppf_special_iv_sub(&den,&one,&ratio,ctx)||ppf_special_iv_mul(&tail,&next,&ratio,ctx)||ppf_special_iv_div(&tail,&tail,&den,ctx)||ppf_special_iv_add(&tail,&sum,&tail,ctx)||ppf_special_iv_add(out,&base,&tail,ctx)){ppf_special_iv_clear(&den);goto done;}ppf_special_iv_clear(&den);settled=1;break;
+                ppf_special_iv_t den;memset(&den,0,sizeof(den));if(ppf_special_iv_init(&den,work,ctx)||ppf_special_iv_sub(&den,&one,&ratio,ctx)||ppf_special_iv_mul(&tail,&next,&ratio,ctx)||ppf_special_iv_div(&tail,&tail,&den,ctx)||ppf_special_iv_add_positive_tail(&tail,&sum,&tail,ctx)||ppf_special_iv_add(out,&base,&tail,ctx)){ppf_special_iv_clear(&den);goto done;}ppf_special_iv_clear(&den);settled=1;break;
             }
         }
         if(ppf_special_iv_copy(&term,&next,ctx))goto done;
@@ -64,12 +64,35 @@ static int li2_series(ppf_special_iv_t*out,const ppf_t*x,ppf_prec_t work,ppf_con
         if(ppf_special_iv_add(&tmp,&sum,&next,ctx)||ppf_special_iv_copy(&sum,&tmp,ctx))goto done;
         if(!negative&&ppf_special_small(&next.hi,work,28u)){
             if(ppf_special_iv_sub(&tail,&one,&ax,ctx)||ppf_special_iv_mul(&tail,&next,&ax,ctx))goto done;
-            ppf_special_iv_t den;memset(&den,0,sizeof(den));if(ppf_special_iv_init(&den,work,ctx)||ppf_special_iv_sub(&den,&one,&ax,ctx)||ppf_special_iv_div(&tail,&tail,&den,ctx)||ppf_special_iv_add(out,&sum,&tail,ctx)){ppf_special_iv_clear(&den);goto done;}ppf_special_iv_clear(&den);settled=1;break;}
+            ppf_special_iv_t den;memset(&den,0,sizeof(den));if(ppf_special_iv_init(&den,work,ctx)||ppf_special_iv_sub(&den,&one,&ax,ctx)||ppf_special_iv_div(&tail,&tail,&den,ctx)||ppf_special_iv_add_positive_tail(out,&sum,&tail,ctx)){ppf_special_iv_clear(&den);goto done;}ppf_special_iv_clear(&den);settled=1;break;}
         if(ppf_special_iv_copy(&term,&next,ctx))goto done;
     }
     if (!settled) goto done;
     rc = 0;
 done:ppf_special_iv_clear(&xi);ppf_special_iv_clear(&ax);ppf_special_iv_clear(&sum);ppf_special_iv_clear(&term);ppf_special_iv_clear(&next);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&ratio);ppf_special_iv_clear(&tail);ppf_special_iv_clear(&cand);ppf_special_iv_clear(&one);return rc;
+}
+
+static int li2_interval(ppf_special_iv_t *out, const ppf_t *x,
+                         ppf_prec_t work, ppf_context_t *ctx, unsigned depth);
+
+/* Li2 is increasing for every real argument <= 1. The reduction maps below
+   land in that region, so preserve uncertainty in each transformed argument. */
+static int li2_monotone_bounds(ppf_special_iv_t *out, const ppf_t *lower,
+                               const ppf_t *upper, ppf_prec_t work,
+                               ppf_context_t *ctx, unsigned depth) {
+    ppf_special_iv_t upper_value;
+    int rc = -1;
+    memset(&upper_value, 0, sizeof(upper_value));
+    if (ppf_cmp(lower, upper, ctx) > 0 || ppf_cmp_ui(upper, 1, ctx) > 0 ||
+        li2_interval(out, lower, work, ctx, depth)) goto done;
+    if (ppf_cmp(lower, upper, ctx) == 0) return 0;
+    if (ppf_special_iv_init(&upper_value, work, ctx) ||
+        li2_interval(&upper_value, upper, work, ctx, depth) ||
+        ppf_set(&out->hi, &upper_value.hi, PPF_RNDU, ctx) == PPF_TERNARY_ERROR) goto done;
+    rc = 0;
+done:
+    ppf_special_iv_clear(&upper_value);
+    return rc;
 }
 
 static int li2_interval(ppf_special_iv_t*out,const ppf_t*x,ppf_prec_t work,ppf_context_t*ctx,unsigned depth){
@@ -88,8 +111,8 @@ exact_done:
         ppf_special_iv_clear(&pi);ppf_special_iv_clear(&pi2);ppf_special_iv_clear(&six);
         return trc;
     }
-    ppf_t y;ppf_special_iv_t li,one,xi,tmp,ln1,ln2,prod,pi,pi2,c,l2,neg;
-    int rc=-1;memset(&y,0,sizeof(y));memset(&li,0,sizeof(li));memset(&one,0,sizeof(one));memset(&xi,0,sizeof(xi));memset(&tmp,0,sizeof(tmp));memset(&ln1,0,sizeof(ln1));memset(&ln2,0,sizeof(ln2));memset(&prod,0,sizeof(prod));memset(&pi,0,sizeof(pi));memset(&pi2,0,sizeof(pi2));memset(&c,0,sizeof(c));memset(&l2,0,sizeof(l2));memset(&neg,0,sizeof(neg));
+    ppf_t y,yu;ppf_special_iv_t li,one,xi,tmp,ln1,ln2,prod,pi,pi2,c,l2,neg;
+    int rc=-1;memset(&y,0,sizeof(y));memset(&yu,0,sizeof(yu));memset(&li,0,sizeof(li));memset(&one,0,sizeof(one));memset(&xi,0,sizeof(xi));memset(&tmp,0,sizeof(tmp));memset(&ln1,0,sizeof(ln1));memset(&ln2,0,sizeof(ln2));memset(&prod,0,sizeof(prod));memset(&pi,0,sizeof(pi));memset(&pi2,0,sizeof(pi2));memset(&c,0,sizeof(c));memset(&l2,0,sizeof(l2));memset(&neg,0,sizeof(neg));
     ppf_t half,nhalf,onev;memset(&half,0,sizeof(half));memset(&nhalf,0,sizeof(nhalf));memset(&onev,0,sizeof(onev));
     if(ppf_init2_ctx(&half,work,ctx)||ppf_init2_ctx(&nhalf,work,ctx)||ppf_init2_ctx(&onev,work,ctx))goto done;
     mpq_t hq;mpq_init(hq);mpq_set_ui(hq,1,2);if(ppf_set_q(&half,hq,PPF_RNDN,ctx)==PPF_TERNARY_ERROR){mpq_clear(hq);goto done;}mpq_clear(hq);if(ppf_neg(&nhalf,&half,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_set_ui(&onev,1,PPF_RNDN,ctx)==PPF_TERNARY_ERROR)goto done;
@@ -100,15 +123,15 @@ exact_done:
     if(ppf_special_iv_set_ui(&one,1,ctx)||ppf_special_iv_set_exact(&xi,x,ctx)||ppf_special_pi_interval(&pi,ctx)||ppf_special_iv_mul(&pi2,&pi,&pi,ctx))goto done;
     mpq_t sixth;mpq_init(sixth);mpq_set_ui(sixth,1,6);if(ppf_special_iv_set_q(&c,sixth,ctx)||ppf_special_iv_mul(&c,&c,&pi2,ctx)){mpq_clear(sixth);goto done;}mpq_clear(sixth);
     if(ppf_cmp(x,&half,ctx)>0){
-        if(ppf_init2_ctx(&y,work,ctx)||ppf_sub(&y,&onev,x,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||li2_interval(&li,&y,work,ctx,depth+1))goto done;
+        if(ppf_init2_ctx(&y,work,ctx)||ppf_init2_ctx(&yu,work,ctx)||ppf_sub(&y,&onev,x,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_sub(&yu,&onev,x,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||li2_monotone_bounds(&li,&y,&yu,work,ctx,depth+1))goto done;
         if(ppf_special_iv_log_positive(&ln1,&xi,ctx))goto done;
-        if(ppf_special_iv_set_exact(&tmp,&y,ctx)||ppf_special_iv_abs(&tmp,&tmp,ctx)||ppf_special_iv_log_positive(&ln2,&tmp,ctx)||ppf_special_iv_mul(&prod,&ln1,&ln2,ctx)||ppf_special_iv_sub(&tmp,&c,&prod,ctx)||ppf_special_iv_sub(out,&tmp,&li,ctx))goto done;
+        if(ppf_set(&tmp.lo,&y,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_set(&tmp.hi,&yu,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_special_iv_abs(&tmp,&tmp,ctx)||ppf_special_iv_log_positive(&ln2,&tmp,ctx)||ppf_special_iv_mul(&prod,&ln1,&ln2,ctx)||ppf_special_iv_sub(&tmp,&c,&prod,ctx)||ppf_special_iv_sub(out,&tmp,&li,ctx))goto done;
     }else{
-        if(ppf_init2_ctx(&y,work,ctx)||ppf_sub(&y,x,&onev,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_div(&y,x,&y,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||li2_interval(&li,&y,work,ctx,depth+1))goto done;
+        if(ppf_init2_ctx(&y,work,ctx)||ppf_init2_ctx(&yu,work,ctx)||ppf_sub(&y,x,&onev,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_sub(&yu,x,&onev,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_div(&y,x,&y,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_div(&yu,x,&yu,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||li2_monotone_bounds(&li,&y,&yu,work,ctx,depth+1))goto done;
         if(ppf_special_iv_sub(&tmp,&one,&xi,ctx)||ppf_special_iv_log_positive(&ln1,&tmp,ctx)||ppf_special_iv_mul(&l2,&ln1,&ln1,ctx)||ppf_special_iv_scale2(&l2,&l2,-1,ctx)||ppf_special_iv_neg(&neg,&li,ctx)||ppf_special_iv_sub(out,&neg,&l2,ctx))goto done;
     }
     rc=0;
-done:if(y.limbs)ppf_clear(&y);if(half.limbs)ppf_clear(&half);if(nhalf.limbs)ppf_clear(&nhalf);if(onev.limbs)ppf_clear(&onev);ppf_special_iv_clear(&li);ppf_special_iv_clear(&one);ppf_special_iv_clear(&xi);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&ln1);ppf_special_iv_clear(&ln2);ppf_special_iv_clear(&prod);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&pi2);ppf_special_iv_clear(&c);ppf_special_iv_clear(&l2);ppf_special_iv_clear(&neg);return rc;
+done:if(y.limbs)ppf_clear(&y);if(yu.limbs)ppf_clear(&yu);if(half.limbs)ppf_clear(&half);if(nhalf.limbs)ppf_clear(&nhalf);if(onev.limbs)ppf_clear(&onev);ppf_special_iv_clear(&li);ppf_special_iv_clear(&one);ppf_special_iv_clear(&xi);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&ln1);ppf_special_iv_clear(&ln2);ppf_special_iv_clear(&prod);ppf_special_iv_clear(&pi);ppf_special_iv_clear(&pi2);ppf_special_iv_clear(&c);ppf_special_iv_clear(&l2);ppf_special_iv_clear(&neg);return rc;
 }
 static int build_li2(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){unary_arg_t*a=opaque;return li2_interval(out,a->x,work,ctx,0);}
 int ppf_li2(ppf_t*rop,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){unary_arg_t a={x};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sm_error(rop,ctx);if(ppf_nan_p(x))return sm_nan(rop,ctx);if(ppf_zero_p(x)){ppf_set_zero(rop,x->sign);return 0;}if(ppf_inf_p(x)){ppf_set_inf(rop,-1);return 0;}return ppf_special_evaluate(rop,rnd,ctx,build_li2,&a);}
@@ -154,7 +177,7 @@ static int zeta_hasse(ppf_special_iv_t*out,const ppf_t*s,ppf_prec_t work,ppf_con
     }
     if(ppf_special_iv_set_ui(&tail,1,ctx)||ppf_special_iv_scale2(&tail,&tail,-(long)N,ctx))goto done;
     if(ppf_special_iv_set_ui(&pow2,2,ctx)){ppf_special_iv_clear(&siv);goto done;}ppf_special_iv_t one_minus_s;memset(&one_minus_s,0,sizeof(one_minus_s));if(ppf_special_iv_init(&one_minus_s,work,ctx)||ppf_special_iv_sub(&one_minus_s,&one,&siv,ctx)||ppf_special_iv_pow_positive(&pow2,&pow2,&one_minus_s,ctx)||ppf_special_iv_sub(&den,&one,&pow2,ctx)){ppf_special_iv_clear(&one_minus_s);ppf_special_iv_clear(&siv);goto done;}ppf_special_iv_clear(&one_minus_s);
-    ppf_special_iv_t num;memset(&num,0,sizeof(num));if(ppf_special_iv_init(&num,work,ctx)||ppf_special_iv_add(&num,&sum,&tail,ctx)){ppf_special_iv_clear(&num);ppf_special_iv_clear(&siv);goto done;}
+    ppf_special_iv_t num;memset(&num,0,sizeof(num));if(ppf_special_iv_init(&num,work,ctx)||ppf_special_iv_add_positive_tail(&num,&sum,&tail,ctx)){ppf_special_iv_clear(&num);ppf_special_iv_clear(&siv);goto done;}
     /* numerator is positive; denominator negative on 0<s<1. */
     if(ppf_special_iv_div(out,&num,&den,ctx)){ppf_special_iv_clear(&num);ppf_special_iv_clear(&siv);goto done;}ppf_special_iv_clear(&num);ppf_special_iv_clear(&siv);rc=0;
 done:ppf_special_iv_clear(&sum);ppf_special_iv_clear(&an);ppf_special_iv_clear(&term);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&base);ppf_special_iv_clear(&expn);ppf_special_iv_clear(&coef);ppf_special_iv_clear(&weight);ppf_special_iv_clear(&one);ppf_special_iv_clear(&two);ppf_special_iv_clear(&den);ppf_special_iv_clear(&pow2);ppf_special_iv_clear(&tail);return rc;
@@ -187,12 +210,15 @@ static int zeta_interval(ppf_special_iv_t*out,const ppf_t*s,ppf_prec_t work,ppf_
         }
         mpz_clear(z);
     }
+    /* sinpi is not globally monotone. Keep its argument a single exact point,
+       and retry rather than treating a rounded reflection point as exact. */
+    if (work < s->precision) return -1;
     ppf_t one_minus;ppf_special_iv_t siv,oms,zp,pi,pim1,pow2,sinarg,sinval,gam,prod,tmp,one;
     int rc=-1;memset(&one_minus,0,sizeof(one_minus));memset(&siv,0,sizeof(siv));memset(&oms,0,sizeof(oms));memset(&zp,0,sizeof(zp));memset(&pi,0,sizeof(pi));memset(&pim1,0,sizeof(pim1));memset(&pow2,0,sizeof(pow2));memset(&sinarg,0,sizeof(sinarg));memset(&sinval,0,sizeof(sinval));memset(&gam,0,sizeof(gam));memset(&prod,0,sizeof(prod));memset(&tmp,0,sizeof(tmp));memset(&one,0,sizeof(one));if(ppf_init2_ctx(&one_minus,work,ctx))goto done;
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(siv);INIT(oms);INIT(zp);INIT(pi);INIT(pim1);INIT(pow2);INIT(sinarg);INIT(sinval);INIT(gam);INIT(prod);INIT(tmp);INIT(one);
 #undef INIT
-    if(ppf_set_ui(&one_minus,1,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_sub(&one_minus,&one_minus,s,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||zeta_em(&zp,&one_minus,work,ctx)||ppf_special_iv_set_exact(&siv,s,ctx)||ppf_special_iv_set_exact(&oms,&one_minus,ctx)||ppf_special_iv_set_ui(&one,1,ctx)||ppf_special_pi_interval(&pi,ctx)||ppf_special_iv_sub(&pim1,&siv,&one,ctx)||ppf_special_iv_pow_positive(&pi,&pi,&pim1,ctx)||ppf_special_iv_set_ui(&pow2,2,ctx)||ppf_special_iv_pow_positive(&pow2,&pow2,&siv,ctx)||ppf_special_iv_scale2(&sinarg,&siv,-1,ctx)||ppf_sinpi(&sinval.lo,&sinarg.lo,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_sinpi(&sinval.hi,&sinarg.hi,PPF_RNDU,ctx)==PPF_TERNARY_ERROR)goto done;
+    if(ppf_set_ui(&one_minus,1,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_sub(&one_minus,&one_minus,s,PPF_RNDN,ctx)!=0||zeta_em(&zp,&one_minus,work,ctx)||ppf_special_iv_set_exact(&siv,s,ctx)||ppf_special_iv_set_exact(&oms,&one_minus,ctx)||ppf_special_iv_set_ui(&one,1,ctx)||ppf_special_pi_interval(&pi,ctx)||ppf_special_iv_sub(&pim1,&siv,&one,ctx)||ppf_special_iv_pow_positive(&pi,&pi,&pim1,ctx)||ppf_special_iv_set_ui(&pow2,2,ctx)||ppf_special_iv_pow_positive(&pow2,&pow2,&siv,ctx)||ppf_special_iv_scale2(&sinarg,&siv,-1,ctx)||ppf_sinpi(&sinval.lo,&sinarg.lo,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_sinpi(&sinval.hi,&sinarg.hi,PPF_RNDU,ctx)==PPF_TERNARY_ERROR)goto done;
     /* gamma(1-s) via public gamma endpoints. */
     if (ppf_gamma(&gam.lo, &one_minus, PPF_RNDD, ctx) == PPF_TERNARY_ERROR ||
         ppf_gamma(&gam.hi, &one_minus, PPF_RNDU, ctx) == PPF_TERNARY_ERROR ||

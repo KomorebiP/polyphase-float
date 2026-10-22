@@ -5,6 +5,8 @@
 import re, subprocess, sys
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(root/'tools'))
+from library_surface import enabled_core_declarations
 inv=(root/'reference/mpfr_api_inventory.md').read_text()
 hdr=(root/'include/polyphase_float.h').read_text()
 all_symbols=set(re.findall(r'`(mpfr_[a-z0-9_]+)`',inv))
@@ -20,11 +22,15 @@ if lib.exists():
     out=subprocess.check_output(['nm','-D','--defined-only',str(lib)],text=True)
     exports=set(re.findall(r'\b(ppf_[a-z0-9_]+)(?:@@?[A-Za-z0-9_.]+)?$',out,re.M))
     decls=set(re.findall(r'PPF_API\s+[^;]*?\b(ppf_[a-z0-9_]+)\s*\(',hdr,re.S))
-    if exports!=decls:
-        print(f'header/export mismatch: declarations={len(decls)} exports={len(exports)}',file=sys.stderr)
-        print('not exported:',sorted(decls-exports),file=sys.stderr)
-        print('not declared:',sorted(exports-decls),file=sys.stderr)
+    try:
+        expected,features=enabled_core_declarations(lib,decls)
+    except (OSError,AttributeError,RuntimeError) as exc:
+        print(f'cannot query native library capabilities: {exc}',file=sys.stderr);sys.exit(1)
+    if exports!=expected:
+        print(f'header/export mismatch: indexed={len(decls)} enabled={len(expected)} exports={len(exports)}',file=sys.stderr)
+        print('not exported:',sorted(expected-exports),file=sys.stderr)
+        print('not declared:',sorted(exports-expected),file=sys.stderr)
         sys.exit(1)
-    print(f'API COVERAGE PASS: 349/349 direct counterparts; {len(exports)}/{len(decls)} exports')
+    print(f'API COVERAGE PASS: 349/349 direct or conditional counterparts; {len(exports)}/{len(expected)} enabled exports ({len(decls)} indexed declarations); capabilities={features}')
 else:
     print('API COVERAGE PASS: 349/349 direct counterparts (library not built)')

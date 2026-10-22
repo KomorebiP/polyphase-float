@@ -32,7 +32,7 @@
 #endif
 
 #ifndef POLYPHASE_CHUDNOVSKY_VERSION
-#define POLYPHASE_CHUDNOVSKY_VERSION "0.18.0"
+#define POLYPHASE_CHUDNOVSKY_VERSION "0.20.0"
 #endif
 
 /* mpz_get_str(NULL, ...) is owned by GMP, not by PPF_CORE_MALLOC.  Release

@@ -1,5 +1,5 @@
 {
-  "contract_sha256": "c2934870bc76396e14c3b51643ec5c3b31ad1b21a93495f746ff4a20feffa444",
+  "contract_sha256": "a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139",
   "contract_version": 1,
   "field_provenance": {
     "declaration_signature_availability": "parsed from the public header",
@@ -135,6 +135,7 @@
           "tests/install_consumer/main.c",
           "tests/install_consumer/mpfr_main.c",
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_special.c",
@@ -144,21 +145,26 @@
           "tests/test_constants.c",
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c",
           "tests/test_product_profile.c",
           "tests/test_random_runtime.c",
           "tests/test_range_flags.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
           "tests/test_special_alias.c",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_special_large.c",
           "tests/test_special_random.c",
           "tests/test_special_values.c",
@@ -180,7 +186,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -268,17 +274,22 @@
           "docs/CONTEXT_AND_MEMORY.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_constant_allocation_failure.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -471,7 +482,9 @@
           "tests/install_consumer/main.c",
           "tests/install_consumer/mpfr_main.c",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_root_allocation_failure.c",
@@ -483,20 +496,25 @@
           "tests/test_constants.c",
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c",
           "tests/test_product_profile.c",
           "tests/test_random_runtime.c",
           "tests/test_range_flags.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_alias.c",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_special_large.c",
           "tests/test_special_random.c",
           "tests/test_special_values.c",
@@ -519,7 +537,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -603,6 +621,8 @@
           "docs/THREAD_SAFETY.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_object.c",
@@ -611,7 +631,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -694,6 +714,7 @@
           "docs/THREAD_SAFETY.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_io_allocation_failure.c",
@@ -703,7 +724,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -780,6 +801,9 @@
         ],
         "tests": [
           "tests/abi_0_11_consumer.c",
+          "tests/test_api_lifecycle_audit.c",
+          "tests/test_fpif_resource_bounds.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_thread_safety.c"
         ]
       },
@@ -951,6 +975,7 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_constants.c",
@@ -1152,9 +1177,12 @@
         "summary": "Read all exception flags from a context."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/ALLOCATION_FAILURE_CONTRACT.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
@@ -1169,6 +1197,7 @@
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_range_flags.c",
           "tests/test_roots.c",
           "tests/test_semantic_surface.c",
@@ -1181,7 +1210,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -1265,9 +1294,12 @@
         "summary": "Clear selected exception flags in a context."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/ALLOCATION_FAILURE_CONTRACT.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
@@ -1282,10 +1314,13 @@
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_range_flags.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_functions.c",
           "tests/test_special_values.c",
           "tests/test_thread_safety.c",
@@ -1303,7 +1338,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -1390,6 +1425,7 @@
         "tests": [
           "tests/test_constants.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_constants.c",
           "tests/test_thread_safety.c"
@@ -1782,7 +1818,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -2668,7 +2704,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_check_range(ppf_t *x, int ternary, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -2680,14 +2716,14 @@
         ],
         "tests": [
           "tests/test_aliasing_contract.py",
+          "tests/test_allocation_completion.c",
           "tests/test_range_flags.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -2777,7 +2813,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_subnormalize(ppf_t *x, int ternary, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -2788,14 +2824,14 @@
           "docs/RANGE_FLAGS_ROOTS_DIVISION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_range_flags.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -3364,7 +3400,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -3440,6 +3476,7 @@
         "documentation": [],
         "tests": [
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_format.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_range_flags.c"
@@ -3447,7 +3484,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -3992,7 +4029,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -4449,6 +4486,7 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_range_flags.c"
         ]
       },
@@ -4538,7 +4576,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -4705,7 +4743,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -4795,7 +4833,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "direct_flag_control",
@@ -5144,6 +5182,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_aliasing_contract.py",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_format.c",
           "tests/test_io.c",
           "tests/test_object.c",
@@ -5255,6 +5294,7 @@
       "evidence": {
         "documentation": [
           "docs/ALLOCATION_FAILURE_CONTRACT.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/CONTEXT_AND_MEMORY.md",
           "docs/OBJECT_MODEL.md",
           "docs/history/README_0.10.0_runtime_complete.md"
@@ -5264,7 +5304,9 @@
           "tests/install_consumer/main.c",
           "tests/install_consumer/mpfr_main.c",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_root_allocation_failure.c",
@@ -5276,19 +5318,23 @@
           "tests/test_constants.c",
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c",
           "tests/test_product_profile.c",
           "tests/test_random_runtime.c",
           "tests/test_range_flags.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
           "tests/test_special_alias.c",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -5411,14 +5457,18 @@
         "summary": "Initialize several numbers at one precision; terminate the variadic list with `(ppf_t *)0`."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "initialization_safe_zero"
+        "classification": "verified_prefix_cleanup",
+        "note": "on failure the initialized prefix is cleared and unvisited variadic destinations are untouched; every observed project allocation is tested; libc prefix-tracking realloc remains outside the recoverable project-allocator domain"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -5516,14 +5566,18 @@
         "summary": "Initialize several numbers at the default precision; terminate with `(ppf_t *)0`."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "initialization_safe_zero"
+        "classification": "verified_prefix_cleanup",
+        "note": "on failure the initialized prefix is cleared and unvisited variadic destinations are untouched; every observed project allocation is tested; libc prefix-tracking realloc remains outside the recoverable project-allocator domain"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -5632,7 +5686,9 @@
           "tests/install_consumer/main.c",
           "tests/install_consumer/mpfr_main.c",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_root_allocation_failure.c",
@@ -5645,19 +5701,24 @@
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
           "tests/test_format.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c",
           "tests/test_product_profile.c",
           "tests/test_random_runtime.c",
           "tests/test_range_flags.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
+          "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
           "tests/test_special_alias.c",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -5682,7 +5743,8 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -5756,23 +5818,25 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_clears(ppf_t *first, ...);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Clear several numbers; terminate the variadic list with `(ppf_t *)0`."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "documented_partial"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -6058,7 +6122,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_prec_round(ppf_t *x, ppf_prec_t precision, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -6066,18 +6130,19 @@
       },
       "evidence": {
         "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
+          "docs/DEEP_AUDIT_0.19.0.md",
           "docs/OBJECT_MODEL.md"
         ],
         "tests": [
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "documented_partial"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -6187,6 +6252,7 @@
         "tests": [
           "tests/test_aliasing_matrix.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_thread_safety.c"
         ]
       },
@@ -6426,7 +6492,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_swap(ppf_t *a, ppf_t *b);",
       "domain": {
         "classification": "purpose_level",
@@ -6434,17 +6500,18 @@
       },
       "evidence": {
         "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/CONSTANT_ALLOCATION_CONTRACT_0.16.0.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_object.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "documented_partial"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -6522,7 +6589,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_prec_raw(ppf_t *x, ppf_prec_t precision);",
       "domain": {
         "classification": "purpose_level",
@@ -6533,14 +6600,14 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_runtime_support.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "documented_partial"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -6796,7 +6863,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "mp_limb_t *ppf_limbs_write(ppf_t *x);",
       "domain": {
         "classification": "purpose_level",
@@ -6804,17 +6871,18 @@
       },
       "evidence": {
         "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/OBJECT_MODEL.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_object.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -6888,7 +6956,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_commit_regular(ppf_t *x, int sign, ppf_exp_t exponent, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -6896,17 +6964,18 @@
       },
       "evidence": {
         "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/OBJECT_MODEL.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_object.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -6996,30 +7065,35 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_zero(ppf_t *x, int sign);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Set signed zero."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_roots.c",
           "tests/test_semantic_surface.c",
           "tests/test_utilities.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -7097,29 +7171,34 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_inf(ppf_t *x, int sign);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Set signed infinity."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_roots.c",
           "tests/test_utilities.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -7197,29 +7276,34 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_nan(ppf_t *x, int sign);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Set a signed NaN."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_roots.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -7314,6 +7398,8 @@
           "tests/test_io.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_release_boundaries.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_utilities.c"
         ]
       },
@@ -7403,6 +7489,7 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c"
@@ -7494,6 +7581,7 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c"
@@ -7582,6 +7670,7 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_object.c"
         ]
       },
@@ -7666,9 +7755,13 @@
         "summary": "Test whether a value is finite, including zero."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/DEEP_AUDIT_0.19.0.md"
+        ],
         "tests": [
           "tests/install_consumer/main.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_thread_safety.c"
         ]
       },
@@ -7761,7 +7854,8 @@
           "tests/test_arithmetic.c",
           "tests/test_assignment_conversion.c",
           "tests/test_mpfr_adapter.c",
-          "tests/test_object.c"
+          "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c"
         ]
       },
       "explicit_gaps": [],
@@ -7846,7 +7940,7 @@
       },
       "evidence": {
         "documentation": [
-          "docs/PUBLIC_RELEASE_HARDENING_REPORT.md"
+          "docs/history/PUBLIC_RELEASE_HARDENING_REPORT_before_0.20.md"
         ],
         "tests": [
           "tests/install_consumer/main.c"
@@ -7942,7 +8036,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_setsign(ppf_t *rop, const ppf_t *op, int signbit, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -7953,14 +8047,14 @@
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -8067,7 +8161,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_copysign(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -8078,14 +8172,14 @@
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -8356,6 +8450,7 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
@@ -8553,7 +8648,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_round_nearest_away_finish(ppf_t *rop, const ppf_t *extended_result, int extended_ternary, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -8564,15 +8659,15 @@
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -8671,7 +8766,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -8681,19 +8776,20 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_io.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_planner.c",
           "tests/test_roots.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -8805,20 +8901,29 @@
         "summary": "Round an unsigned long into an existing Polyphase number."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/ALLOCATION_FAILURE_CONTRACT.md"
+        ],
         "tests": [
           "tests/abi_0_11_consumer.c",
           "tests/test_aliasing_contract.py",
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_divisor_plan.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_io_allocation_failure.c",
+          "tests/test_release_boundaries.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
+          "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
+          "tests/test_special_edge_audit.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_thread_safety.c",
           "tests/test_transcendental_special_allocation_failure.c",
           "tests/test_utilities.c"
@@ -8826,7 +8931,8 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -8927,7 +9033,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_si(ppf_t *rop, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -8936,18 +9042,20 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_root_allocation_failure.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_roots.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_surface.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9045,7 +9153,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_uj(ppf_t *rop, uintmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -9054,14 +9162,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9159,7 +9267,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_sj(ppf_t *rop, intmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -9168,14 +9276,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9273,7 +9381,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_flt(ppf_t *rop, float value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -9282,15 +9390,15 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9400,18 +9508,22 @@
         "documentation": [],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c",
           "tests/test_format.c",
           "tests/test_io.c",
           "tests/test_io_allocation_failure.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_runtime_support.c",
+          "tests/test_semantic_contract.py",
           "tests/test_special_random.c",
           "tests/test_thread_safety.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9509,7 +9621,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_ld(ppf_t *rop, long double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -9518,14 +9630,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9634,16 +9746,17 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_conditional_formats.c",
           "tests/test_semantic_contract.py"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "conditional_build_surface"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9752,16 +9865,17 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_conditional_formats.c",
           "tests/test_semantic_contract.py"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "conditional_build_surface"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9870,16 +9984,17 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_conditional_formats.c",
           "tests/test_semantic_contract.py"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "conditional_build_surface"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -9977,7 +10092,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_z(ppf_t *rop, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -9986,16 +10101,16 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_object.c",
           "tests/test_product_planner.c",
           "tests/test_product_profile.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10093,7 +10208,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_q(ppf_t *rop, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10102,14 +10217,16 @@
       "evidence": {
         "documentation": [],
         "tests": [
-          "tests/test_assignment_conversion.c"
+          "tests/test_allocation_completion.c",
+          "tests/test_assignment_conversion.c",
+          "tests/test_precision_remainder_failure.c",
+          "tests/test_special_interval_audit.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10207,7 +10324,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_f(ppf_t *rop, mpf_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10216,14 +10333,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10335,18 +10452,22 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_assignment_conversion.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_runtime_support.c",
+          "tests/test_semantic_contract.py",
+          "tests/test_special_interval_audit.c",
           "tests/test_thread_safety.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10450,7 +10571,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_si_2exp(ppf_t *rop, long value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10459,14 +10580,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10570,7 +10691,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_uj_2exp(ppf_t *rop, uintmax_t value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10579,14 +10700,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10690,7 +10811,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_sj_2exp(ppf_t *rop, intmax_t value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10699,14 +10820,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10810,7 +10931,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_z_2exp(ppf_t *rop, mpz_srcptr value, ppf_exp_t exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -10821,20 +10942,22 @@
           "docs/OBJECT_MODEL.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_range.c",
           "tests/test_assignment_conversion.c",
           "tests/test_exhaustive_small.c",
           "tests/test_io.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -10949,11 +11072,13 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
           "docs/IO_ALLOCATION_CONTRACT_0.15.0.md",
           "docs/IO_ALLOCATION_HARDENING_VALIDATION_0.15.0.md"
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_assignment_conversion.c",
           "tests/test_format.c",
           "tests/test_io.c",
@@ -11085,6 +11210,8 @@
           "docs/IO_ALLOCATION_HARDENING_VALIDATION_0.15.0.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_assignment_conversion.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_semantic_contract.py"
@@ -11211,7 +11338,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11222,15 +11349,15 @@
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11330,7 +11457,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_ui(ppf_t *rop, unsigned long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11339,14 +11466,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11446,7 +11573,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_si(ppf_t *rop, long value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11455,14 +11582,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11562,7 +11689,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_uj(ppf_t *rop, uintmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11571,14 +11698,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11678,7 +11805,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_sj(ppf_t *rop, intmax_t value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11687,14 +11814,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11794,7 +11921,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_flt(ppf_t *rop, float value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11803,14 +11930,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -11910,7 +12037,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_d(ppf_t *rop, double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -11919,14 +12046,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12026,7 +12153,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_ld(ppf_t *rop, long double value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -12035,14 +12162,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12142,7 +12269,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_z(ppf_t *rop, mpz_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -12151,14 +12278,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12258,7 +12385,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_q(ppf_t *rop, mpq_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -12267,15 +12394,15 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12375,7 +12502,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_init_set_f(ppf_t *rop, mpf_srcptr value, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -12384,14 +12511,14 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12502,15 +12629,16 @@
           "docs/IO_ALLOCATION_CONTRACT_0.15.0.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_semantic_surface.c"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "bounded_implementation_path"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_initialization_lifecycle",
+        "note": "every observed project-allocation failure is tested; initialization failure leaves a safe-zero object, setter failure leaves an initialized clearable object; caller must clear after any initialized outcome"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -12733,7 +12861,9 @@
         "tests": [
           "tests/abi_0_11_consumer.c",
           "tests/test_aliasing_contract.py",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_random_runtime.c",
           "tests/test_semantic_surface.c",
           "tests/test_thread_safety.c"
@@ -13934,7 +14064,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_frexp(ppf_exp_t *exponent, ppf_t *mantissa, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -13944,14 +14074,14 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_assignment_conversion.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -14730,7 +14860,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -15071,6 +15201,7 @@
         ],
         "tests": [
           "tests/test_allocation_failure.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_semantic_contract.py"
@@ -15158,7 +15289,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_without_recorded_gap",
+      "contract_status": "indexed_with_explicit_gaps",
       "declaration": "int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -15172,11 +15303,14 @@
         ],
         "tests": [
           "tests/test_allocation_failure.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_semantic_contract.py"
         ]
       },
-      "explicit_gaps": [],
+      "explicit_gaps": [
+        "bounded_implementation_path"
+      ],
       "failure_atomicity": {
         "classification": "verified_transactional"
       },
@@ -15196,9 +15330,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "none_declared",
-        "source": null,
-        "summary": "no additional function-specific practical limit is declared beyond type, precision, memory, and configured exponent-range limits"
+        "classification": "implementation_bound",
+        "source": "src/io.c; docs/FPIF_RESOURCE_CONTRACT.md",
+        "summary": "default 64 MiB cap independently bounds imported payload and rounded significand storage (536870912 ordinary precision bits on GMP64); PPF_FPIF_MAX_IMPORT_BYTES may configure another positive cap; initial staging is at most 4096 bytes, growing only after reserved bytes arrive; range rejection returns -1, raises ERANGE and preserves the destination"
       },
       "purpose": "Transactionally import a `PPFIF01` record; malformed input leaves the destination unchanged.",
       "return_contract": {
@@ -15898,6 +16032,7 @@
           "docs/IO_AND_FORMATTING.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_format.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_semantic_contract.py"
@@ -16122,6 +16257,7 @@
           "docs/IO_AND_FORMATTING.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_format.c",
           "tests/test_format_errno.c",
           "tests/test_io_allocation_failure.c",
@@ -17074,13 +17210,14 @@
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_runtime_support.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -17291,7 +17428,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -17805,6 +17942,7 @@
         "documentation": [],
         "tests": [
           "tests/test_runtime_support.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
@@ -18128,8 +18266,11 @@
         "summary": "Compare a value's absolute magnitude with an unsigned long."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/BRANCH_REVIEW_0.20.0.md"
+        ],
         "tests": [
+          "tests/test_release_boundaries.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
@@ -18887,24 +19028,27 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_neg(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Negate a value with requested destination rounding."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/DEEP_AUDIT_0.19.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
-          "tests/test_object.c"
+          "tests/test_allocation_completion.c",
+          "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19003,24 +19147,27 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_abs(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Take an absolute value with requested destination rounding."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/DEEP_AUDIT_0.19.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
-          "tests/test_object.c"
+          "tests/test_allocation_completion.c",
+          "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19119,7 +19266,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19131,15 +19278,15 @@
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19241,7 +19388,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_ceil(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19251,15 +19398,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19355,7 +19502,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_floor(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19365,15 +19512,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19469,7 +19616,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_round(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19479,15 +19626,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19583,7 +19730,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_roundeven(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19593,15 +19740,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19697,7 +19844,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_trunc(ppf_t *rop, const ppf_t *op, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19707,15 +19854,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19811,7 +19958,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint_ceil(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19821,15 +19968,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -19931,7 +20078,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint_floor(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -19941,15 +20088,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20051,7 +20198,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint_round(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20061,15 +20208,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20171,7 +20318,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint_roundeven(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20181,15 +20328,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20291,7 +20438,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_rint_trunc(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20301,15 +20448,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20411,7 +20558,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_frac(ppf_t *rop, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20421,15 +20568,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20535,7 +20682,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_modf(ppf_t *integer_part, ppf_t *fractional_part, const ppf_t *op, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20548,21 +20695,23 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/ALIASING_CONTRACT_VALIDATION_0.14.0.md",
           "docs/INDEPENDENT_UTILITIES_AND_REMAINDERS.md"
         ],
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20671,7 +20820,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_fmod(ppf_t *rop, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20681,15 +20830,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20797,24 +20946,26 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_fmod_ui(ppf_t *rop, const ppf_t *x, unsigned long y, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Compute the truncating-quotient remainder by an unsigned long divisor."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
+          "docs/DEEP_AUDIT_0.19.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -20925,7 +21076,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_fmodquo(ppf_t *rop, long *quotient_bits, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -20935,15 +21086,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21058,7 +21209,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_remainder(ppf_t *rop, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21068,15 +21219,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21187,7 +21338,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_remquo(ppf_t *rop, long *quotient_bits, const ppf_t *x, const ppf_t *y, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21197,15 +21348,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21491,7 +21642,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_nexttoward(ppf_t *x, const ppf_t *y, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21500,15 +21651,15 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21597,7 +21748,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_nextabove(ppf_t *x, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21606,15 +21757,15 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21697,7 +21848,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_nextbelow(ppf_t *x, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21706,15 +21857,15 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21802,7 +21953,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_min(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21812,15 +21963,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -21926,7 +22077,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_max(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -21936,15 +22087,15 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22050,7 +22201,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_dim(ppf_t *rop, const ppf_t *a, const ppf_t *b, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -22060,14 +22211,13 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22265,23 +22415,25 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_set_exp(ppf_t *x, ppf_exp_t exponent, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
         "summary": "Replace the stored binary exponent after range validation."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md"
+        ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_utilities_remainder.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22370,7 +22522,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_urandomb(ppf_t *rop, gmp_randstate_t state);",
       "domain": {
         "classification": "purpose_level",
@@ -22378,17 +22530,18 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_random_runtime.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -22474,18 +22627,20 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_random_runtime.c"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "bounded_implementation_path"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22588,18 +22743,20 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_random_runtime.c"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "bounded_implementation_path"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22713,21 +22870,25 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/ALIASING_CONTRACT_VALIDATION_0.14.0.md",
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
           "tests/test_aliasing_contract.py",
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_random_runtime.c"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "bounded_implementation_path"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -22836,18 +22997,20 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_random_runtime.c"
         ]
       },
       "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete",
         "bounded_implementation_path"
       ],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -24162,6 +24325,7 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_runtime_support.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
@@ -24590,7 +24754,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_reldiff(ppf_t *rop, const ppf_t *op1, const ppf_t *op2, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -24598,18 +24762,20 @@
       },
       "evidence": {
         "documentation": [
+          "docs/API_LIFECYCLE_AUDIT_0.19.0.md",
+          "docs/COMPLETION_SCOPE_0.19.0.md",
+          "docs/DEEP_AUDIT_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_runtime_support.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -24714,7 +24880,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_mul_2exp(ppf_t *rop, const ppf_t *op, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -24722,18 +24888,19 @@
       },
       "evidence": {
         "documentation": [
+          "docs/ALLOCATION_COMPLETION_0.20.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_runtime_support.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -24838,7 +25005,7 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_div_2exp(ppf_t *rop, const ppf_t *op, unsigned long exponent, ppf_rnd_t rnd, ppf_context_t *ctx);",
       "domain": {
         "classification": "purpose_level",
@@ -24846,18 +25013,19 @@
       },
       "evidence": {
         "documentation": [
+          "docs/ALLOCATION_COMPLETION_0.20.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_allocation_completion.c",
           "tests/test_runtime_support.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -24972,6 +25140,7 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_runtime_support.c",
           "tests/test_transcendental_special_allocation_failure.c"
@@ -25159,7 +25328,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_custom_init_set(ppf_t *x, int kind, ppf_exp_t exponent, ppf_prec_t precision, void *significand);",
       "domain": {
         "classification": "purpose_level",
@@ -25170,16 +25339,18 @@
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_root_allocation_failure.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_runtime_support.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -25554,7 +25725,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_custom_move(ppf_t *x, void *new_position);",
       "domain": {
         "classification": "purpose_level",
@@ -25562,17 +25733,18 @@
       },
       "evidence": {
         "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
           "docs/RUNTIME_COMPLETION.md"
         ],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_runtime_support.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "reviewed_allocation_free",
+        "note": "reviewed valid initialized-storage paths do not call the project allocator; existing capacity, direct-storage and ownership preconditions apply; GMP allocation is outside this claim"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -32084,7 +32256,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -32256,7 +32428,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -32475,11 +32647,12 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/ALIASING_CONTRACT_VALIDATION_0.18.0.md",
           "docs/ALLOCATION_FAILURE_CONTRACT.md",
           "docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_CONTRACT_0.18.0.md",
-          "docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md",
-          "docs/PUBLIC_RELEASE_STATUS.md"
+          "docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md"
         ],
         "tests": [
           "tests/test_aliasing_contract.py",
@@ -37895,7 +38068,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_trig_threads(unsigned long workers);",
       "domain": {
         "classification": "purpose_level",
@@ -37909,9 +38082,7 @@
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
         "classification": "not_applicable"
       },
@@ -37926,9 +38097,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/trig_hyperbolic.c:PPF_TRIG_MAX_ATTEMPTS,PPF_TRIG_MAX_REDUCTION_EXTRA,PPF_TRIG_MAX_STEPS",
-        "summary": "general trigonometric certification uses bounded escalation, bounded reduction growth, and at most 10,000,000 steps"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Set the default internal worker request for trigonometric calculations.",
       "return_contract": {
@@ -37983,7 +38154,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "unsigned long ppf_get_trig_threads(void);",
       "domain": {
         "classification": "purpose_level",
@@ -37992,12 +38163,11 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
         "classification": "not_applicable"
       },
@@ -38012,9 +38182,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/trig_hyperbolic.c:PPF_TRIG_MAX_ATTEMPTS,PPF_TRIG_MAX_REDUCTION_EXTRA,PPF_TRIG_MAX_STEPS",
-        "summary": "general trigonometric certification uses bounded escalation, bounded reduction growth, and at most 10,000,000 steps"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Read the current trigonometric worker request.",
       "return_contract": {
@@ -39088,6 +39258,8 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/ALIASING_CONTRACT_VALIDATION_0.17.0.md",
           "docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_HARDENING_VALIDATION_0.17.0.md",
           "docs/TRIG_HYPERBOLIC.md"
@@ -41497,6 +41669,8 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/ALIASING_CONTRACT_VALIDATION_0.17.0.md",
           "docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_HARDENING_VALIDATION_0.17.0.md",
           "docs/TRIG_HYPERBOLIC.md"
@@ -42369,6 +42543,7 @@
         "documentation": [],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_independent_special_review.c",
           "tests/test_special_alias.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
@@ -42495,7 +42670,10 @@
         "documentation": [],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_independent_special_review.c",
+          "tests/test_release_boundaries.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -42623,7 +42801,10 @@
         ],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_independent_special_review.c",
+          "tests/test_release_boundaries.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -42881,6 +43062,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -43010,6 +43192,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_transcendental_special_allocation_failure.c"
@@ -43138,7 +43321,10 @@
         "documentation": [],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_independent_special_review.c",
+          "tests/test_release_boundaries.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -43266,6 +43452,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -43398,6 +43585,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -44146,7 +44334,9 @@
         ],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_release_boundaries.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -44529,6 +44719,7 @@
         "tests": [
           "tests/diag_special.c",
           "tests/test_special_alias.c",
+          "tests/test_special_edge_audit.c",
           "tests/test_special_faithful.c",
           "tests/test_special_functions.c",
           "tests/test_special_large.c",
@@ -44794,6 +44985,7 @@
         ],
         "tests": [
           "tests/diag_special.c",
+          "tests/test_release_boundaries.c",
           "tests/test_semantic_contract.py",
           "tests/test_special_alias.c",
           "tests/test_special_faithful.c",
@@ -46841,6 +47033,8 @@
           "docs/ALIASING_CONTRACT_0.16.0.md",
           "docs/ALIASING_CONTRACT_0.17.0.md",
           "docs/ALIASING_CONTRACT_0.18.0.md",
+          "docs/ALIASING_CONTRACT_0.19.0.md",
+          "docs/ALIASING_CONTRACT_0.20.0.md",
           "docs/CONSTANT_ALLOCATION_HARDENING_VALIDATION_0.16.0.md",
           "docs/history/README_0.10.0_runtime_complete.md"
         ],
@@ -46958,7 +47152,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_clear_constant_cache(ppf_constant_id_t id);",
       "domain": {
         "classification": "purpose_level",
@@ -46972,15 +47166,14 @@
         "tests": [
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
+          "tests/test_semantic_contract.py",
           "tests/test_special_constants.c",
           "tests/test_thread_safety.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -46993,9 +47186,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Clear the cache for one selected constant.",
       "return_contract": {
@@ -47053,7 +47246,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_free_constant_caches(void);",
       "domain": {
         "classification": "purpose_level",
@@ -47068,16 +47261,19 @@
           "tests/test_arithmetic_variants.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
+          "tests/test_independent_special_review.c",
+          "tests/test_release_boundaries.c",
+          "tests/test_semantic_contract.py",
           "tests/test_special_constants.c",
+          "tests/test_special_edge_audit.c",
+          "tests/test_special_interval_audit.c",
           "tests/test_special_random.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -47090,9 +47286,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Release all certified constant caches.",
       "return_contract": {
@@ -47142,7 +47338,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "ppf_prec_t ppf_constant_cache_precision(ppf_constant_id_t id);",
       "domain": {
         "classification": "purpose_level",
@@ -47153,15 +47349,14 @@
         "tests": [
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
+          "tests/test_semantic_contract.py",
           "tests/test_special_constants.c",
           "tests/test_thread_safety.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -47174,9 +47369,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Return the precision currently retained for a constant cache.",
       "return_contract": {
@@ -47233,7 +47428,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "void ppf_set_constant_threads(unsigned long workers);",
       "domain": {
         "classification": "purpose_level",
@@ -47246,15 +47441,14 @@
         "tests": [
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
+          "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
           "tests/test_thread_safety.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -47267,9 +47461,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Set the default worker request for constant construction.",
       "return_contract": {
@@ -47326,7 +47520,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "unsigned long ppf_get_constant_threads(void);",
       "domain": {
         "classification": "purpose_level",
@@ -47340,11 +47534,9 @@
           "tests/test_semantic_surface.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -47357,9 +47549,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Read the default worker request for constant construction.",
       "return_contract": {
@@ -47409,7 +47601,7 @@
         "parameter": null,
         "policy": "none"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "int ppf_get_last_constant_stats(ppf_constant_stats_t *out);",
       "domain": {
         "classification": "purpose_level",
@@ -47420,14 +47612,13 @@
         "tests": [
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
+          "tests/test_semantic_contract.py",
           "tests/test_special_constants.c"
         ]
       },
-      "explicit_gaps": [
-        "bounded_implementation_path"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -47440,9 +47631,9 @@
         "note": "the function does not transfer ownership of caller-visible storage"
       },
       "practical_limits": {
-        "classification": "implementation_bound",
-        "source": "src/constants.c:PPF_CONSTANT_MAX_ATTEMPTS",
-        "summary": "constant certification uses at most 16 precision-escalation attempts per request"
+        "classification": "none_declared",
+        "source": null,
+        "summary": "metadata or cleanup operation; no numerical certification loop is executed"
       },
       "purpose": "Read statistics from the most recent constant computation in the calling thread.",
       "return_contract": {
@@ -47501,23 +47692,25 @@
         "parameter": "ctx",
         "policy": "explicit_or_thread_default"
       },
-      "contract_status": "indexed_with_explicit_gaps",
+      "contract_status": "indexed_without_recorded_gap",
       "declaration": "ppf_interval_status_t ppf_set_dyadic_interval( ppf_t *rop, mpz_srcptr lower, mpz_srcptr upper, ppf_exp_t exponent, ppf_rnd_t rnd, int *ternary, ppf_context_t *ctx);",
       "domain": {
         "classification": "function_specific",
         "summary": "lower and upper are exact integers with lower <= upper and share the supplied binary exponent"
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.19.0.md",
+          "docs/DEEP_AUDIT_0.19.0.md"
+        ],
         "tests": [
-          "tests/test_object.c"
+          "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c"
         ]
       },
-      "explicit_gaps": [
-        "allocation_failure_atomicity_incomplete"
-      ],
+      "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "not_yet_verified"
+        "classification": "verified_transactional"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -47656,7 +47849,7 @@
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "family_upper_bound",
@@ -47755,8 +47948,12 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
+          "tests/test_api_lifecycle_audit.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_io.c",
           "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
           "tests/test_product_profile.c",
           "tests/test_runtime_support.c",
           "tests/test_utilities_remainder.c"
@@ -47853,15 +48050,21 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
+          "tests/test_api_lifecycle_audit.c",
           "tests/test_exhaustive_small.c",
+          "tests/test_fpif_resource_bounds.c",
           "tests/test_mpfr_adapter.c",
-          "tests/test_object.c"
+          "tests/test_object.c",
+          "tests/test_precision_remainder_failure.c",
+          "tests/test_release_boundaries.c",
+          "tests/test_semantic_contract.py"
         ]
       },
       "explicit_gaps": [],
       "failure_atomicity": {
-        "classification": "verified_transactional"
+        "classification": "not_applicable"
       },
       "flags": {
         "classification": "none_or_not_applicable",
@@ -48262,7 +48465,7 @@
     }
   ],
   "library": "Polyphase Float",
-  "release_version": "0.18.0",
+  "release_version": "0.20.0",
   "schema_version": 1,
   "scope": "public core C API declared in include/polyphase_float.h",
   "summary": {
@@ -48277,11 +48480,12 @@
       "verified_same_index_overlap": 1
     },
     "atomicity_classes": {
-      "documented_partial": 4,
-      "initialization_safe_zero": 5,
-      "not_applicable": 138,
-      "not_yet_verified": 77,
-      "verified_transactional": 213
+      "initialization_safe_zero": 3,
+      "not_applicable": 165,
+      "reviewed_allocation_free": 63,
+      "verified_initialization_lifecycle": 12,
+      "verified_prefix_cleanup": 2,
+      "verified_transactional": 192
     },
     "conditional_functions": 6,
     "context_policies": {
@@ -48292,14 +48496,13 @@
       "thread_default": 43
     },
     "contract_status_counts": {
-      "indexed_with_explicit_gaps": 191,
-      "indexed_without_recorded_gap": 246
+      "indexed_with_explicit_gaps": 111,
+      "indexed_without_recorded_gap": 326
     },
-    "entries_with_explicit_gaps": 191,
-    "entries_without_recorded_gap": 246,
+    "entries_with_explicit_gaps": 111,
+    "entries_without_recorded_gap": 326,
     "explicit_gap_counts": {
-      "allocation_failure_atomicity_incomplete": 81,
-      "bounded_implementation_path": 112,
+      "bounded_implementation_path": 105,
       "conditional_build_surface": 6
     },
     "flag_classes": {
@@ -48309,7 +48512,7 @@
     },
     "function_count": 437,
     "functions_with_direct_test_reference": 437,
-    "functions_with_documentation_reference": 138,
+    "functions_with_documentation_reference": 154,
     "ownership_classes": {
       "application_owned_storage": 3,
       "borrowed_object_storage": 3,
@@ -48324,8 +48527,8 @@
       "value_copy": 1
     },
     "practical_limit_classes": {
-      "implementation_bound": 112,
-      "none_declared": 325
+      "implementation_bound": 105,
+      "none_declared": 332
     },
     "return_kinds": {
       "borrowed_pointer": 14,

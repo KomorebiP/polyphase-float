@@ -57,8 +57,9 @@ Raw measurements must be retained.
 
 ## Public API and ABI changes
 
-The project is pre-1.0 and the ABI is not frozen. Nevertheless, public changes
-must be intentional. Update the header, documentation, examples, version
+The project is pre-1.0 and retains the governed ABI epoch 1 on the supported
+Linux ELF LP64/GMP64 baseline. Public changes must preserve that contract or
+follow the breaking-change procedure in `docs/ABI_POLICY.md`. Update the header, documentation, examples, version
 metadata, API audit, and release notes in the same pull request. Serialized
 format changes require an explicit versioning and migration plan.
 

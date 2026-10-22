@@ -31,9 +31,9 @@ extern "C" {
 #endif
 
 #define PPF_VERSION_MAJOR 0
-#define PPF_VERSION_MINOR 18
+#define PPF_VERSION_MINOR 20
 #define PPF_VERSION_PATCHLEVEL 0
-#define PPF_VERSION_STRING "0.18.0"
+#define PPF_VERSION_STRING "0.20.0"
 #define PPF_VERSION_NUM(major, minor, patchlevel) \
     (((long)(major) << 16) | ((long)(minor) << 8) | (long)(patchlevel))
 #define PPF_VERSION PPF_VERSION_NUM(PPF_VERSION_MAJOR, PPF_VERSION_MINOR, \
@@ -44,13 +44,13 @@ extern "C" {
 #define PPF_ABI_TAG "polyphase-float-abi-1"
 #define PPF_ABI_INFO_VERSION 1
 #define PPF_ABI_CONTRACT_SHA256 \
-    "100c993384c2cc04193c4cd1d5b3c49c9f1823257d2e7b306b3115fae6929423"
+    "6025fff55e8a41fb682cadab8df813c84ce34d6dbd9c7e717fbf974f0c0a7868"
 #define PPF_SEMANTIC_CONTRACT_VERSION 1
 #define PPF_SEMANTIC_CONTRACT_SHA256 \
-    "c2934870bc76396e14c3b51643ec5c3b31ad1b21a93495f746ff4a20feffa444"
+    "a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139"
 #define PPF_ALIASING_CONTRACT_VERSION 1
 #define PPF_ALIASING_CONTRACT_SHA256 \
-    "e55f826ecd61b67c91c2e9b7e1ca3efc35fb831ac923fc34aad65148d5ea41c5"
+    "802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7"
 
 
 #if defined(__SIZEOF_FLOAT128__) && (__SIZEOF_FLOAT128__ == 16)
@@ -579,6 +579,10 @@ PPF_API size_t ppf_out_str(FILE *stream, int base, size_t digits,
 PPF_API size_t ppf_inp_str(ppf_t *rop, FILE *stream, int base,
                            ppf_rnd_t rnd, ppf_context_t *ctx);
 PPF_API int ppf_fpif_export(FILE *stream, const ppf_t *op);
+/* Import admits at most 64 MiB each of encoded payload and rounded object
+   significand storage by default. The private build macro
+   PPF_FPIF_MAX_IMPORT_BYTES can set another positive byte bound. Resource
+   rejection returns -1, raises ERANGE and preserves the destination. */
 PPF_API int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx);
 
 PPF_API int ppf_fprintf(FILE *stream, const char *format, ...);

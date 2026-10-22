@@ -3,9 +3,9 @@
 
 # GitHub publication and release procedure
 
-This document covers publication of the canonical repository at
-`https://github.com/KomorebiP/polyphase-float`. The repository is staged privately
-before public launch. Polyphase Float remains a pre-1.0 research release.
+This document covers the public repository at
+`https://github.com/KomorebiP/polyphase-float`. Polyphase Float remains a
+pre-1.0 research release.
 
 ## Initial publication
 
@@ -42,22 +42,6 @@ The repository includes `.github/CODEOWNERS`, issue forms, a private-security
 contact link, pull-request guidance, CI, ABI governance, CodeQL, extended
 validation, and Dependabot configuration.
 
-## Private staging and CodeQL results
-
-The current private repository does not have GitHub Code Scanning enabled.
-The CodeQL workflow still builds the independent core and executes its C/C++
-queries. For private runs it omits uploads to Code Scanning and retains the
-generated SARIF as a `codeql-sarif-<commit>` workflow artifact for 30 days.
-The job summary reports the number of SARIF files and results. Download and
-review that artifact from the workflow run; private-stage findings are not
-published as Security-tab alerts or pull-request annotations.
-
-A successful CodeQL job confirms that analysis completed and SARIF retention
-succeeded. It does not assert that there are no findings. Query failures and
-missing SARIF artifacts still fail the workflow. Once the repository is public,
-the workflow automatically uploads results and databases to GitHub Code Scanning.
-Enable Code Scanning as part of the public repository setup above.
-
 ## Release assets
 
 Generate deterministic project archives from the audited tag checkout:
@@ -68,12 +52,11 @@ SOURCE_DATE_EPOCH=1788134400 python3 tools/create_source_release.py --output-dir
 sha256sum -c dist/SHA256SUMS
 ```
 
-For `v0.18.0`, attach these files to a GitHub pre-release:
+For `v0.20.0`, attach these files to a GitHub pre-release:
 
-- `polyphase-float-0.18.0.zip`
-- `polyphase-float-0.18.0.tar.gz`
+- `polyphase-float-0.20.0.zip`
+- `polyphase-float-0.20.0.tar.gz`
 - `SHA256SUMS`
-- `polyphase-float-0.17.0_to_0.18.0.patch`, when publishing the exact upgrade patch
 - the separate reproducibility bundle, when publishing retained validation logs
 
 GitHub's automatically generated tag archives are supplementary. They are not
@@ -85,8 +68,8 @@ Create an annotated or signed tag only after the protected-branch workflows
 pass:
 
 ```sh
-git tag -a v0.18.0 -m "Polyphase Float 0.18.0"
-git push origin v0.18.0
+git tag -a v0.20.0 -m "Polyphase Float 0.20.0"
+git push origin v0.20.0
 ```
 
 Create the corresponding GitHub Release and mark it as a pre-release. State the

@@ -73,6 +73,15 @@ int ppf_special_iv_pow_positive(ppf_special_iv_t *out,
                                 const ppf_special_iv_t *base,
                                 const ppf_special_iv_t *exponent,
                                 ppf_context_t *ctx);
+/* A nonnegative remainder bounded above by tail.hi widens only the upper end. */
+int ppf_special_iv_add_positive_tail(ppf_special_iv_t *out,
+                                     const ppf_special_iv_t *sum,
+                                     const ppf_special_iv_t *tail,
+                                     ppf_context_t *ctx);
+/* Gamma is decreasing throughout the supported argument interval (0, 1]. */
+int ppf_special_iv_gamma_decreasing(ppf_special_iv_t *out,
+                                    const ppf_special_iv_t *argument,
+                                    ppf_context_t *ctx);
 int ppf_special_iv_to_dyadic(mpz_ptr lower, mpz_ptr upper,
                              ppf_exp_t *exponent,
                              const ppf_special_iv_t *x);

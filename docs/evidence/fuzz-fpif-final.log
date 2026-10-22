@@ -1,0 +1,58 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 19002
+INFO: Loaded 1 modules   (6118 inline 8-bit counters): 6118 [0x55fa204e3d20, 0x55fa204e5506), 
+INFO: Loaded 1 PC tables (6118 PCs): 6118 [0x55fa204e5508,0x55fa204fd368), 
+INFO:        3 files found in build/audit-fuzz/final-corpus-fpif
+INFO: -max_len is not provided; libFuzzer will not generate inputs larger than 4096 bytes
+INFO: seed corpus: files: 3 min: 9b max: 40b total: 89b rss: 30Mb
+#4	INITED cov: 163 ft: 165 corp: 3/89b exec/s: 0 rss: 30Mb
+#28	REDUCE cov: 163 ft: 165 corp: 3/85b lim: 40 exec/s: 0 rss: 31Mb L: 36/40 MS: 4 ChangeBinInt-ShuffleBytes-CrossOver-EraseBytes-
+#44	REDUCE cov: 163 ft: 165 corp: 3/82b lim: 40 exec/s: 0 rss: 31Mb L: 6/40 MS: 1 EraseBytes-
+#68	NEW    cov: 164 ft: 166 corp: 4/122b lim: 40 exec/s: 0 rss: 32Mb L: 40/40 MS: 4 CrossOver-ChangeByte-ChangeBit-ChangeByte-
+#84	REDUCE cov: 164 ft: 166 corp: 4/121b lim: 40 exec/s: 0 rss: 32Mb L: 5/40 MS: 1 EraseBytes-
+#93	NEW    cov: 165 ft: 167 corp: 5/161b lim: 40 exec/s: 0 rss: 32Mb L: 40/40 MS: 4 ChangeBit-CMP-ChangeByte-ChangeBit- DE: "\377\377~\346\317PYB"-
+#125	REDUCE cov: 165 ft: 167 corp: 5/160b lim: 40 exec/s: 0 rss: 32Mb L: 4/40 MS: 2 ChangeByte-EraseBytes-
+#147	NEW    cov: 166 ft: 168 corp: 6/200b lim: 40 exec/s: 0 rss: 33Mb L: 40/40 MS: 2 CopyPart-ChangeByte-
+#243	REDUCE cov: 166 ft: 168 corp: 6/196b lim: 40 exec/s: 0 rss: 34Mb L: 36/40 MS: 1 EraseBytes-
+#540	NEW    cov: 167 ft: 169 corp: 7/232b lim: 40 exec/s: 0 rss: 38Mb L: 36/40 MS: 2 EraseBytes-InsertRepeatedBytes-
+#742	REDUCE cov: 167 ft: 169 corp: 7/230b lim: 40 exec/s: 0 rss: 41Mb L: 2/40 MS: 2 ShuffleBytes-EraseBytes-
+#826	REDUCE cov: 167 ft: 169 corp: 7/226b lim: 40 exec/s: 0 rss: 42Mb L: 36/40 MS: 4 ChangeBit-EraseBytes-PersAutoDict-CopyPart- DE: "\377\377~\346\317PYB"-
+#1002	REDUCE cov: 167 ft: 169 corp: 7/225b lim: 40 exec/s: 0 rss: 44Mb L: 1/40 MS: 1 EraseBytes-
+#1058	REDUCE cov: 167 ft: 169 corp: 7/223b lim: 40 exec/s: 0 rss: 45Mb L: 38/40 MS: 1 EraseBytes-
+#1234	REDUCE cov: 169 ft: 171 corp: 8/261b lim: 40 exec/s: 0 rss: 47Mb L: 38/40 MS: 1 CrossOver-
+#1778	REDUCE cov: 169 ft: 171 corp: 8/259b lim: 45 exec/s: 0 rss: 53Mb L: 38/38 MS: 4 CrossOver-ChangeBit-ChangeByte-EraseBytes-
+#1779	NEW    cov: 170 ft: 172 corp: 9/302b lim: 45 exec/s: 0 rss: 53Mb L: 43/43 MS: 1 InsertRepeatedBytes-
+#1956	REDUCE cov: 170 ft: 172 corp: 9/301b lim: 45 exec/s: 0 rss: 55Mb L: 37/43 MS: 2 ChangeByte-CrossOver-
+#2090	REDUCE cov: 170 ft: 172 corp: 9/300b lim: 45 exec/s: 0 rss: 57Mb L: 37/43 MS: 4 EraseBytes-InsertRepeatedBytes-InsertRepeatedBytes-EraseBytes-
+#2288	REDUCE cov: 170 ft: 172 corp: 9/299b lim: 45 exec/s: 0 rss: 59Mb L: 42/42 MS: 3 ChangeBinInt-CopyPart-EraseBytes-
+#2415	REDUCE cov: 170 ft: 172 corp: 9/298b lim: 45 exec/s: 0 rss: 60Mb L: 41/41 MS: 2 ChangeByte-EraseBytes-
+#2484	REDUCE cov: 170 ft: 172 corp: 9/296b lim: 45 exec/s: 0 rss: 61Mb L: 36/41 MS: 4 InsertRepeatedBytes-ShuffleBytes-EraseBytes-EraseBytes-
+#2975	REDUCE cov: 170 ft: 172 corp: 9/291b lim: 45 exec/s: 0 rss: 66Mb L: 36/37 MS: 1 EraseBytes-
+#4785	REDUCE cov: 170 ft: 172 corp: 9/290b lim: 60 exec/s: 0 rss: 84Mb L: 36/37 MS: 5 ShuffleBytes-CopyPart-CMP-CrossOver-EraseBytes- DE: "\001\000\000\000"-
+#5745	REDUCE cov: 170 ft: 172 corp: 9/289b lim: 65 exec/s: 0 rss: 93Mb L: 36/36 MS: 5 PersAutoDict-CopyPart-ChangeBinInt-PersAutoDict-EraseBytes- DE: "\001\000\000\000"-"\377\377~\346\317PYB"-
+#6625	REDUCE cov: 171 ft: 173 corp: 10/356b lim: 71 exec/s: 0 rss: 102Mb L: 67/67 MS: 5 ShuffleBytes-InsertByte-EraseBytes-ChangeBit-InsertRepeatedBytes-
+#7342	REDUCE cov: 171 ft: 173 corp: 10/338b lim: 77 exec/s: 0 rss: 109Mb L: 49/49 MS: 2 ChangeByte-EraseBytes-
+#7365	REDUCE cov: 171 ft: 173 corp: 10/330b lim: 77 exec/s: 0 rss: 109Mb L: 41/41 MS: 3 CopyPart-CopyPart-EraseBytes-
+#7506	REDUCE cov: 171 ft: 173 corp: 10/329b lim: 77 exec/s: 0 rss: 111Mb L: 40/40 MS: 1 EraseBytes-
+#7752	REDUCE cov: 171 ft: 173 corp: 10/328b lim: 77 exec/s: 0 rss: 113Mb L: 39/39 MS: 1 EraseBytes-
+#7958	REDUCE cov: 171 ft: 173 corp: 10/326b lim: 77 exec/s: 0 rss: 115Mb L: 37/37 MS: 1 EraseBytes-
+	NEW_FUNC[1/4]: ==7==WARNING: invalid path to external symbolizer!
+==7==WARNING: Failed to use and restart external symbolizer!
+0x55fa20446028  (/workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-fuzz/fuzz_fpif_import+0x17b028) (BuildId: 3d42c788e1e62f137df2529fc974dedf8b358d33)
+	NEW_FUNC[2/4]: 0x55fa204642f8  (/workspace/scratch/c092a76de5f0/polyphase_audit/polyphase-float-0.18.0/build/audit-fuzz/fuzz_fpif_import+0x1992f8) (BuildId: 3d42c788e1e62f137df2529fc974dedf8b358d33)
+#8696	REDUCE cov: 191 ft: 193 corp: 11/387b lim: 83 exec/s: 0 rss: 123Mb L: 61/61 MS: 3 ShuffleBytes-ChangeASCIIInt-InsertRepeatedBytes-
+#9569	REDUCE cov: 191 ft: 193 corp: 11/380b lim: 89 exec/s: 0 rss: 132Mb L: 54/54 MS: 3 InsertRepeatedBytes-ChangeBit-EraseBytes-
+#9625	REDUCE cov: 191 ft: 193 corp: 11/377b lim: 89 exec/s: 0 rss: 132Mb L: 51/51 MS: 1 EraseBytes-
+#10261	REDUCE cov: 191 ft: 193 corp: 11/371b lim: 95 exec/s: 0 rss: 138Mb L: 45/45 MS: 1 EraseBytes-
+#10766	REDUCE cov: 191 ft: 193 corp: 11/370b lim: 95 exec/s: 0 rss: 143Mb L: 36/45 MS: 5 InsertByte-CopyPart-PersAutoDict-PersAutoDict-EraseBytes- DE: "\001\000\000\000"-"\377\377~\346\317PYB"-
+#18394	REDUCE cov: 191 ft: 193 corp: 11/369b lim: 166 exec/s: 0 rss: 217Mb L: 44/44 MS: 3 ChangeASCIIInt-EraseBytes-InsertByte-
+#23025	REDUCE cov: 191 ft: 193 corp: 11/367b lim: 208 exec/s: 0 rss: 262Mb L: 42/42 MS: 1 EraseBytes-
+#26182	REDUCE cov: 191 ft: 193 corp: 11/365b lim: 236 exec/s: 0 rss: 293Mb L: 40/40 MS: 2 InsertByte-EraseBytes-
+#27914	REDUCE cov: 194 ft: 197 corp: 12/404b lim: 250 exec/s: 0 rss: 310Mb L: 39/40 MS: 2 CopyPart-EraseBytes-
+#35453	REDUCE cov: 194 ft: 197 corp: 12/403b lim: 321 exec/s: 35453 rss: 341Mb L: 38/40 MS: 1 EraseBytes-
+#50000	DONE   cov: 194 ft: 197 corp: 12/403b lim: 465 exec/s: 50000 rss: 342Mb
+###### Recommended dictionary. ######
+"\377\377~\346\317PYB" # Uses: 2375
+"\001\000\000\000" # Uses: 2069
+###### End of recommended dictionary. ######
+Done 50000 runs in 1 second(s)

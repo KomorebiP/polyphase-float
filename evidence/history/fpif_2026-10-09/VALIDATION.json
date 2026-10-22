@@ -1,0 +1,30 @@
+{
+  "original_metadata": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "CHECK FAILED <source>/tests/test_fpif_resource_bounds.c:177: ctx.flags == PPF_FLAG_ERANGE\n"
+  },
+  "original_stream": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "CHECK FAILED <source>/tests/test_fpif_resource_bounds.c:203: (ctx.flags & PPF_FLAG_ALLOC) == 0\n"
+  },
+  "fixed_all": {
+    "exit_code": 0,
+    "stdout": "FPIF category 0: 4 allocation failure positions passed\nFPIF category 1: 1 allocation failure positions passed\nFPIF category 2: 1 allocation failure positions passed\nFPIF category 3: 1 allocation failure positions passed\nFPIF resource admission and streaming regressions passed\n",
+    "stderr": ""
+  },
+  "additional_checks": {
+    "test_allocation_failure": "allocation-failure and transactional-state tests passed\n",
+    "test_object": "POLYPHASE FLOAT OBJECT TESTS PASSED\n",
+    "test_api_lifecycle_audit": "random urandomb: 1 fail-at-N positions passed\nrandom urandom: 1 fail-at-N positions passed\nrandom erandom: 16 fail-at-N positions passed\nrandom nrandom: 197 fail-at-N positions passed\nrandom grandom: 199 fail-at-N positions passed\nreldiff: 2 fail-at-N positions passed with ordinary, alias, and external outputs\nAPI lifecycle audit regressions passed\n",
+    "test_io_allocation_failure": "I/O allocation-failure and commit-boundary tests passed\n"
+  },
+  "source_archive_sha256": "8053922227a917d6cf432d0a84b31f41b4812885de1bfc4e49365c8acb00793a",
+  "original_io_sha256": "c0bf74a29b02f31e9b03d8974224095bca55f10bde07e02de41a8d2ec4756185",
+  "fixed_io_sha256": "125dcb47e968d332e581f84c4e78ae370d7b2bf42a875cb8782d5d170be6f193",
+  "test_sha256": "7e0dff6ed76059deaf93d47d4c37406af0a1dc02312dc97d2685ded4afd60629",
+  "compiler": "GCC 13.3.0",
+  "sanitizers": "AddressSanitizer and UndefinedBehaviorSanitizer; detect_leaks=0, independent exact allocator balance checks enabled",
+  "exact_original_fuzz_artifact_replay": "Not performed: the previous source/build directory, diagnostic log, and fuzz artifact were absent from the resumed executor. The cap and streaming regressions use bounded allocators and do not execute an oversized allocation."
+}

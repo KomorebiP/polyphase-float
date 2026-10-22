@@ -1,5 +1,5 @@
 {
-  "contract_sha256": "e55f826ecd61b67c91c2e9b7e1ca3efc35fb831ac923fc34aad65148d5ea41c5",
+  "contract_sha256": "802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7",
   "contract_version": 1,
   "functions": [
     {
@@ -9745,10 +9745,10 @@
     }
   ],
   "library": "Polyphase Float",
-  "release_version": "0.18.0",
+  "release_version": "0.20.0",
   "schema_version": 1,
   "scope": "overlap and lifecycle rules for the public core C API",
-  "semantic_contract_sha256": "c2934870bc76396e14c3b51643ec5c3b31ad1b21a93495f746ff4a20feffa444",
+  "semantic_contract_sha256": "a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139",
   "summary": {
     "classification_counts": {
       "direct_storage": 11,

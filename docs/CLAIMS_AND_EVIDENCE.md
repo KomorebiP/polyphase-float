@@ -46,12 +46,13 @@ this level.
 
 - The source contains direct or conditional `ppf_*` counterparts for all 349
   symbols in the supplied lowercase inventory.
-- The 0.13.0 public header and validated GCC core shared-library configurations
+- The public header and validated GCC core shared-library configurations
   contain 437 `ppf_*` functions.
-- The 0.13.0 generated semantic ledger contains one record and curated purpose
+- The generated semantic ledger contains one record and curated purpose
   for each of those 437 functions, and every name has a direct test-source
-  reference. The same ledger retains unresolved aliasing, allocation, limit,
-  and conditional-build gaps explicitly.
+  reference. The same ledger retains unresolved allocation, limit,
+  and conditional-build gaps explicitly. The separate aliasing contract
+  classifies all 437 functions with zero unverified entries.
 - The production core is designed not to link MPFR, and the supplied audit
   checks imported symbols.
 - The repository contains exact, differential, randomized, range,

@@ -139,6 +139,19 @@ static int set_underflow_ratio(ppf_t *rop, mpz_srcptr numerator,
     return minimum ? -1 : 1;
 }
 
+/* Called only after proving the magnitude lies well below half of the
+   smallest normal value.  Its significand alone is not the original ratio. */
+static int set_underflow_tiny_local(ppf_t *rop, int sign, ppf_rnd_t rnd,
+                                   ppf_context_t *ctx) {
+    int minimum = rnd == PPF_RNDA || (rnd == PPF_RNDU && sign > 0) ||
+                  (rnd == PPF_RNDD && sign < 0);
+    if (minimum) {
+        if (ppf_set_min_normal(rop, sign, ctx) != 0) return PPF_TERNARY_ERROR;
+    } else ppf_set_zero(rop, sign);
+    ppf_raise(ctx, PPF_FLAG_UNDERFLOW | PPF_FLAG_INEXACT);
+    return sign > 0 ? (minimum ? 1 : -1) : (minimum ? -1 : 1);
+}
+
 static int set_ratio(ppf_t *rop, mpz_srcptr signed_numerator,
                      mpz_srcptr positive_denominator,
                      ppf_rnd_t rnd, ppf_context_t *ctx) {
@@ -379,6 +392,12 @@ static int set_binary_real(ppf_t *rop, long double value, int mantissa_bits,
     mpz_t z;
     long double fraction;
     int exponent, i, sign, t;
+    ctx = ppf_resolve_context(ctx);
+    rnd = resolve_rounding(rnd, ctx);
+    if (!rop || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     if (isnan(value)) {
         ppf_set_nan(rop, signbit(value) ? -1 : 1);
         ppf_raise(ctx, PPF_FLAG_NAN);
@@ -541,6 +560,11 @@ static int ppf_strtofr_parse(ppf_t *rop, const char *text, char **endptr,
         return PPF_TERNARY_ERROR;
     }
     rnd = resolve_rounding(rnd, ctx);
+    if (!ppf_rounding_valid(rnd)) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        if (endptr) *endptr = (char *)text;
+        return PPF_TERNARY_ERROR;
+    }
     s = text;
     while (isspace((unsigned char)*s)) ++s;
     if (*s == '+' || *s == '-') {
@@ -621,13 +645,18 @@ static int ppf_strtofr_parse(ppf_t *rop, const char *text, char **endptr,
                       (binary_exp ? 1.0L : log2l((long double)actual_base)) -
                       (long double)fractional * log2l((long double)actual_base);
     if (fabsl((long double)parsed_exp) > PPF_TEXT_POWER_LIMIT) {
-        if (estimated_shift > (long double)ctx->emax + 16.0L) {
+        long double bits = (long double)mpz_sizeinbase(significand, 2);
+        long double guard = 16.0L + 16.0L * LDBL_EPSILON *
+            (fabsl((long double)parsed_exp) *
+             (binary_exp ? 1.0L : log2l((long double)actual_base)) +
+             (long double)fractional * log2l((long double)actual_base) + bits);
+        /* The integer significand contributes between bits-1 and bits to
+           log2(|value|).  A wide guard leaves cancellation near the resource
+           boundary undecided instead of manufacturing an overflow/underflow. */
+        if (estimated_shift + bits - 1.0L > (long double)ctx->emax + guard) {
             t = set_overflow_local(rop, sign, rnd, ctx);
-        } else if (estimated_shift < (long double)ctx->emin - 16.0L) {
-            mpz_t den, mag;
-            mpz_inits(den, mag, NULL); mpz_set_ui(den, 1); mpz_abs(mag, significand);
-            t = set_underflow_ratio(rop, mag, den, sign, rnd, ctx);
-            mpz_clears(den, mag, NULL);
+        } else if (estimated_shift + bits < (long double)ctx->emin - guard) {
+            t = set_underflow_tiny_local(rop, sign, rnd, ctx);
         } else {
             ppf_raise(ctx, PPF_FLAG_ERANGE);
             t = PPF_TERNARY_ERROR;
@@ -716,6 +745,9 @@ int ppf_set_str(ppf_t *rop, const char *text, int base,
     parsed_ready = 1;
     ternary = ppf_strtofr_parse(&parsed, text, &end, base, rnd, ctx);
     if (ternary == PPF_TERNARY_ERROR) goto done;
+    /* strtofr reports no conversion by leaving the end pointer at the
+       original input.  Empty and whitespace-only strings are not numbers. */
+    if (end == text) goto done;
     while (end && isspace((unsigned char)*end)) ++end;
     if (!end || *end != '\0') goto done;
     if (commit_parsed_value(rop, &parsed, ctx) == PPF_TERNARY_ERROR)

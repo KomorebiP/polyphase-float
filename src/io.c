@@ -13,6 +13,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Interchange metadata is not a request to the general object initializer.
+   Bound each imported payload and significand allocation independently. */
+#ifndef PPF_FPIF_MAX_IMPORT_BYTES
+#define PPF_FPIF_MAX_IMPORT_BYTES ((size_t)64u * 1024u * 1024u)
+#endif
+
+#define PPF_FPIF_READ_CHUNK_BYTES ((size_t)4096u)
+
 static int write_all(FILE *stream, const void *data, size_t size) {
     const unsigned char *p = (const unsigned char *)data;
     while (size != 0) {
@@ -313,6 +321,7 @@ int ppf_fpif_export(FILE *stream, const ppf_t *op) {
 int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx) {
     unsigned char header[PPFIF_HEADER_BYTES], crcbuf[4];
     unsigned char *payload = NULL;
+    size_t payload_capacity = 0;
     uint64_t precision64, payload64;
     ppf_exp_t exponent;
     ppf_kind_t kind;
@@ -347,10 +356,38 @@ int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx) {
         payload64 > SIZE_MAX)
         return -1;
 
+    /* A short input must never trigger an unbounded allocation from a claimed
+       precision.  The significand bound also applies to special records,
+       whose encoded payload is empty but whose object storage is not. */
+    if (payload64 > (uint64_t)PPF_FPIF_MAX_IMPORT_BYTES ||
+        ppf_limbs_for_precision((ppf_prec_t)precision64) >
+            (size_t)PPF_FPIF_MAX_IMPORT_BYTES / sizeof(mp_limb_t)) {
+        ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return -1;
+    }
+
     if (payload64) {
-        payload = (unsigned char *)ppf_context_malloc_internal(ctx, (size_t)payload64);
+        size_t received = 0;
+        payload_capacity = (size_t)payload64 < PPF_FPIF_READ_CHUNK_BYTES
+            ? (size_t)payload64 : PPF_FPIF_READ_CHUNK_BYTES;
+        payload = (unsigned char *)ppf_context_malloc_internal(ctx, payload_capacity);
         if (!payload) return -1;
-        if (read_all(stream, payload, (size_t)payload64) != 0) goto done;
+        while (received < (size_t)payload64) {
+            if (received == payload_capacity) {
+                size_t next = payload_capacity <= SIZE_MAX / 2u
+                    ? payload_capacity * 2u : (size_t)payload64;
+                unsigned char *grown;
+                if (next > (size_t)payload64) next = (size_t)payload64;
+                grown = (unsigned char *)ppf_context_realloc_internal(
+                    ctx, payload, payload_capacity, next);
+                if (!grown) goto done;
+                payload = grown;
+                payload_capacity = next;
+            }
+            if (read_all(stream, payload + received,
+                         payload_capacity - received) != 0) goto done;
+            received = payload_capacity;
+        }
     }
     if (payload64 != 0u && payload == NULL) goto done;
     if (read_all(stream, crcbuf, sizeof(crcbuf)) != 0) goto done;
@@ -397,6 +434,6 @@ int ppf_fpif_import(ppf_t *op, FILE *stream, ppf_context_t *ctx) {
 
 done:
     if (temp_ready) ppf_clear(&temp);
-    ppf_context_free_internal(ctx, payload, (size_t)payload64);
+    ppf_context_free_internal(ctx, payload, payload_capacity);
     return rc;
 }

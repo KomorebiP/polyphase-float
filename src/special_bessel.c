@@ -13,6 +13,8 @@
 
 static int sb_nan(ppf_t*r,ppf_context_t*ctx){ppf_set_nan(r,1);ppf_raise(ctx,PPF_FLAG_NAN);return 0;}
 static int sb_error(ppf_t*r,ppf_context_t*ctx){ppf_set_nan(r,1);ppf_raise(ctx,PPF_FLAG_ERANGE);return PPF_TERNARY_ERROR;}
+/* Convert even LONG_MIN without signed negation overflow. */
+static unsigned long order_magnitude(long n){return n<0?(unsigned long)(-(n+1L))+1UL:(unsigned long)n;}
 static int iv_minmax(ppf_special_iv_t*out,const ppf_special_iv_t*a,const ppf_special_iv_t*b,ppf_context_t*ctx){const ppf_t*lo=ppf_cmp(&a->lo,&b->lo,ctx)<=0?&a->lo:&b->lo;const ppf_t*hi=ppf_cmp(&a->hi,&b->hi,ctx)>=0?&a->hi:&b->hi;return ppf_set(&out->lo,lo,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_set(&out->hi,hi,PPF_RNDU,ctx)==PPF_TERNARY_ERROR?-1:0;}
 static int iv_recip(ppf_special_iv_t*out,const ppf_special_iv_t*x,ppf_context_t*ctx){ppf_special_iv_t one;int rc=-1;memset(&one,0,sizeof(one));if(ppf_special_iv_init(&one,out->lo.precision,ctx)||ppf_special_iv_set_ui(&one,1,ctx))goto done;rc=ppf_special_iv_div(out,&one,x,ctx);done:ppf_special_iv_clear(&one);return rc;}
 
@@ -112,14 +114,17 @@ int ppf_agm(ppf_t*rop,const ppf_t*a,const ppf_t*b,ppf_rnd_t rnd,ppf_context_t*ct
 /* Bessel J_n power series. */
 typedef struct{const ppf_t*x;long n;} order_arg_t;
 static int bessel_j_interval(ppf_special_iv_t*out,const ppf_t*x,long order,ppf_prec_t work,ppf_context_t*ctx){
-    unsigned long n=(unsigned long)(order<0?-(order+1)+1:order);int order_sign=(order<0&&(n&1u))?-1:1;
+    unsigned long n=order_magnitude(order);int order_sign=(order<0&&(n&1u))?-1:1;
     ppf_special_iv_t xi,half,x2,term,sum,next,tmp,ratio,cand,faciv,powiv,neg;int rc=-1,settled=0;
     memset(&xi,0,sizeof(xi));memset(&half,0,sizeof(half));memset(&x2,0,sizeof(x2));memset(&term,0,sizeof(term));memset(&sum,0,sizeof(sum));memset(&next,0,sizeof(next));memset(&tmp,0,sizeof(tmp));memset(&ratio,0,sizeof(ratio));memset(&cand,0,sizeof(cand));memset(&faciv,0,sizeof(faciv));memset(&powiv,0,sizeof(powiv));memset(&neg,0,sizeof(neg));
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(xi);INIT(half);INIT(x2);INIT(term);INIT(sum);INIT(next);INIT(tmp);INIT(ratio);INIT(cand);INIT(faciv);INIT(powiv);INIT(neg);
 #undef INIT
     if(ppf_special_iv_set_exact(&xi,x,ctx)||ppf_special_iv_scale2(&half,&xi,-1,ctx)||ppf_special_iv_mul(&x2,&half,&half,ctx))goto done;
-    mpz_t fac;mpz_init(fac);mpz_fac_ui(fac,n);if(ppf_pow_ui(&powiv.lo,&half.lo,n,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_pow_ui(&powiv.hi,&half.hi,n,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_set_z(&faciv.lo,fac,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_set_z(&faciv.hi,fac,PPF_RNDN,ctx)==PPF_TERNARY_ERROR||ppf_special_iv_div(&term,&powiv,&faciv,ctx)||ppf_special_iv_copy(&sum,&term,ctx)){mpz_clear(fac);goto done;}mpz_clear(fac);
+    /* Even powers decrease on negative arguments; reverse those input ends. */
+    const ppf_t *power_lower=(x->sign<0&&!(n&1UL))?&half.hi:&half.lo;
+    const ppf_t *power_upper=(x->sign<0&&!(n&1UL))?&half.lo:&half.hi;
+    mpz_t fac;mpz_init(fac);mpz_fac_ui(fac,n);if(ppf_pow_ui(&powiv.lo,power_lower,n,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_pow_ui(&powiv.hi,power_upper,n,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_set_z(&faciv.lo,fac,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_set_z(&faciv.hi,fac,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_special_iv_div(&term,&powiv,&faciv,ctx)||ppf_special_iv_copy(&sum,&term,ctx)){mpz_clear(fac);goto done;}mpz_clear(fac);
     for(unsigned long k=0;k<1000000UL;++k){mpq_t q;mpq_init(q);mpq_set_si(q,-1,(long)((k+1UL)*(k+n+1UL)));if(ppf_special_iv_set_q(&ratio,q,ctx)||ppf_special_iv_mul(&tmp,&term,&x2,ctx)||ppf_special_iv_mul(&next,&tmp,&ratio,ctx)){mpq_clear(q);goto done;}mpq_clear(q);ppf_special_iv_t an;memset(&an,0,sizeof(an));if(ppf_special_iv_init(&an,work,ctx)||ppf_special_iv_abs(&an,&next,ctx)){ppf_special_iv_clear(&an);goto done;}if(ppf_special_small(&an.hi,work,28u)){unsigned long kp2=k+2UL;unsigned long np2=k+n+2UL;if(kp2<=ULONG_MAX/np2&&ppf_cmp_ui(&x2.hi,kp2*np2,ctx)<=0){if(ppf_special_iv_add(&cand,&sum,&next,ctx)||iv_minmax(&sum,&sum,&cand,ctx)){ppf_special_iv_clear(&an);goto done;}ppf_special_iv_clear(&an);settled=1;break;}}ppf_special_iv_clear(&an);if(ppf_special_iv_add(&tmp,&sum,&next,ctx)||ppf_special_iv_copy(&sum,&tmp,ctx)||ppf_special_iv_copy(&term,&next,ctx))goto done;}
     if (!settled) goto done;
     if (order_sign < 0) {
@@ -132,7 +137,7 @@ static int bessel_j_interval(ppf_special_iv_t*out,const ppf_t*x,long order,ppf_p
 done:ppf_special_iv_clear(&xi);ppf_special_iv_clear(&half);ppf_special_iv_clear(&x2);ppf_special_iv_clear(&term);ppf_special_iv_clear(&sum);ppf_special_iv_clear(&next);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&ratio);ppf_special_iv_clear(&cand);ppf_special_iv_clear(&faciv);ppf_special_iv_clear(&powiv);ppf_special_iv_clear(&neg);return rc;
 }
 static int build_jn(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){order_arg_t*a=opaque;return bessel_j_interval(out,a->x,a->n,work,ctx);}
-int ppf_jn(ppf_t*rop,long n,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){order_arg_t a={x,n};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sb_error(rop,ctx);if(ppf_nan_p(x))return sb_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_zero(rop,1);return 0;}if(ppf_zero_p(x)){int sign=1;if(n!=0&&x->sign<0&&((unsigned long)(n<0?-n:n)&1u))sign=-1;ppf_set_zero(rop,sign);return n==0?ppf_set_ui(rop,1,rnd,ctx):0;}return ppf_special_evaluate(rop,rnd,ctx,build_jn,&a);}
+int ppf_jn(ppf_t*rop,long n,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){order_arg_t a={x,n};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sb_error(rop,ctx);if(ppf_nan_p(x))return sb_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_zero(rop,1);return 0;}if(ppf_zero_p(x)){int sign=1;if(n!=0&&(order_magnitude(n)&1u))sign=(x->sign<0?-1:1)*(n<0?-1:1);ppf_set_zero(rop,sign);return n==0?ppf_set_ui(rop,1,rnd,ctx):0;}if(order_magnitude(n)>100000UL)return sb_error(rop,ctx);return ppf_special_evaluate(rop,rnd,ctx,build_jn,&a);}
 int ppf_j0(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_jn(r,0,x,rnd,ctx);}int ppf_j1(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_jn(r,1,x,rnd,ctx);}
 
 static int harmonic_iv(ppf_special_iv_t*out,unsigned long n,ppf_context_t*ctx){mpq_t q;mpq_init(q);mpq_set_ui(q,0,1);for(unsigned long k=1;k<=n;++k){mpq_t t;mpq_init(t);mpq_set_ui(t,1,k);mpq_add(q,q,t);mpq_clear(t);}int rc=ppf_special_iv_set_q(out,q,ctx);mpq_clear(q);return rc;}
@@ -172,7 +177,7 @@ done:ppf_special_iv_clear(&xi);ppf_special_iv_clear(&half);ppf_special_iv_clear(
 }
 
 static int yn_interval(ppf_special_iv_t*out,const ppf_t*x,long order,ppf_prec_t work,ppf_context_t*ctx){
-    unsigned long n=(unsigned long)(order<0?-(order+1)+1:order);int sign=(order<0&&(n&1u))?-1:1;ppf_special_iv_t y0,y1,ym1,ycur,ynext,xi,coef,tmp,neg;int rc=-1;
+    unsigned long n=order_magnitude(order);int sign=(order<0&&(n&1u))?-1:1;ppf_special_iv_t y0,y1,ym1,ycur,ynext,xi,coef,tmp,neg;int rc=-1;
     memset(&y0,0,sizeof(y0));memset(&y1,0,sizeof(y1));memset(&ym1,0,sizeof(ym1));memset(&ycur,0,sizeof(ycur));memset(&ynext,0,sizeof(ynext));memset(&xi,0,sizeof(xi));memset(&coef,0,sizeof(coef));memset(&tmp,0,sizeof(tmp));memset(&neg,0,sizeof(neg));
 #define INIT(V) if(ppf_special_iv_init(&(V),work,ctx))goto done
     INIT(y0);INIT(y1);INIT(ym1);INIT(ycur);INIT(ynext);INIT(xi);INIT(coef);INIT(tmp);INIT(neg);
@@ -195,7 +200,7 @@ finish:if(sign<0){if(ppf_special_iv_neg(&neg,&ycur,ctx)||ppf_special_iv_copy(out
 done:ppf_special_iv_clear(&y0);ppf_special_iv_clear(&y1);ppf_special_iv_clear(&ym1);ppf_special_iv_clear(&ycur);ppf_special_iv_clear(&ynext);ppf_special_iv_clear(&xi);ppf_special_iv_clear(&coef);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&neg);return rc;
 }
 static int build_yn(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){order_arg_t*a=opaque;return yn_interval(out,a->x,a->n,work,ctx);}
-int ppf_yn(ppf_t*rop,long n,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){order_arg_t a={x,n};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sb_error(rop,ctx);if(ppf_nan_p(x)||(x->sign<0&&!ppf_zero_p(x)))return sb_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_zero(rop,1);return 0;}if(ppf_zero_p(x)){unsigned long an=(unsigned long)(n<0?-(n+1L)+1L:n);int sign=(n<0&&(an&1u))?1:-1;ppf_set_inf(rop,sign);ppf_raise(ctx,PPF_FLAG_DIVBY0);return 0;}return ppf_special_evaluate(rop,rnd,ctx,build_yn,&a);}int ppf_y0(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_yn(r,0,x,rnd,ctx);}int ppf_y1(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_yn(r,1,x,rnd,ctx);}
+int ppf_yn(ppf_t*rop,long n,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){order_arg_t a={x,n};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sb_error(rop,ctx);if(ppf_nan_p(x)||(x->sign<0&&!ppf_zero_p(x)))return sb_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_zero(rop,1);return 0;}if(ppf_zero_p(x)){unsigned long an=order_magnitude(n);int sign=(n<0&&(an&1u))?1:-1;ppf_set_inf(rop,sign);ppf_raise(ctx,PPF_FLAG_DIVBY0);return 0;}if(order_magnitude(n)>100000UL)return sb_error(rop,ctx);return ppf_special_evaluate(rop,rnd,ctx,build_yn,&a);}int ppf_y0(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_yn(r,0,x,rnd,ctx);}int ppf_y1(ppf_t*r,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){return ppf_yn(r,1,x,rnd,ctx);}
 
 /* Airy Ai power series. */
 static int build_ai(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context_t*ctx){
@@ -206,7 +211,7 @@ static int build_ai(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context
 #undef INIT
     if(ppf_special_iv_set_exact(&xi,a->x,ctx)||ppf_special_iv_mul(&x3,&xi,&xi,ctx)||ppf_special_iv_mul(&x3,&x3,&xi,ctx)||ppf_special_iv_set_ui(&three,3,ctx))goto done;
     mpq_t q;mpq_init(q);mpq_set_ui(q,1,3);if(ppf_special_iv_set_q(&third,q,ctx)){mpq_clear(q);goto done;}mpq_set_ui(q,2,3);if(ppf_special_iv_set_q(&two_third,q,ctx)){mpq_clear(q);goto done;}mpq_clear(q);
-    if(ppf_gamma(&g13.lo,&third.lo,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_gamma(&g13.hi,&third.hi,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_gamma(&g23.lo,&two_third.lo,PPF_RNDD,ctx)==PPF_TERNARY_ERROR||ppf_gamma(&g23.hi,&two_third.hi,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||ppf_special_iv_pow_positive(&p13,&three,&third,ctx)||ppf_special_iv_pow_positive(&p23,&three,&two_third,ctx)||ppf_special_iv_mul(&a0,&p23,&g23,ctx)||iv_recip(&a0,&a0,ctx)||ppf_special_iv_mul(&a1,&p13,&g13,ctx)||iv_recip(&a1,&a1,ctx)||ppf_special_iv_neg(&a1,&a1,ctx)||ppf_special_iv_copy(&t0,&a0,ctx)||ppf_special_iv_mul(&t1,&a1,&xi,ctx)||ppf_special_iv_copy(&s0,&t0,ctx)||ppf_special_iv_copy(&s1,&t1,ctx)||ppf_special_iv_set_ui(&one,1,ctx))goto done;
+    if(ppf_special_iv_gamma_decreasing(&g13,&third,ctx)||ppf_special_iv_gamma_decreasing(&g23,&two_third,ctx)||ppf_special_iv_pow_positive(&p13,&three,&third,ctx)||ppf_special_iv_pow_positive(&p23,&three,&two_third,ctx)||ppf_special_iv_mul(&a0,&p23,&g23,ctx)||iv_recip(&a0,&a0,ctx)||ppf_special_iv_mul(&a1,&p13,&g13,ctx)||iv_recip(&a1,&a1,ctx)||ppf_special_iv_neg(&a1,&a1,ctx)||ppf_special_iv_copy(&t0,&a0,ctx)||ppf_special_iv_mul(&t1,&a1,&xi,ctx)||ppf_special_iv_copy(&s0,&t0,ctx)||ppf_special_iv_copy(&s1,&t1,ctx)||ppf_special_iv_set_ui(&one,1,ctx))goto done;
     for(unsigned long k=0;k<1000000UL;++k){
         mpq_t q0,q1;mpq_inits(q0,q1,NULL);mpq_set_ui(q0,1,(3*k+3UL)*(3*k+2UL));mpq_set_ui(q1,1,(3*k+4UL)*(3*k+3UL));if(ppf_special_iv_set_q(&ratio,q0,ctx)||ppf_special_iv_mul(&n0,&t0,&x3,ctx)||ppf_special_iv_mul(&n0,&n0,&ratio,ctx)){mpq_clears(q0,q1,NULL);goto done;}if(ppf_special_iv_set_q(&ratio,q1,ctx)||ppf_special_iv_mul(&n1,&t1,&x3,ctx)||ppf_special_iv_mul(&n1,&n1,&ratio,ctx)){mpq_clears(q0,q1,NULL);goto done;}mpq_clears(q0,q1,NULL);
         ppf_special_iv_t an0,an1;memset(&an0,0,sizeof(an0));memset(&an1,0,sizeof(an1));if(ppf_special_iv_init(&an0,work,ctx)||ppf_special_iv_init(&an1,work,ctx)||ppf_special_iv_abs(&an0,&n0,ctx)||ppf_special_iv_abs(&an1,&n1,ctx)){ppf_special_iv_clear(&an0);ppf_special_iv_clear(&an1);goto done;}
@@ -218,4 +223,17 @@ static int build_ai(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_context
     rc = 0;
 done:ppf_special_iv_clear(&xi);ppf_special_iv_clear(&x3);ppf_special_iv_clear(&three);ppf_special_iv_clear(&third);ppf_special_iv_clear(&two_third);ppf_special_iv_clear(&g13);ppf_special_iv_clear(&g23);ppf_special_iv_clear(&p13);ppf_special_iv_clear(&p23);ppf_special_iv_clear(&a0);ppf_special_iv_clear(&a1);ppf_special_iv_clear(&s0);ppf_special_iv_clear(&s1);ppf_special_iv_clear(&t0);ppf_special_iv_clear(&t1);ppf_special_iv_clear(&n0);ppf_special_iv_clear(&n1);ppf_special_iv_clear(&tmp);ppf_special_iv_clear(&ratio);ppf_special_iv_clear(&tail0);ppf_special_iv_clear(&tail1);ppf_special_iv_clear(&one);ppf_special_iv_clear(&den);return rc;
 }
-int ppf_ai(ppf_t*rop,const ppf_t*x,ppf_rnd_t rnd,ppf_context_t*ctx){order_arg_t a={x,0};ctx=ppf_resolve_context(ctx);if(!rop||!x||!ctx)return sb_error(rop,ctx);if(ppf_nan_p(x))return sb_nan(rop,ctx);if(ppf_inf_p(x)){ppf_set_zero(rop,1);return 0;}long double xd=ppf_get_ld(x,PPF_RNDN,ctx);if(fabsl(xd)>500.0L)return sb_error(rop,ctx);return ppf_special_evaluate(rop,rnd,ctx,build_ai,&a);}
+int ppf_ai(ppf_t *rop, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx) {
+    order_arg_t a = {x, 0};
+    ctx = ppf_resolve_context(ctx);
+    if (!rop || !x || !ctx) return sb_error(rop, ctx);
+    if (ppf_nan_p(x)) return sb_nan(rop, ctx);
+    if (ppf_inf_p(x)) {
+        ppf_set_zero(rop, 1);
+        return 0;
+    }
+    /* Compare the exact input: conversion to long double can round a value
+       just outside the supported domain back onto its boundary. */
+    if (ppf_cmpabs_ui(x, 500UL, ctx) > 0) return sb_error(rop, ctx);
+    return ppf_special_evaluate(rop, rnd, ctx, build_ai, &a);
+}

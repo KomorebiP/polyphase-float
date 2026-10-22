@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
 # SPDX-License-Identifier: LGPL-3.0-or-later
 
-prefix=${pcfiledir}/../..
+prefix=${pcfiledir}/@PPF_PC_PREFIX_RELATIVE@
 exec_prefix=${prefix}
-libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
-includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@PPF_PC_LIBDIR@
+includedir=@PPF_PC_INCLUDEDIR@
 
 Name: polyphase-float
 Description: Independent arbitrary-precision binary floating-point arithmetic

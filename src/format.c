@@ -218,6 +218,12 @@ static int parse_spec(const char **cursor, format_spec_t *s, va_list *ap) {
         int w = va_arg(*ap, int);
         ++p;
         s->width_set = 1;
+        /* Its positive magnitude cannot fit the supported int width. */
+        if (w == INT_MIN) {
+            ppf_set_erangeflag();
+            PPF_SET_OVERFLOW_ERRNO();
+            return -1;
+        }
         if (w < 0) { s->left = 1; s->zero = 0; s->width = -w; }
         else s->width = w;
     } else {

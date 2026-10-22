@@ -14,11 +14,13 @@ import argparse
 import importlib.util
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
 SPEC = importlib.util.spec_from_file_location("release_audit", ROOT / "tools/release_audit.py")
 assert SPEC is not None and SPEC.loader is not None
 AUDIT = importlib.util.module_from_spec(SPEC)
@@ -123,13 +125,13 @@ class ReleaseApiAuditTests(unittest.TestCase):
         for float128, decimal in ((-1, 0), (1, 2)):
             with self.subTest(float128=float128, decimal=decimal):
                 failures, _ = self.audit_fixture(float128, decimal)
-                self.assertTrue(any("invalid feature value" in item for item in failures), failures)
+                self.assertTrue(any("invalid capability" in item for item in failures), failures)
 
     def test_missing_feature_probe_fails(self) -> None:
         for name in ("ppf_buildopt_float128_p", "ppf_buildopt_decimal_p"):
             with self.subTest(probe=name):
                 failures, _ = self.audit_fixture(1, 0, missing={name})
-                self.assertTrue(any("optional-format features" in item for item in failures), failures)
+                self.assertTrue(any("conditional capabilities" in item for item in failures), failures)
 
 
 if __name__ == "__main__":

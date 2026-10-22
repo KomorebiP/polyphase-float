@@ -12,9 +12,33 @@ if(@PPF_INSTALLED_WITH_OPENMP@)
   find_dependency(OpenMP REQUIRED COMPONENTS C)
 endif()
 
-if(@PPF_INSTALLED_WITH_MPFR@)
-  find_dependency(MPFR REQUIRED)
-endif()
-
 include("${CMAKE_CURRENT_LIST_DIR}/PolyphaseFloatTargets.cmake")
+set(PolyphaseFloat_core_FOUND TRUE)
+set(PolyphaseFloat_mpfr_FOUND FALSE)
+
+# Preserve the full-package behavior of an unqualified find_package call.
+# Explicit COMPONENTS core keeps the independent core usable without MPFR,
+# even when the distributor also installed the optional adapter.
+set(_ppf_load_mpfr FALSE)
+if(NOT PolyphaseFloat_FIND_COMPONENTS OR
+    "mpfr" IN_LIST PolyphaseFloat_FIND_COMPONENTS)
+  set(_ppf_load_mpfr TRUE)
+endif()
+if(_ppf_load_mpfr AND @PPF_INSTALLED_WITH_MPFR@)
+  if(NOT PolyphaseFloat_FIND_COMPONENTS OR PolyphaseFloat_FIND_REQUIRED_mpfr)
+    find_dependency(MPFR REQUIRED)
+  else()
+    find_package(MPFR QUIET)
+  endif()
+  if(MPFR_FOUND AND MPFR_HAS_HEADER AND EXISTS "${MPFR_INCLUDE_DIR}/mpfr.h")
+    include("${CMAKE_CURRENT_LIST_DIR}/PolyphaseFloatMPFRTargets.cmake")
+    set(PolyphaseFloat_mpfr_FOUND TRUE)
+  elseif(NOT PolyphaseFloat_FIND_COMPONENTS OR PolyphaseFloat_FIND_REQUIRED_mpfr)
+    set(PolyphaseFloat_FOUND FALSE)
+    set(PolyphaseFloat_NOT_FOUND_MESSAGE
+      "The installed MPFR adapter requires the official MPFR development header")
+    return()
+  endif()
+endif()
+unset(_ppf_load_mpfr)
 check_required_components(PolyphaseFloat)

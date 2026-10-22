@@ -161,25 +161,37 @@ roadmap.
 
 ## Caller pattern
 
+Use the explicit context flag functions when passing an explicit context.
+The `ppf_flags_*` convenience functions inspect the calling thread's default
+context instead.
+
 ```c
-ppf_context_t ctx;
-ppf_t x, y, out;
+int allocation_example(void) {
+    ppf_context_t ctx;
+    ppf_t x = {0}, y = {0}, out = {0};
+    int rc = 1;
 
-ppf_context_init(&ctx);
-ppf_init2_ctx(&x, 256, &ctx);
-ppf_init2_ctx(&y, 256, &ctx);
-ppf_init2_ctx(&out, 256, &ctx);
+    if (ppf_context_init(&ctx) != 0) return rc;
+    if (ppf_init2_ctx(&x, 256, &ctx) != 0 ||
+        ppf_init2_ctx(&y, 256, &ctx) != 0 ||
+        ppf_init2_ctx(&out, 256, &ctx) != 0) goto cleanup;
+    if (ppf_set_ui(&x, 7, PPF_RNDN, &ctx) == PPF_TERNARY_ERROR ||
+        ppf_set_ui(&y, 11, PPF_RNDN, &ctx) == PPF_TERNARY_ERROR)
+        goto cleanup;
 
-ppf_flags_clear(PPF_FLAG_ALLOC);
-int ternary = ppf_mul(&out, &x, &y, PPF_RNDN, &ctx);
+    ppf_context_flags_clear(&ctx, PPF_FLAG_ALLOC);
+    int ternary = ppf_mul(&out, &x, &y, PPF_RNDN, &ctx);
+    if (ternary == PPF_TERNARY_ERROR &&
+        (ppf_context_flags(&ctx) & PPF_FLAG_ALLOC) != 0) {
+        /* out is unchanged for the covered failure path */
+    }
+    rc = ternary == PPF_TERNARY_ERROR;
 
-if (ternary == PPF_TERNARY_ERROR &&
-    (ppf_flags_test(PPF_FLAG_ALLOC) & PPF_FLAG_ALLOC) != 0) {
-    /* out is unchanged for the covered failure path */
+cleanup:
+    ppf_clear(&out);
+    ppf_clear(&y);
+    ppf_clear(&x);
+    ppf_context_clear(&ctx);
+    return rc;
 }
-
-ppf_clear(&out);
-ppf_clear(&y);
-ppf_clear(&x);
-ppf_context_clear(&ctx);
 ```

@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.23)
 
 project(PolyphaseFloat
-  VERSION 0.18.0
+  VERSION 0.20.0
   DESCRIPTION "Independent arbitrary-precision binary floating-point arithmetic"
   LANGUAGES C)
 
@@ -368,12 +368,30 @@ endif()
 
 find_package(Python3 COMPONENTS Interpreter QUIET)
 if(BUILD_TESTING AND Python3_Interpreter_FOUND)
+  set(PPF_INSTALL_PACKAGING_COMMAND
+    "${Python3_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/tests/test_install_packaging.py"
+    --root "${PROJECT_SOURCE_DIR}" --cmake "${CMAKE_COMMAND}"
+    --ctest "${CMAKE_CTEST_COMMAND}" --cc "${CMAKE_C_COMPILER}"
+    --gmp-include "${GMP_INCLUDE_DIR}" --gmp-library "${GMP_LIBRARY}")
+  if(PKG_CONFIG_EXECUTABLE)
+    list(APPEND PPF_INSTALL_PACKAGING_COMMAND
+      --pkg-config "${PKG_CONFIG_EXECUTABLE}")
+  endif()
+  if(PPF_INSTALLED_WITH_MPFR)
+    list(APPEND PPF_INSTALL_PACKAGING_COMMAND --with-mpfr
+      --mpfr-include "${MPFR_INCLUDE_DIR}" --mpfr-library "${MPFR_LIBRARY}")
+  endif()
+  add_test(NAME install_packaging COMMAND ${PPF_INSTALL_PACKAGING_COMMAND})
+  set_tests_properties(install_packaging PROPERTIES
+    LABELS "fast;packaging" TIMEOUT 900)
+
   add_test(NAME release_api_audit
-    COMMAND "${Python3_EXECUTABLE}"
-            "${PROJECT_SOURCE_DIR}/tools/tests/test_release_api_audit.py"
-            --cc "${CMAKE_C_COMPILER}")
-  set_tests_properties(release_api_audit PROPERTIES
-    LABELS "fast;hardening" TIMEOUT 180)
+    COMMAND "${Python3_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/tools/tests/test_release_api_audit.py" --cc "${CMAKE_C_COMPILER}")
+  set_tests_properties(release_api_audit PROPERTIES LABELS "fast;hardening;semantic" TIMEOUT 180)
+
+  add_test(NAME qualification_runner_policy
+    COMMAND "${Python3_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/tools/tests/test_qualification_runner.py")
+  set_tests_properties(qualification_runner_policy PROPERTIES LABELS "fast;hardening" TIMEOUT 180)
 
   add_test(NAME product_profile_generator
     COMMAND "${Python3_EXECUTABLE}"
@@ -431,7 +449,7 @@ if(BUILD_TESTING AND Python3_Interpreter_FOUND)
   add_test(NAME abi_contract_previous_release
     COMMAND "${Python3_EXECUTABLE}"
             "${PROJECT_SOURCE_DIR}/tools/abi_contract.py" compare
-            --baseline "${PROJECT_SOURCE_DIR}/abi/baselines/0.17.0-contract.json"
+            --baseline "${PROJECT_SOURCE_DIR}/abi/baselines/0.19.0-contract.json"
             --current "${PROJECT_SOURCE_DIR}/abi/contract-v1.json")
   set_tests_properties(abi_contract_previous_release PROPERTIES
     LABELS "fast;hardening" TIMEOUT 180)
@@ -486,7 +504,7 @@ if(Python3_Interpreter_FOUND)
             --baseline "${PROJECT_SOURCE_DIR}/abi/baselines/0.11.0-contract.json"
             --current "${PROJECT_SOURCE_DIR}/abi/contract-v1.json"
     COMMAND "${Python3_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/tools/abi_contract.py" compare
-            --baseline "${PROJECT_SOURCE_DIR}/abi/baselines/0.17.0-contract.json"
+            --baseline "${PROJECT_SOURCE_DIR}/abi/baselines/0.19.0-contract.json"
             --current "${PROJECT_SOURCE_DIR}/abi/contract-v1.json"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
     VERBATIM)
@@ -505,6 +523,22 @@ if(Python3_Interpreter_FOUND)
   endif()
 endif()
 
+# pkg-config metadata lives below the configured libdir, which may contain
+# several components (for example lib/x86_64-linux-gnu). Derive the prefix
+# instead of assuming that it is exactly two parent directories away.
+file(RELATIVE_PATH PPF_PC_PREFIX_RELATIVE
+  "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")
+if(IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
+  set(PPF_PC_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+else()
+  set(PPF_PC_LIBDIR "\${prefix}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+if(IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}")
+  set(PPF_PC_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+else()
+  set(PPF_PC_INCLUDEDIR "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+endif()
+
 if(PPF_INSTALLED_WITH_MPFR)
   configure_file(
     "${PROJECT_SOURCE_DIR}/polyphase-float-mpfr.pc.in"
@@ -520,14 +554,37 @@ configure_package_config_file(
 write_basic_package_version_file(
   "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersion.cmake"
   VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMinorVersion)
+  COMPATIBILITY SameMajorVersion)
+# ABI epoch 1 preserves the public 0.11.0 interface across compatible 0.x
+# releases. Older interfaces are outside the governed compatibility evidence.
+file(APPEND "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersion.cmake" [=[
 
-install(TARGETS ${PPF_INSTALL_TARGETS} ${PPF_ADAPTER_INSTALL_TARGETS}
+if(DEFINED PACKAGE_FIND_VERSION AND
+    PACKAGE_FIND_VERSION VERSION_LESS "0.11.0")
+  set(PACKAGE_VERSION_COMPATIBLE FALSE)
+  set(PACKAGE_VERSION_EXACT FALSE)
+endif()
+]=])
+
+install(TARGETS ${PPF_INSTALL_TARGETS}
   EXPORT PolyphaseFloatTargets
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+if(PPF_ADAPTER_INSTALL_TARGETS)
+  install(TARGETS ${PPF_ADAPTER_INSTALL_TARGETS}
+    EXPORT PolyphaseFloatMPFRTargets
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+  install(EXPORT PolyphaseFloatMPFRTargets
+    FILE PolyphaseFloatMPFRTargets.cmake
+    NAMESPACE PolyphaseFloat::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/PolyphaseFloat")
+endif()
 
 install(FILES include/polyphase_float.h
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
@@ -619,6 +676,26 @@ install(FILES
   docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md
   docs/COMPLETION_STATUS_0.18.0.md
   docs/PRODUCTION_CHANGESET_0.18.0.json
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/PolyphaseFloat")
+
+install(FILES
+  docs/COMPLETION_SCOPE_0.20.0.md
+  docs/ALLOCATION_COMPLETION_0.20.0.md
+  docs/BRANCH_REVIEW_0.20.0.md
+  docs/FPIF_RESOURCE_CONTRACT.md
+  docs/QUALIFICATION.md
+  docs/ABI_COMPATIBILITY_0.20.0.md
+  docs/PUBLIC_SEMANTIC_CONTRACT_0.20.0.md
+  docs/ALIASING_CONTRACT_0.20.0.md
+  docs/PRODUCTION_CHANGESET_0.20.0.json
+  docs/DEEP_AUDIT_0.19.0.md
+  docs/COMPLETION_SCOPE_0.19.0.md
+  docs/API_LIFECYCLE_AUDIT_0.19.0.md
+  docs/NUMERICAL_EDGE_AUDIT_2026-10-09.md
+  docs/ABI_COMPATIBILITY_0.19.0.md
+  docs/PUBLIC_SEMANTIC_CONTRACT_0.19.0.md
+  docs/ALIASING_CONTRACT_0.19.0.md
+  docs/PRODUCTION_CHANGESET_0.19.0.json
   DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/PolyphaseFloat")
 
 install(FILES

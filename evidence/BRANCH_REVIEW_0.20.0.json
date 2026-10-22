@@ -1,0 +1,63 @@
+{
+  "schema": "polyphase-float.branch-review/1",
+  "recorded_utc": "2026-10-22T13:35:53.736839+00:00",
+  "status": "PASS_FOR_REVIEWED_BRANCH_SCOPE",
+  "scope": "Source-level interval arguments and independently checked finite branch/boundary matrix. Not a whole-library formal correctness theorem.",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "mpfr_header_version": "#define MPFR_VERSION_STRING \"4.2.1\"",
+  "test_command": "gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -Iinclude -Isrc tests/test_release_boundaries.c ../build-gcc/libpolyphase_float_mpfr.a ../build-gcc/libpolyphase_float.a -lmpfr -lgmp -lm -lpthread -o ../test_release_boundaries_current; ../test_release_boundaries_current",
+  "result": {
+    "exit_code": 0,
+    "comparisons_and_contract_checks": 515,
+    "stdout_and_progress": "branch matrix precision 2 passed\nbranch matrix precision 17 passed\nbranch matrix precision 53 passed\nbranch matrix precision 113 passed\nrelease branch and boundary review passed: 515 comparisons/checks\n"
+  },
+  "regression": {
+    "defect": "Airy finite-domain admission rounded exact input through long double",
+    "repair": "Exact ppf_cmpabs_ui comparison with500",
+    "fixed_admission_exit_code": 0,
+    "original_source_negative_control": {
+      "expected": "reject original rounded-boundary guard",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FAIL tests/test_release_boundaries.c:72: state.calls == 1\n"
+    },
+    "allocator_bound": "Only the public transaction allocation is permitted after arming; attempted builder work is rejected before sustained numerical evaluation."
+  },
+  "source_sha256": {
+    "src/special_gamma.c": "fc6a3cc6c14a382a892c868038fdeac57e725b743b4afe4466a82863c0a6f5e5",
+    "src/special_misc.c": "24835c6eb311b286baf41aecf9fe8cece82216c42dea46da43859b154de33e16",
+    "src/special_bessel.c": "188bfacd0c7e1c30c5f1b5680d8a90bc20cd543ae292ba89d3712221901ec1b7",
+    "src/special_common.c": "604ffcf0e332bcbe48660c0e100f61be37519a6368359ccd0b0eaaadb55a5033",
+    "src/trig_hyperbolic.c": "85e0a63d96ea76ecebc0c45c746a412d078dfa9128901468b35e864d19f7ad59",
+    "src/result_transaction.c": "72a5ad1892e7b74bb6c63b7e239f62778a8103d7c2dc74ec9e7de20fe07faf2d",
+    "tests/test_release_boundaries.c": "90d625f20c3717ceeae9682df44a7922fef4ee33a3c3cf3261509de2b86b14c5",
+    "docs/BRANCH_REVIEW_0.20.0.md": "54bae80a603741ec43045d6cc62eed0ca04206816211a5a2e42fac670710561b"
+  },
+  "reviewed_branches": [
+    "Positive logarithmic Gamma/digamma Stirling enclosure",
+    "Negative Gamma/digamma reflection",
+    "Real dilogarithm transformed intervals and tails",
+    "Bessel J/Y series tails, signs and recurrence",
+    "Airy coefficients, geometric tails and exact admission",
+    "Production special-function retry exhaustion"
+  ],
+  "assumptions": [
+    "Existing interval primitives satisfy their documented directed containment contracts",
+    "GMP arithmetic and platform model as stated by release",
+    "MPFR used only as independent finite numerical oracle"
+  ],
+  "limitations": [
+    "No formal C semantics proof",
+    "No unrestricted finite-real completion of Airy or Bessel practical domains",
+    "No all-input or all-platform theorem",
+    "No new performance claim"
+  ],
+  "execution_history": [
+    {
+      "event": "initial strict rebuild",
+      "status": "FAILED_THEN_CORRECTED",
+      "reason": "One-line Airy guard insertion caused GCC misleading-indentation warning under-Werror",
+      "resolution": "Reformatted the full public ppf_ai function; strict rebuild and515-check matrix passed. Earlier command continued to a binary linked with prior archives and is excluded from current validation."
+    }
+  ]
+}

@@ -208,7 +208,9 @@ int ppf_nan_p(const ppf_t *x) { return x && x->kind == PPF_KIND_NAN; }
 int ppf_inf_p(const ppf_t *x) { return x && x->kind == PPF_KIND_INF; }
 int ppf_zero_p(const ppf_t *x) { return x && x->kind == PPF_KIND_ZERO; }
 int ppf_regular_p(const ppf_t *x) { return x && x->kind == PPF_KIND_REGULAR; }
-int ppf_number_p(const ppf_t *x) { return x && x->kind != PPF_KIND_NAN; }
+int ppf_number_p(const ppf_t *x) {
+    return x && (x->kind == PPF_KIND_REGULAR || x->kind == PPF_KIND_ZERO);
+}
 int ppf_signbit(const ppf_t *x) { return x && x->sign < 0; }
 
 int ppf_sgn(const ppf_t *x, ppf_context_t *ctx) {

@@ -70,6 +70,12 @@ int ppf_set_float128(ppf_t *rop, ppf_float128_t value,
     ppf_exp_t e2;
     mpz_t z;
     int t;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     raw.f = value;
     sign = (unsigned)(raw.u >> 127);
     exponent = (unsigned)((raw.u >> 112) & 0x7fffu);
@@ -197,6 +203,12 @@ int ppf_set_decimal64(ppf_t *rop, ppf_decimal64_t value,
                       ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_d64_union_t raw; uint64_t coeff; unsigned biased; long q; int sign;
     mpz_t z; int t;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     raw.d=value; sign=(raw.u>>63)?-1:1;
     if ((raw.u & UINT64_C(0x7c00000000000000)) == UINT64_C(0x7c00000000000000)) {
         ppf_set_nan(rop,sign);ppf_raise(ctx,PPF_FLAG_NAN);return 0;
@@ -220,6 +232,12 @@ int ppf_set_decimal128(ppf_t *rop, ppf_decimal128_t value,
                        ppf_rnd_t rnd, ppf_context_t *ctx) {
     ppf_d128_union_t raw; unsigned biased; long q; int sign;
     mpz_t z; uint64_t high;
+    ctx = ppf_resolve_context(ctx);
+    if (ctx && rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!rop || !ctx || !ppf_rounding_valid(rnd)) {
+        if (ctx) ppf_raise(ctx, PPF_FLAG_ERANGE);
+        return PPF_TERNARY_ERROR;
+    }
     raw.d=value; sign=(raw.u.hi>>63)?-1:1;
     if ((raw.u.hi & UINT64_C(0x7c00000000000000)) == UINT64_C(0x7c00000000000000)) {
         ppf_set_nan(rop,sign);ppf_raise(ctx,PPF_FLAG_NAN);return 0;
