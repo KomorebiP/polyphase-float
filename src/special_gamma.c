@@ -611,6 +611,11 @@ int ppf_gamma_inc(ppf_t *rop, const ppf_t *a, const ppf_t *x,
     }
     if (ppf_zero_p(x)) return ppf_gamma(rop, a, rnd, ctx);
     if (ppf_inf_p(x)) { ppf_set_zero(rop, 1); return 0; }
+    /* The negative-parameter recurrence needs ceil(-a) steps. Admit this
+       budget before any conversion of a compact huge-exponent input to an
+       integer; the special x=0 and x=+infinity cases above need no recurrence. */
+    if (a->sign < 0 && ppf_cmp_si(a, -100000L, ctx) < 0)
+        return sp_error(rop, ctx);
     return ppf_special_evaluate(rop, rnd, ctx, build_gamma_inc, &arg);
 }
 

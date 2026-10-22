@@ -249,7 +249,8 @@ if(PPF_BUILD_SHARED)
     OUTPUT_NAME polyphase_float
     EXPORT_NAME shared
     VERSION "${PROJECT_VERSION}"
-    SOVERSION "${PROJECT_VERSION_MAJOR}"
+    # ABI epoch 1 keeps this SONAME across compatible 0.x and 1.x releases.
+    SOVERSION "0"
     C_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN YES)
   if(PPF_ELF_SYMBOL_VERSIONING_ENABLED)
@@ -315,7 +316,7 @@ if(PPF_MPFR_ENABLED)
       OUTPUT_NAME polyphase_float_mpfr
       EXPORT_NAME mpfr_shared
       VERSION "${PROJECT_VERSION}"
-      SOVERSION "${PROJECT_VERSION_MAJOR}"
+      SOVERSION "0"
       C_VISIBILITY_PRESET hidden
       VISIBILITY_INLINES_HIDDEN YES)
     if(PPF_ELF_SYMBOL_VERSIONING_ENABLED)
@@ -384,6 +385,13 @@ if(BUILD_TESTING AND Python3_Interpreter_FOUND)
   add_test(NAME install_packaging COMMAND ${PPF_INSTALL_PACKAGING_COMMAND})
   set_tests_properties(install_packaging PROPERTIES
     LABELS "fast;packaging" TIMEOUT 900)
+
+  add_test(NAME package_version_policy
+    COMMAND "${Python3_EXECUTABLE}"
+      "${PROJECT_SOURCE_DIR}/tests/test_package_version.py"
+      --root "${PROJECT_SOURCE_DIR}" --cmake "${CMAKE_COMMAND}")
+  set_tests_properties(package_version_policy PROPERTIES
+    LABELS "fast;packaging" TIMEOUT 180)
 
   add_test(NAME release_api_audit
     COMMAND "${Python3_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/tools/tests/test_release_api_audit.py" --cc "${CMAKE_C_COMPILER}")
@@ -551,20 +559,8 @@ configure_package_config_file(
   "${PROJECT_BINARY_DIR}/PolyphaseFloatConfig.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/PolyphaseFloat")
 
-write_basic_package_version_file(
-  "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersion.cmake"
-  VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMajorVersion)
-# ABI epoch 1 preserves the public 0.11.0 interface across compatible 0.x
-# releases. Older interfaces are outside the governed compatibility evidence.
-file(APPEND "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersion.cmake" [=[
-
-if(DEFINED PACKAGE_FIND_VERSION AND
-    PACKAGE_FIND_VERSION VERSION_LESS "0.11.0")
-  set(PACKAGE_VERSION_COMPATIBLE FALSE)
-  set(PACKAGE_VERSION_EXACT FALSE)
-endif()
-]=])
+include(cmake/PolyphasePackageVersion.cmake)
+ppf_write_package_version_files("${PROJECT_BINARY_DIR}" "${PROJECT_VERSION}")
 
 install(TARGETS ${PPF_INSTALL_TARGETS}
   EXPORT PolyphaseFloatTargets
@@ -608,6 +604,7 @@ install(EXPORT PolyphaseFloatTargets
 install(FILES
   "${PROJECT_BINARY_DIR}/PolyphaseFloatConfig.cmake"
   "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersion.cmake"
+  "${PROJECT_BINARY_DIR}/PolyphaseFloatConfigVersionBase.cmake"
   cmake/FindGMP.cmake
   cmake/FindMPFR.cmake
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/PolyphaseFloat")
@@ -639,7 +636,8 @@ install(DIRECTORY docs examples
   DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/PolyphaseFloat"
   FILES_MATCHING
     PATTERN "*.md" PATTERN "*.txt" PATTERN "*.json" PATTERN "*.csv"
-    PATTERN "*.c" PATTERN "*.h")
+    PATTERN "*.c" PATTERN "*.h" PATTERN "*.pdf" PATTERN "*.html"
+    PATTERN "*.svg" PATTERN "*.css" PATTERN "*.tex" PATTERN "*.lua")
 install(DIRECTORY abi/
   DESTINATION "${CMAKE_INSTALL_DATADIR}/doc/PolyphaseFloat/abi"
   FILES_MATCHING PATTERN "*.json" PATTERN "*.txt" PATTERN "*.md")

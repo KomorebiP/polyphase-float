@@ -1,0 +1,75 @@
+{
+  "schema": "polyphase-float.manual-example-expectations/1",
+  "examples": [
+    {
+      "source": "examples/manual/intro_first.c",
+      "mpfr": false,
+      "stdout": "2 * 3 = 6.00000e0\n"
+    },
+    {
+      "source": "examples/manual/intro_flags.c",
+      "mpfr": false,
+      "stdout": "1 / 3: INEXACT is set\nexact assignment: INEXACT is still set\nafter clearing: no flags are set\n1 / 0: positive infinity; DIVBY0 is set\n0 / 0: NaN; NAN is set\n"
+    },
+    {
+      "source": "examples/manual/intro_precision.c",
+      "mpfr": false,
+      "stdout": "parsed at 8 bits     = 1.00097656250e-1\ncopied to 128 bits   = 1.00097656250e-1\nparsed at 128 bits   = 1.00000000000e-1\nchanging the default leaves existing precisions unchanged\n"
+    },
+    {
+      "source": "examples/manual/intro_rounding.c",
+      "mpfr": false,
+      "stdout": "down    = 3.32031250e-1 (below)\nnearest = 3.33984375e-1 (above)\nup      = 3.33984375e-1 (above)\n"
+    },
+    {
+      "source": "examples/manual/numeric_constants.c",
+      "mpfr": false,
+      "stdout": "Pi: direct evaluation and exported interval agree at 80 bits.\nThe interval proves the value and its rounding direction.\n"
+    },
+    {
+      "source": "examples/manual/numeric_elementary.c",
+      "mpfr": false,
+      "stdout": "log of the rounded 1 + 2^-80 is zero at 53 bits.\nlog1p(2^-80) and expm1(2^-80) remain positive.\nsinpi(1) is exactly zero; sin of rounded pi is not.\n"
+    },
+    {
+      "source": "examples/manual/numeric_import.c",
+      "mpfr": false,
+      "stdout": "Neither binary value is exactly 1/10.\nThe 256-bit decimal parse is closer to 1/10.\nWidening the native import preserves its old value.\n"
+    },
+    {
+      "source": "examples/manual/numeric_ranges.c",
+      "mpfr": false,
+      "stdout": "Nearest quotient: +infinity; overflow and inexact.\nToward-zero quotient: 384; inexact only.\nExact subnormal emulation: underflow without inexact.\n"
+    },
+    {
+      "source": "examples/manual/numeric_refinement.c",
+      "mpfr": false,
+      "stdout": "scale 8: refine\nscale 16: refine\nscale 32: refine\nscale 64: certified 53-bit sqrt(2), rounded upward\n"
+    },
+    {
+      "source": "examples/manual/numeric_special_domains.c",
+      "mpfr": false,
+      "stdout": "Gamma(5) = 24 exactly.\nlgamma(-1/2) returns a finite log magnitude and sign -1.\nlngamma(-1/2) reports a real-domain NaN.\nAi(501) exceeds the implementation domain: ERANGE, not ALLOC.\n"
+    },
+    {
+      "source": "examples/manual/systems_allocation.c",
+      "mpfr": false,
+      "stdout": "allocation failure preserved 37; retry produced 1.25\n"
+    },
+    {
+      "source": "examples/manual/systems_io.c",
+      "mpfr": false,
+      "stdout": "digits=12500 exponent=1\nvalue=1.25\nPPFIF round trip: value and precision preserved\n"
+    },
+    {
+      "source": "examples/manual/systems_mpfr_bridge.c",
+      "mpfr": true,
+      "stdout": "MPFR -> Polyphase -> MPFR: 10\n"
+    },
+    {
+      "source": "examples/manual/systems_threads.c",
+      "mpfr": false,
+      "stdout": "2 workers read one immutable input; both produced 49\n"
+    }
+  ]
+}

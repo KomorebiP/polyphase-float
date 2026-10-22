@@ -2,7 +2,7 @@
 
 Release: `0.20.0`  
 Contract version: `1`  
-Contract SHA-256: `d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae`
+Contract SHA-256: `98e38327513d49a562c99a1ad0b2bc8654b287b966e36f0ca6309c44b69aa6a0`
 
 ## Purpose and boundary
 
@@ -18,10 +18,10 @@ An entry without a currently recorded gap is not a universal correctness proof. 
 |---|---:|
 | Public core functions | **437** |
 | Functions with a direct test reference | **437** |
-| Functions with a pre-existing documentation reference | **158** |
+| Functions with a pre-existing documentation reference | **437** |
 | Conditional functions | **6** |
-| Entries without a currently recorded gap | **326** |
-| Entries with one or more explicit gaps | **111** |
+| Entries without a currently recorded gap | **316** |
+| Entries with one or more explicit gaps | **121** |
 
 ## Explicit gap counts
 
@@ -29,14 +29,14 @@ A function may appear in more than one row below.
 
 | Gap | Functions | Meaning |
 |---|---:|---|
-| `bounded_implementation_path` | 105 | The current source contains a real domain, attempt, iteration, or reduction bound. |
+| `bounded_implementation_path` | 115 | The current source contains a real domain, attempt, iteration, or reduction bound. |
 | `conditional_build_surface` | 6 | The declaration depends on a compiler or build capability and must be validated in both enabled and disabled configurations. |
 
 ## Classification rules
 
 ### Return values
 
-`ternary` records the floating-point relation to the exact result and uses `PPF_TERNARY_ERROR` for an unrecovered failure. `status` records an ordinary success or failure code. Predicates, comparisons, counts, borrowed pointers, and caller-owned pointers are classified separately.
+`ternary` records the floating-point relation to the exact result and uses `PPF_TERNARY_ERROR` for an unrecovered failure. `packed_ternary` records two component ternaries as code(first) + 4 * code(second), with component codes 0 for exact, 1 for above, and 2 for below; test for `PPF_TERNARY_ERROR` before decoding. `status` records an ordinary success or failure code, whose exact convention is stated in the entry when it differs from the general family rule. Predicates, comparisons, counts, borrowed pointers, and caller-owned pointers are classified separately.
 
 ### Rounding
 

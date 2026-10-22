@@ -74,11 +74,25 @@ def main() -> int:
             "README.md", "README_FIRST.txt", "docs/BUILDING.md",
             "docs/TESTING.md", "docs/ABI_POLICY.md",
             "docs/COMPLETION_SCOPE_0.20.0.md", "examples/basic.c",
+            "docs/STABILITY_POLICY.md", "docs/FUZZING_POLICY.md",
+            "docs/NUMERICAL_LIMITS.md", "docs/manual/README.md",
+            "docs/manual/Polyphase_Float_Manual.pdf",
+            "docs/manual/Polyphase_Float_Manual.html",
             "abi/contract-v1.json", "semantics/contract-v1.json",
         ):
             installed = documentation / relative
             if not installed.is_file() or installed.read_bytes() != (root / relative).read_bytes():
                 raise RuntimeError(f"installed documentation missing or changed: {relative}")
+
+        # The manual's local links depend on its chapters, figures, and reader
+        # resources keeping their source-relative locations after relocation.
+        for source in (root / "docs/manual").rglob("*"):
+            if not source.is_file():
+                continue
+            relative = source.relative_to(root)
+            installed = documentation / relative
+            if not installed.is_file() or installed.read_bytes() != source.read_bytes():
+                raise RuntimeError(f"installed manual resource missing or changed: {relative}")
 
         def consume(name: str, *, components: str = "",
                     disable_mpfr: bool = False,

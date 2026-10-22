@@ -7,6 +7,9 @@ MPFR; the adapter and differential tests use MPFR optionally.
 
 The [release scope](COMPLETION_SCOPE_0.20.0.md) is the current reference for
 supported inputs, allocation behavior, resource limits, and review boundaries.
+The [reader's manual](manual/README.md) provides the learning path and complete
+user reference; the [1.0 readiness record](ONE_POINT_ZERO_READINESS.md) separates
+completed preparation from open promotion requirements.
 The [semantic contract](PUBLIC_SEMANTIC_CONTRACT_0.20.0.md) indexes the 437 core
 functions, while the [allocation reference](ALLOCATION_COMPLETION_0.20.0.md)
 records the completed classifications and targeted lifecycle tests.

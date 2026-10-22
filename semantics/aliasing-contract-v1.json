@@ -1,5 +1,5 @@
 {
-  "contract_sha256": "d909e0c44f392b5e1353e22cd7c2f33fb609c843e6ebcbe0fb1142c7dbf35cc9",
+  "contract_sha256": "94e200c9be795145019434f1de3c3e3cdb8301df0d6a54f9a7c881be90d1d478",
   "contract_version": 1,
   "functions": [
     {
@@ -9748,7 +9748,7 @@
   "release_version": "0.20.0",
   "schema_version": 1,
   "scope": "overlap and lifecycle rules for the public core C API",
-  "semantic_contract_sha256": "d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae",
+  "semantic_contract_sha256": "98e38327513d49a562c99a1ad0b2bc8654b287b966e36f0ca6309c44b69aa6a0",
   "summary": {
     "classification_counts": {
       "direct_storage": 11,

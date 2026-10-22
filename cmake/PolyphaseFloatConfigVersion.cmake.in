@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+include("${CMAKE_CURRENT_LIST_DIR}/PolyphaseFloatConfigVersionBase.cmake")
+
+# A separate include is intentional: the generated architecture check may
+# return early when the consumer has not enabled a compiled language.  That
+# must not skip the minimum governed interface check below.
+if((DEFINED PACKAGE_FIND_VERSION AND NOT PACKAGE_FIND_VERSION STREQUAL "" AND
+    PACKAGE_FIND_VERSION VERSION_LESS "0.11.0") OR
+    PACKAGE_VERSION_UNSUITABLE)
+  set(PACKAGE_VERSION_COMPATIBLE FALSE)
+  set(PACKAGE_VERSION_EXACT FALSE)
+endif()

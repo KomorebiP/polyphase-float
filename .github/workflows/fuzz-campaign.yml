@@ -1,0 +1,130 @@
+# SPDX-FileCopyrightText: 2026 Komorebi P. and Polyphase Float contributors
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+name: Sustained fuzz campaign
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "47 2 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fuzz-campaign-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install dependencies
+        id: dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake libgmp-dev python3
+      - name: Record distinct campaign seeds
+        id: seeds
+        shell: bash
+        run: |
+          text_seed=$((GITHUB_RUN_ID % 2147483646 + 1))
+          fpif_seed=$((text_seed + 1))
+          echo "PPF_TEXT_SEED=$text_seed" >> "$GITHUB_ENV"
+          echo "PPF_FPIF_SEED=$fpif_seed" >> "$GITHUB_ENV"
+      - name: Run two one-hour campaigns
+        id: campaign
+        run: >-
+          python3 tools/qualify_release.py
+          --source "$GITHUB_WORKSPACE"
+          --output "$RUNNER_TEMP/polyphase-fuzz"
+          --only fuzz --jobs 2
+          --fuzz-seconds 3600 --fuzz-case-timeout 30 --fuzz-max-len 8192
+          --text-seed "$PPF_TEXT_SEED" --fpif-seed "$PPF_FPIF_SEED"
+          --detect-leaks 1
+      - name: Require completed fuzz scope
+        id: completed
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipts = list((Path(os.environ['RUNNER_TEMP']) / 'polyphase-fuzz').glob('*/qualification.json'))
+          assert len(receipts) == 1, 'expected one campaign receipt'
+          receipt = json.loads(receipts[0].read_text())
+          assert receipt['scopes']['fuzz']['status'] == 'PASS', 'fuzz scope did not complete'
+          assert receipt['source_unchanged'], 'campaign modified source'
+          PY
+      - name: Fingerprint retained evidence and dependency packages
+        if: always()
+        env:
+          PPF_DEPENDENCIES_OUTCOME: ${{ steps.dependencies.outcome }}
+          PPF_SEEDS_OUTCOME: ${{ steps.seeds.outcome }}
+          PPF_CAMPAIGN_OUTCOME: ${{ steps.campaign.outcome }}
+          PPF_COMPLETED_OUTCOME: ${{ steps.completed.outcome }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'polyphase-fuzz'
+          root.mkdir(parents=True, exist_ok=True)
+          receipt = {'source_commit': os.environ['GITHUB_SHA'],
+                     'run_id': os.environ['GITHUB_RUN_ID'],
+                     'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'seeds': {name: os.environ.get('PPF_' + name.upper() + '_SEED')
+                               for name in ('text', 'fpif')},
+                     'step_outcomes': {name: os.environ.get('PPF_' + name.upper() + '_OUTCOME', 'unknown')
+                                       for name in ('dependencies', 'seeds', 'campaign', 'completed')}}
+          qualifications = list(root.glob('*/qualification.json'))
+          if len(qualifications) == 1:
+              try:
+                  result = json.loads(qualifications[0].read_text())
+                  receipt['qualification'] = str(qualifications[0].relative_to(root))
+                  receipt['status'] = result['scopes']['fuzz']['status']
+                  if result['status'] == 'FAIL' or not result['source_unchanged']:
+                      receipt['status'] = 'FAIL'
+              except (KeyError, ValueError) as error:
+                  receipt.update(status='UNVERIFIED', reason='Unreadable or incomplete qualification receipt: ' + str(error))
+          elif not qualifications:
+              skipped = receipt['step_outcomes']['campaign'] == 'skipped'
+              receipt.update(status='NOT_RUN' if skipped else 'UNVERIFIED',
+                             reason='Campaign step was skipped before runner invocation.' if skipped else
+                                    'Campaign step ran, but no qualification receipt survived; execution is not established.')
+          else:
+              receipt.update(status='UNVERIFIED', reason='More than one qualification receipt found.')
+          try:
+              packages = subprocess.run(['dpkg-query', '-W', 'clang', 'cmake', 'libgmp-dev', 'python3'],
+                                        text=True, capture_output=True, check=False)
+              receipt['dependency_query_exit_code'] = packages.returncode
+              (root / 'dependencies.txt').write_text(packages.stdout + packages.stderr)
+          except OSError as error:
+              receipt['dependency_query_error'] = str(error)
+              (root / 'dependencies.txt').write_text(str(error) + '\n')
+          (root / 'workflow_receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+          selected = [root / 'dependencies.txt', root / 'workflow_receipt.json']
+          for run in sorted(root.glob('qualification_*')):
+              selected += [p for p in run.rglob('*') if p.is_file() and
+                           (p.name in {'qualification.json', 'source_snapshot.json'} or
+                            p.relative_to(run).parts[0] in {'logs', 'corpus', 'artifacts'})]
+          manifest = {str(p.relative_to(root)): {'bytes': p.stat().st_size,
+                      'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
+                      for p in sorted(selected) if p.is_file()}
+          (root / 'evidence_manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+          PY
+      - name: Preserve campaign evidence and reproducers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 90
+          path: |
+            ${{ runner.temp }}/polyphase-fuzz/dependencies.txt
+            ${{ runner.temp }}/polyphase-fuzz/evidence_manifest.json
+            ${{ runner.temp }}/polyphase-fuzz/workflow_receipt.json
+            ${{ runner.temp }}/polyphase-fuzz/**/qualification.json
+            ${{ runner.temp }}/polyphase-fuzz/**/source_snapshot.json
+            ${{ runner.temp }}/polyphase-fuzz/**/logs/**
+            ${{ runner.temp }}/polyphase-fuzz/**/corpus/**
+            ${{ runner.temp }}/polyphase-fuzz/**/artifacts/**

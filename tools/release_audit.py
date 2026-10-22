@@ -34,6 +34,7 @@ REVIEWED_CHANGED_SOURCE_FILES = (
     "special_bessel.c",
     "special_common.c",
     "special_gamma.c",
+    "special_misc.c",
     "transcendental.c",
 )
 REQUIRED_FILES = (
@@ -1189,11 +1190,11 @@ def audit_semantic_contract(root: Path, failures: list[str]) -> tuple[int, int, 
     if summary.get("conditional_functions") != 6:
         fail("semantic contract conditional-function count is not six", failures)
     if summary.get("explicit_gap_counts") != {
-        "bounded_implementation_path": 105,
+        "bounded_implementation_path": 115,
         "conditional_build_surface": 6,
     }:
         fail(f"semantic contract gap counts differ from the reviewed {CURRENT_RELEASE} ledger", failures)
-    if gap_entries != 111 or alias_summary.get("unverified_aliasing_functions") != 0:
+    if gap_entries != 121 or alias_summary.get("unverified_aliasing_functions") != 0:
         fail(f"semantic or aliasing gap summary differs from the reviewed {CURRENT_RELEASE} ledger", failures)
     if summary.get("atomicity_classes", {}).get("verified_transactional") != 192:
         fail(f"semantic contract transactional-function count differs from the reviewed {CURRENT_RELEASE} ledger", failures)

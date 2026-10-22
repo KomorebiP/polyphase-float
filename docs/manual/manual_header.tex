@@ -1,0 +1,40 @@
+\usepackage{fvextra}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\definecolor{ManualTeal}{HTML}{234B5A}
+\definecolor{ManualGray}{HTML}{667078}
+\fvset{breaklines=true,breakanywhere=true,fontsize=\footnotesize}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
+\setcounter{tocdepth}{0}
+\setcounter{secnumdepth}{1}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{ManualGray}POLYPHASE FLOAT}
+\fancyhead[R]{\small\sffamily\color{ManualGray}USER GUIDE AND REFERENCE}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+\makeatletter
+\renewcommand{\maketitle}{%
+\begin{titlepage}
+\vspace*{0.7in}
+{\sffamily\color{ManualTeal}\fontsize{13}{18}\selectfont NUMERICAL COMPUTING IN C\par}
+\vspace{0.45in}
+{\fontsize{38}{45}\selectfont Polyphase Float\par}
+\vspace{0.2in}
+{\sffamily\fontsize{20}{26}\selectfont User Guide\par and Reference\par}
+\vspace{0.55in}
+{\large Arbitrary precision. Explicit rounding.\par Checked numerical workflows.\par}
+\vfill
+{\large Komorebi P.\par}
+\vspace{0.2in}
+{\sffamily\small A practical reader's manual with worked C programs\par and a complete core function reference.\par}
+\vspace{0.45in}
+\end{titlepage}}
+\makeatother

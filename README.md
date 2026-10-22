@@ -10,11 +10,20 @@ arithmetic, built on GMP. It provides arithmetic, roots, elementary and selected
 special functions, constants, conversion, formatting, and binary interchange
 through the `ppf_*` API. Precision and rounding are controlled explicitly.
 
-**Version 0.20.0** supports Linux x86-64 ELF with the LP64 data model and
+**Version 0.20.0 (unreleased candidate)** targets Linux x86-64 ELF with the LP64 data model and
 64-bit GMP limbs. It retains ABI epoch 1 and `libpolyphase_float.so.0`. The production core
 requires GMP and POSIX threads. OpenMP is optional; MPFR is used only by the
 optional interoperability adapter, differential tests, and matched benchmarks.
-This is a pre-1.0 release with a documented numerical and resource contract.
+The numerical and resource contract is documented. The remaining stable-release
+requirements are tracked in [1.0 readiness](docs/ONE_POINT_ZERO_READINESS.md).
+
+## Reader's manual
+
+The [User Guide and Reference](docs/manual/README.md) provides a continuous
+learning path, complete checked C programs, numerical limits, troubleshooting,
+and every core API declaration. PDF and offline HTML editions are included
+with the manual. Start there for a guided introduction, or use the commands
+below for a quick build.
 
 ## Build and run
 

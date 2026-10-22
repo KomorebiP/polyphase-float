@@ -25,10 +25,22 @@ The production core requires GMP and POSIX threads; MPFR remains optional.
 - Settle proven exponential and Gamma range cases before expensive construction.
   Compute integer base-2 exponentials directly and bound other exact-power
   shortcuts and exponential-minus-one subtraction work.
+- Reject excessive negative-parameter incomplete-Gamma recurrence before
+  materializing a large integer. Recognize negative-integer zeta parity from
+  compact storage and admit the small odd shortcut before expansion.
 - Complete the indexed allocation-contract classification and add targeted
   numerical, input-boundary, and allocation-failure regressions.
 - Provide a checked introductory example, clear ownership and error-handling
   guidance, and installed documentation with working relative paths.
+- Supply a continuous reader's manual with fourteen complete checked programs,
+  all core function declarations, type and symbol references, numerical limits,
+  and troubleshooting. Correct reference classifications for packed results,
+  status returns, predicates, rounding setters, and allocation-output rules.
+- Separate ABI SONAMEs from the project major version. Test the governed CMake
+  version floor, exact/range selection, and future compatible 1.x consumers;
+  preserve the existing `.so.0` libraries.
+- Record the numerical argument and limit inventory, the compatible-series
+  support decision, permanent fuzz-corpus policy, and the remaining 1.0 gates.
 - Retain deterministic source archives and an offline qualification runner for
   compiler, installed-consumer, sanitizer, and seeded fuzz checks.
 

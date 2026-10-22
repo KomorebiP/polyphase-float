@@ -38,3 +38,42 @@ if(PPF_ADAPTER_TEST_TARGET)
     MPFR::MPFR)
   ppf_apply_project_warnings(example_mpfr_bridge)
 endif()
+
+# Complete, self-checking programs used by the user manual. Keep this list
+# explicit so a new example receives a review and a recorded output contract.
+set(PPF_MANUAL_CORE_EXAMPLES
+  intro_first
+  intro_flags
+  intro_precision
+  intro_rounding
+  numeric_constants
+  numeric_elementary
+  numeric_import
+  numeric_ranges
+  numeric_refinement
+  numeric_special_domains
+  systems_allocation
+  systems_io
+  systems_threads)
+foreach(name IN LISTS PPF_MANUAL_CORE_EXAMPLES)
+  ppf_add_example(manual_${name} manual/${name}.c)
+  target_link_libraries(example_manual_${name} PRIVATE Threads::Threads)
+  if(BUILD_TESTING)
+    add_test(NAME manual_${name} COMMAND example_manual_${name})
+    set_tests_properties(manual_${name} PROPERTIES LABELS manual TIMEOUT 60)
+  endif()
+endforeach()
+
+if(PPF_ADAPTER_TEST_TARGET AND MPFR_HAS_HEADER)
+  add_executable(example_manual_systems_mpfr_bridge
+    "${PROJECT_SOURCE_DIR}/examples/manual/systems_mpfr_bridge.c")
+  target_compile_features(example_manual_systems_mpfr_bridge PRIVATE c_std_11)
+  set_target_properties(example_manual_systems_mpfr_bridge PROPERTIES C_EXTENSIONS OFF)
+  target_link_libraries(example_manual_systems_mpfr_bridge PRIVATE
+    ${PPF_ADAPTER_TEST_TARGET} ${PPF_CORE_TEST_TARGET} MPFR::MPFR)
+  ppf_apply_project_warnings(example_manual_systems_mpfr_bridge)
+  if(BUILD_TESTING)
+    add_test(NAME manual_systems_mpfr_bridge COMMAND example_manual_systems_mpfr_bridge)
+    set_tests_properties(manual_systems_mpfr_bridge PROPERTIES LABELS manual TIMEOUT 60)
+  endif()
+endif()

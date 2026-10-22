@@ -42,6 +42,7 @@ explicit contract domains rather than concealed allocation guarantees.
 | Ordinary periodic trig reduction | More than 1,000,000 extra reduction bits may be rejected. Exact scaled-grid paths are separate. |
 | Finite Airy Ai | Absolute input at most 500, checked by exact arbitrary-precision comparison. |
 | Integer Bessel order | Finite order magnitude at most 100,000 on the general path. |
+| Negative-parameter incomplete Gamma | The finite positive-second-argument recurrence requires the first argument to be at least -100,000, checked before integer materialization; special-value routes remain separate. |
 | PPFIF import | At most 64 MiB each of payload and limb-rounded significand storage by default, including special-value records. |
 | Dyadic interval certificates | General transcendental and special-function evaluators limit endpoint alignment to 1,000,000 extra bits by default; an unusable certificate causes retry or numerical rejection. |
 | Certification attempts | General transcendental, special and adaptive random paths use 12 attempts; trig and constant paths use 16. Internal construction and iteration limits are stated in their individual source contracts. |
@@ -67,9 +68,13 @@ operation's contract rather than treating every error as allocation rollback.
 See [PPFIF resource limits](FPIF_RESOURCE_CONTRACT.md) for ownership, admission,
 and destination-preservation behavior on import rejection.
 
-The semantic ledger retains 105 bounded implementation paths and six
+The semantic ledger records 115 bounded implementation paths and six
 compiler-conditional interfaces. A complete symbol inventory does not imply
 unbounded numerical domains or identical optional formats on every compiler.
+The [numerical-limit inventory](NUMERICAL_LIMITS.md) also distinguishes the
+root, square-root, interval, text, and fast-path budgets and records missing
+cap-exhaustion evidence. The [argument map](NUMERICAL_ARGUMENTS.md) identifies
+the mathematical dependencies and remaining review obligations.
 
 ## Proof and execution evidence
 

@@ -10,6 +10,27 @@
 #undef main
 #include "special_internal.h"
 
+/* Install before any GMP use. The cap is enabled only during the compact-
+   input resource checks; an oversized request fails the test before malloc. */
+static size_t gmp_request_cap = SIZE_MAX;
+static void *bounded_gmp_malloc(size_t size) {
+    CHECK(size <= gmp_request_cap);
+    void *result = malloc(size);
+    CHECK(result != NULL);
+    return result;
+}
+static void *bounded_gmp_realloc(void *ptr, size_t old_size, size_t size) {
+    (void)old_size;
+    CHECK(size <= gmp_request_cap);
+    void *result = realloc(ptr, size);
+    CHECK(result != NULL);
+    return result;
+}
+static void bounded_gmp_free(void *ptr, size_t size) {
+    (void)size;
+    free(ptr);
+}
+
 static int ppf_j2(ppf_t *r, const ppf_t *x, ppf_rnd_t rnd, ppf_context_t *ctx) {
     return ppf_jn(r, 2, x, rnd, ctx);
 }
@@ -218,7 +239,74 @@ static void scaled_exponential_resources(void) {
     ppf_clear(&x); ppf_clear(&result); ppf_context_clear(&ctx);
 }
 
+static void compact_integer_resources(void) {
+    ppf_context_t ctx;
+    ppf_t a, x, result;
+    CHECK(ppf_context_init(&ctx) == 0);
+    ctx.emin = PPF_EMIN_MIN; ctx.emax = PPF_EMAX_MAX;
+    CHECK(ppf_init2_ctx(&a, 128, &ctx) == 0);
+    CHECK(ppf_init2_ctx(&x, 128, &ctx) == 0);
+    CHECK(ppf_init2_ctx(&result, 53, &ctx) == 0);
+    CHECK(ppf_set_si_2exp(&a, -1, ((ppf_exp_t)1) << 40, PPF_RNDN, &ctx) == 0);
+    CHECK(ppf_set_ui(&x, 1, PPF_RNDN, &ctx) == 0);
+    gmp_request_cap = 4u * 1024u * 1024u;
+    for (unsigned mode = 0; mode < 5; ++mode) {
+        ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+        CHECK(ppf_zeta(&result, &a, pr[mode], &ctx) == 0);
+        CHECK(ppf_zero_p(&result) && result.sign == 1 && ctx.flags == 0);
+        ++cases;
+        ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+        CHECK(ppf_gamma_inc(&result, &a, &x, pr[mode], &ctx) == PPF_TERNARY_ERROR);
+        CHECK(ppf_nan_p(&result) && ctx.flags == PPF_FLAG_ERANGE);
+        ++cases;
+    }
+    ppf_set_inf(&x, 1);
+    ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+    CHECK(ppf_gamma_inc(&result, &a, &x, PPF_RNDN, &ctx) == 0);
+    CHECK(ppf_zero_p(&result) && result.sign == 1 && ctx.flags == 0);
+    ++cases;
+    gmp_request_cap = SIZE_MAX;
+    ppf_clear(&a); ppf_clear(&x); ppf_clear(&result); ppf_context_clear(&ctx);
+    const char *integers[] = {"-1", "-2", "-3", "-4", "-5", "-0x1p40"};
+    for (unsigned i = 0; i < sizeof(integers)/sizeof(integers[0]); ++i)
+        unary_case("zeta-compact-parity", ppf_zeta, mpfr_zeta, integers[i], 53, 0);
+
+    admission_allocator_t state = {0};
+    ppf_allocator_t allocator = {admission_malloc, admission_realloc, admission_free, &state};
+    CHECK(ppf_context_init_custom(&ctx, &allocator) == 0);
+    CHECK(ppf_init2_ctx(&a, 128, &ctx) == 0);
+    CHECK(ppf_init2_ctx(&x, 128, &ctx) == 0);
+    CHECK(ppf_init2_ctx(&result, 53, &ctx) == 0);
+    CHECK(ppf_set_ui(&x, 1, PPF_RNDN, &ctx) == 0);
+    for (unsigned mode = 0; mode < 5; ++mode)
+        for (long parameter = -100000; parameter >= -100001; --parameter) {
+            CHECK(ppf_set_si(&a, parameter, PPF_RNDN, &ctx) == 0);
+            CHECK(ppf_set_ui(&result, 17, PPF_RNDN, &ctx) == 0);
+            ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+            state.calls = 0; state.armed = 1;
+            CHECK(ppf_gamma_inc(&result, &a, &x, pr[mode], &ctx) == PPF_TERNARY_ERROR);
+            state.armed = 0;
+            if (parameter == -100000) {
+                CHECK(state.calls > 1 && (ctx.flags & PPF_FLAG_ALLOC));
+                CHECK(ppf_cmp_ui(&result, 17, &ctx) == 0);
+            } else {
+                CHECK(state.calls == 1 && ctx.flags == PPF_FLAG_ERANGE);
+                CHECK(ppf_nan_p(&result));
+            }
+            ++cases;
+        }
+    ppf_clear(&a); ppf_clear(&x); ppf_clear(&result); ppf_context_clear(&ctx);
+    CHECK(state.live == 0);
+}
+
 int main(int argc, char **argv) {
+    mp_set_memory_functions(bounded_gmp_malloc, bounded_gmp_realloc, bounded_gmp_free);
+    if (argc == 2 && strcmp(argv[1], "compact") == 0) {
+        compact_integer_resources();
+        ppf_free_constant_caches(); mpfr_mp_memory_cleanup();
+        printf("compact integer resource checks passed: %lu comparisons/checks\n", cases);
+        return 0;
+    }
     if (argc == 2 && strcmp(argv[1], "scaled") == 0) {
         scaled_exponential_resources();
         ppf_free_constant_caches(); mpfr_mp_memory_cleanup();
@@ -239,6 +327,7 @@ int main(int argc, char **argv) {
     airy_exact_admission();
     extreme_exponential_gamma();
     scaled_exponential_resources();
+    compact_integer_resources();
     const unsigned precisions[] = {2, 17, 53, 113};
     const char *reflection[] = {"-0.0009765625", "-0.9990234375",
         "-1.0009765625", "-7.9990234375", "-8.0009765625"};

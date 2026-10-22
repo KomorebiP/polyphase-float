@@ -6,6 +6,12 @@ The project is pre-1.0. Security fixes are applied to the current development
 branch and the most recent tagged release candidate. Older snapshots are not
 maintained unless explicitly stated.
 
+When a 1.x release is published, fixes will be supplied through the latest
+compatible 1.x release as maintainer resources permit. There is no guaranteed
+calendar maintenance window or response-time agreement; any planned end of
+maintenance will be announced explicitly. See the
+[stability and maintenance policy](docs/STABILITY_POLICY.md).
+
 ## Reporting a vulnerability
 
 Do not disclose a suspected vulnerability in a public issue before maintainers

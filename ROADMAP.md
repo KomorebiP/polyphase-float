@@ -22,7 +22,7 @@ behavior and [History](docs/HISTORY_INDEX.md) for earlier development reports.
 The following remain promotion requirements rather than claims made by the
 0.20.0 version number:
 
-- [ ] Make the final SONAME, package-version compatibility, and support-window decision while preserving or explicitly migrating the epoch-1 commitment.
+- [x] Make the SONAME, package-version compatibility, and support-window decision while preserving the epoch-1 commitment. The [stability policy](docs/STABILITY_POLICY.md) retains both `.so.0` names and defines compatible 1.x package selection and support.
 - [ ] Establish sustained fuzzing and permanent regression-corpus governance.
 - [ ] Document or prove every fixed iteration and argument-domain limit, with boundary evidence.
 - [ ] Connect each certified numerical path to its written enclosure or remainder argument.
@@ -33,6 +33,12 @@ Local compiler and sanitizer runs contribute evidence but do not replace
 independent review or external reproduction. A 1.0 release must also have a
 frozen public contract, published limits, and successful qualification for its
 declared platforms.
+
+The [1.0 readiness record](docs/ONE_POINT_ZERO_READINESS.md) separates completed
+manual, package, admission, and corpus-governance work from the remaining
+mathematical, boundary, sustained-execution, and independent reproduction
+requirements. The [limits inventory](docs/NUMERICAL_LIMITS.md) and
+[numerical arguments](docs/NUMERICAL_ARGUMENTS.md) state the concrete gaps.
 
 ## Platform and safety expansion
 

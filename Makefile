@@ -96,11 +96,16 @@ CORE_STATIC := lib/libpolyphase_float.a
 ADAPTER_SHARED := lib/libpolyphase_float_mpfr.so
 ADAPTER_STATIC := lib/libpolyphase_float_mpfr.a
 
-.PHONY: all core clean test sanitize tsan benchmark package abi-check semantic-check aliasing-check
+.PHONY: all core clean test sanitize tsan benchmark package abi-check semantic-check aliasing-check package-version-check
 .NOTPARALLEL: sanitize tsan
 all: $(CORE_SHARED) $(CORE_STATIC) $(ADAPTER_SHARED) $(ADAPTER_STATIC)
 
 core: $(CORE_SHARED) $(CORE_STATIC)
+
+# Optional CMake package-metadata qualification; ordinary Make builds do not
+# require CMake.  This is also registered as the CTest package_version_policy.
+package-version-check:
+	python3 tests/test_package_version.py --root .
 
 build lib bin build/generated:
 	mkdir -p $@
@@ -563,9 +568,13 @@ install: all polyphase-float.pc
 	ln -sf libpolyphase_float_mpfr.so.$(SOVERSION) $(DESTDIR)$(LIBDIR)/libpolyphase_float_mpfr.so
 	install -m 0644 $(CORE_STATIC) $(ADAPTER_STATIC) $(DESTDIR)$(LIBDIR)/
 	install -m 0644 polyphase-float.pc $(DESTDIR)$(PKGCONFIGDIR)/
-	install -m 0644 README.md LICENSE.md LICENSE COPYING AUTHORS.md THIRD_PARTY_NOTICES.md ROADMAP.md docs/ABI_POLICY.md docs/ABI_STABILITY_VALIDATION_0.12.0.md docs/ABI_STABILITY_RELEASE_REPORT_0.12.0.md docs/ABI_COMPATIBILITY_0.14.0.md docs/ABI_COMPATIBILITY_0.15.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.15.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.15.0.md docs/ALIASING_CONTRACT_0.15.0.md docs/ALIASING_CONTRACT_VALIDATION_0.15.0.md docs/IO_ALLOCATION_CONTRACT_0.15.0.md docs/IO_ALLOCATION_HARDENING_VALIDATION_0.15.0.md docs/COMPLETION_STATUS_0.15.0.md docs/PRODUCTION_CHANGESET_0.15.0.json docs/ABI_COMPATIBILITY_0.16.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.16.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.16.0.md docs/ALIASING_CONTRACT_0.16.0.md docs/ALIASING_CONTRACT_VALIDATION_0.16.0.md docs/CONSTANT_ALLOCATION_CONTRACT_0.16.0.md docs/CONSTANT_ALLOCATION_HARDENING_VALIDATION_0.16.0.md docs/COMPLETION_STATUS_0.16.0.md docs/PRODUCTION_CHANGESET_0.16.0.json docs/ABI_COMPATIBILITY_0.17.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.17.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.17.0.md docs/ALIASING_CONTRACT_0.17.0.md docs/ALIASING_CONTRACT_VALIDATION_0.17.0.md docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_CONTRACT_0.17.0.md docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_HARDENING_VALIDATION_0.17.0.md docs/COMPLETION_STATUS_0.17.0.md docs/PRODUCTION_CHANGESET_0.17.0.json docs/ABI_COMPATIBILITY_0.18.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.18.0.md docs/SEMANTIC_CONTRACT_VALIDATION_0.18.0.md docs/ALIASING_CONTRACT_0.18.0.md docs/ALIASING_CONTRACT_VALIDATION_0.18.0.md docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_CONTRACT_0.18.0.md docs/ARITHMETIC_FUSED_ROOT_ALLOCATION_HARDENING_VALIDATION_0.18.0.md docs/COMPLETION_STATUS_0.18.0.md docs/PRODUCTION_CHANGESET_0.18.0.json $(DESTDIR)$(DOCDIR)/
-	install -m 0644 docs/COMPLETION_SCOPE_0.20.0.md docs/ALLOCATION_COMPLETION_0.20.0.md docs/BRANCH_REVIEW_0.20.0.md docs/FPIF_RESOURCE_CONTRACT.md docs/QUALIFICATION.md docs/ABI_COMPATIBILITY_0.20.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.20.0.md docs/ALIASING_CONTRACT_0.20.0.md docs/PRODUCTION_CHANGESET_0.20.0.json $(DESTDIR)$(DOCDIR)/
-	install -m 0644 docs/DEEP_AUDIT_0.19.0.md docs/COMPLETION_SCOPE_0.19.0.md docs/API_LIFECYCLE_AUDIT_0.19.0.md docs/NUMERICAL_EDGE_AUDIT_2026-10-09.md docs/ABI_COMPATIBILITY_0.19.0.md docs/PUBLIC_SEMANTIC_CONTRACT_0.19.0.md docs/ALIASING_CONTRACT_0.19.0.md docs/PRODUCTION_CHANGESET_0.19.0.json $(DESTDIR)$(DOCDIR)/
+	install -m 0644 README.md README_FIRST.txt LICENSE.md LICENSE COPYING AUTHORS.md \
+	    THIRD_PARTY_NOTICES.md ROADMAP.md STATUS.md RELEASE_NOTES.md SUPPORT.md \
+	    SECURITY.md CONTRIBUTING.md CODE_OF_CONDUCT.md GOVERNANCE.md CITATION.cff \
+	    $(DESTDIR)$(DOCDIR)/
+	# Preserve reader links and keep the manual, policies, figures and examples
+	# at the same relative paths as the source and CMake installation.
+	cp -R docs examples abi semantics $(DESTDIR)$(DOCDIR)/
 	install -m 0644 semantics/contract-v1.json semantics/function-matrix-v1.csv semantics/aliasing-contract-v1.json semantics/aliasing-matrix-v1.csv $(DESTDIR)$(DOCDIR)/semantics/
 	install -m 0644 abi/contract-v1.json $(DESTDIR)$(DOCDIR)/abi/
 

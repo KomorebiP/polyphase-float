@@ -30,7 +30,9 @@ are true:
    parameter types, and semantics needed for binary use.
 2. Existing public structures keep their size, alignment, field order, field
    types, and ownership meaning on a matching data model.
-3. Existing enum values and public constants do not change.
+3. Existing ABI-governed enum values and public constants do not change.
+   Release-identification and generated contract-digest metadata track their
+   underlying release or record, as described in the stability policy.
 4. Existing ELF symbols remain available at symbol version `PPF_0.11`.
 5. Additive public functions receive a later symbol-version node.
 6. The SONAME remains load-compatible with binaries linked to the epoch-1
@@ -111,13 +113,15 @@ executable linked against the 0.11.0 shared library must be able to load the
 compatible 0.20.0 implementation on the governed baseline. The MPFR adapter
 retains `libpolyphase_float_mpfr.so.0`.
 
-Before version 1.0, the project must decide whether to retain this SONAME or
-introduce a new major SONAME while shipping an epoch-1 compatibility library.
-That decision must also cover CMake package-version compatibility and the
-support window. The current 0.x package accepts minimum-version requests from
-0.11.0 onward within that major series; exact-version requests remain exact.
-A future project-version change must not silently invalidate the compatibility
-evidence established here.
+The [stability policy](STABILITY_POLICY.md) retains these SONAMEs and ABI epoch
+1 throughout compatible 1.x releases. The current 0.x package accepts
+minimum-version requests from 0.11.0 onward within that major series; a
+compatible 1.x package also accepts those governed 0.x minimum requests.
+Exact-version requests remain exact, range bounds remain effective, and the
+generated architecture suitability check is preserved. Support is through the
+latest compatible 1.x release as resources permit, without a guaranteed
+calendar maintenance window. This decision does not itself satisfy the
+remaining 1.0 promotion requirements.
 
 ## PPFIF is separate
 

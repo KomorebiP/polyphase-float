@@ -188,7 +188,21 @@ static int zeta_interval(ppf_special_iv_t*out,const ppf_t*s,ppf_prec_t work,ppf_
     if(ppf_cmp_ui(s,0,ctx)>0)return zeta_hasse(out,s,work,ctx);
     if(ppf_cmp_ui(s,0,ctx)==0){mpq_t q;mpq_init(q);mpq_set_si(q,-1,2);int rc=ppf_special_iv_set_q(out,q,ctx);mpq_clear(q);return rc;}
     if(ppf_integer_p(s)){
-        mpz_t z; mpz_init(z); ppf_get_z(z,s,PPF_RNDZ,ctx);
+        /* Inspect the compact dyadic significand before expanding an integer.
+           A positive binary exponent proves evenness immediately. A negative
+           exponent only removes exact trailing zero bits, so this conversion
+           never allocates according to the magnitude of the represented value. */
+        mpz_t z; mpz_init(z);
+        ppf_exp_t exponent = ppf_get_z_2exp(z, s);
+        if (exponent > 0) {
+            mpz_clear(z);
+            return ppf_special_iv_set_ui(out, 0, ctx);
+        }
+        if (exponent < 0) {
+            uint64_t shift = (uint64_t)(-(exponent + 1)) + 1u;
+            if (shift > ULONG_MAX) { mpz_clear(z); return -1; }
+            mpz_tdiv_q_2exp(z, z, (mp_bitcnt_t)shift);
+        }
         if(mpz_sgn(z)<=0){
             if(mpz_even_p(z)){mpz_clear(z);return ppf_special_iv_set_ui(out,0,ctx);}
             if(mpz_fits_slong_p(z)){

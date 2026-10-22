@@ -12,7 +12,8 @@
     "round.c": "Preserve full GMP bit-count width and compare half-way remainders without exponent-sized allocation; defer interval finalization when endpoint range flags disagree.",
     "special_bessel.c": "Use exact arbitrary-precision comparison for the finite Airy input boundary.",
     "special_common.c": "Zero-initialize interval absolute-value scratch objects for partial-failure cleanup; reject nonfinite or unordered dyadic interval conversion endpoints and avoid shifting zero.",
-    "special_gamma.c": "Use a directed log-absolute-Gamma enclosure to settle proven range saturation before exponentiation; retain bounded certification for undecided cases.",
+    "special_gamma.c": "Use directed log-absolute-Gamma enclosures for proven range saturation; reject excessive negative-parameter incomplete-Gamma recurrence before integer materialization while preserving special values.",
+    "special_misc.c": "Recognize negative-integer zeta parity directly from compact dyadic storage and admit the small odd Bernoulli shortcut before materializing its integer.",
     "transcendental.c": "Reject nonfinite or unordered dyadic endpoints, bound alignment and exponential-minus-one subtraction, prove exponential range saturation before reduction, compute integer exp2 directly, and budget exact-power shortcuts."
   },
   "changed_files": [
@@ -26,6 +27,7 @@
     "special_bessel.c",
     "special_common.c",
     "special_gamma.c",
+    "special_misc.c",
     "transcendental.c"
   ],
   "files": {
@@ -154,16 +156,16 @@
       "sha256": "f344a2892912fc95e0b95eea1548cf687042656596df57ee642b74719e40c7ef"
     },
     "special_gamma.c": {
-      "bytes": 34193,
-      "sha256": "55542d5202098a2ca7b4f45f5306693350e7171a1582fa2313fcbc34822d664a"
+      "bytes": 34517,
+      "sha256": "604f52b2a4db8468caa2c1a847df6c17bd0f029da064bf09c37c243142f49d36"
     },
     "special_internal.h": {
       "bytes": 4959,
       "sha256": "42836b6e086d3a6af026fd68e92b2c081a4682bb10451a4c54247f0e3568fb87"
     },
     "special_misc.c": {
-      "bytes": 29506,
-      "sha256": "24835c6eb311b286baf41aecf9fe8cece82216c42dea46da43859b154de33e16"
+      "bytes": 30185,
+      "sha256": "ef46e501551e855681cbb135c2a3e1799756f95c5d3d8062566cea7fb3ffee2d"
     },
     "toom3.c": {
       "bytes": 20028,

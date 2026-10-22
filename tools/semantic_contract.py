@@ -21,7 +21,7 @@ from typing import Any
 COMMENT_RE = re.compile(r"/\*.*?\*/|//[^\n]*", re.S)
 
 RETURN_KINDS = {
-    "void", "ternary", "status", "predicate", "comparison", "sign",
+    "void", "ternary", "packed_ternary", "status", "predicate", "comparison", "sign",
     "count", "value", "pointer", "owned_pointer", "borrowed_pointer",
     "interval_status", "formatted_count"
 }
@@ -81,11 +81,59 @@ COMPARISON_FUNCTIONS = {
     "ppf_cmp_si_2exp", "ppf_cmpabs", "ppf_cmpabs_ui"
 }
 SIGN_FUNCTIONS = {"ppf_sgn"}
+# These conventions cannot be inferred from the C return type or the presence
+# of a mutable ppf_t argument. Keep their actual result channels explicit.
+RETURN_OVERRIDES = {
+    "ppf_div_with_plan_many": (
+        "status", "-1",
+        "Returns 0 on success and -1 on failure. When supplied, the ternaries array receives the individual numerical ternary results; the function return is not a numerical ternary."),
+    "ppf_get_constant_interval": (
+        "status", "-1",
+        "Returns 0 on success and -1 on failure. The certified dyadic interval is written to lower, upper, and exponent."),
+    "ppf_urandomb": (
+        "status", "1",
+        "Returns 0 on success and 1 on failure. The generated significand is exact at the destination precision; the return is not a numerical ternary."),
+    "ppf_get_z": (
+        "ternary", "PPF_TERNARY_ERROR",
+        "Returns the numerical ternary for the GMP integer written to rop. Test for PPF_TERNARY_ERROR before interpreting its sign."),
+    "ppf_get_f": (
+        "ternary", "PPF_TERNARY_ERROR",
+        "Returns the numerical ternary for conversion to the GMP floating-point destination. Test for PPF_TERNARY_ERROR before interpreting its sign. NaN maps to zero with ERANGE and return 0; infinity maps to a finite GMP value with ERANGE and returns +1 for negative infinity or -1 for positive infinity."),
+    "ppf_eq": (
+        "predicate", None,
+        "Returns nonzero when the operands agree to the requested number of leading bits, and 0 otherwise."),
+    "ppf_context_set_rounding": (
+        "status", "-1",
+        "Returns 0 when the concrete rounding mode is accepted and -1 otherwise; PPF_RND_DEFAULT is rejected."),
+    "ppf_set_default_rounding_mode": (
+        "status", "-1",
+        "Returns 0 when the concrete rounding mode is accepted and -1 otherwise; PPF_RND_DEFAULT is rejected."),
+    "ppf_rounding_name": (
+        "borrowed_pointer", None,
+        "Returns a static name for the supplied enumeration value, including PPF_RND_DEFAULT. An invalid enumeration value returns the static string PPF_RND_INVALID; this function does not return NULL."),
+    "ppf_print_rnd_mode": (
+        "borrowed_pointer", "NULL",
+        "Returns a static name for a concrete rounding mode from PPF_RNDN through PPF_RNDF. PPF_RND_DEFAULT and invalid enumeration values return NULL."),
+}
+PACKED_TERNARY_FUNCTIONS = {
+    "ppf_modf": "the integral output first and the fractional output second",
+    "ppf_sin_cos": "the sine output first and the cosine output second",
+    "ppf_sinh_cosh": "the hyperbolic sine output first and the hyperbolic cosine output second",
+    "ppf_grandom": "rop1 first and rop2 second; when rop2 is NULL its component code is 0",
+}
+ROUNDING_POLICY_SETTERS = {
+    "ppf_context_set_rounding", "ppf_set_default_rounding_mode"
+}
+PRIVATE_CONTEXT_FITS_FUNCTIONS = {
+    "ppf_fits_ulong_p", "ppf_fits_slong_p", "ppf_fits_uint_p",
+    "ppf_fits_sint_p", "ppf_fits_ushort_p", "ppf_fits_sshort_p",
+    "ppf_fits_uintmax_p", "ppf_fits_intmax_p"
+}
 PREDICATE_EXTRA = {
     "ppf_can_round", "ppf_validate", "ppf_integer_p", "ppf_equal_p",
     "ppf_greater_p", "ppf_greaterequal_p", "ppf_less_p",
     "ppf_lessequal_p", "ppf_lessgreater_p", "ppf_unordered_p",
-    "ppf_total_order_p"
+    "ppf_total_order_p", "ppf_signbit"
 }
 COUNT_FUNCTIONS = {"ppf_out_str", "ppf_inp_str", "ppf_get_str_ndigits"}
 OWNED_POINTER_FUNCTIONS = {"ppf_get_str"}
@@ -418,6 +466,14 @@ def direct_references(root: Path, names: list[str], subdir: str) -> dict[str, li
 def return_contract(function: dict[str, Any]) -> dict[str, Any]:
     name = function["name"]
     ret = function["return_type"]
+    if name in RETURN_OVERRIDES:
+        kind, sentinel, note = RETURN_OVERRIDES[name]
+        return {"kind": kind, "error_sentinel": sentinel, "note": note}
+    if name in PACKED_TERNARY_FUNCTIONS:
+        return {
+            "kind": "packed_ternary", "error_sentinel": "PPF_TERNARY_ERROR",
+            "note": "Test for PPF_TERNARY_ERROR before decoding. Otherwise the return is code(first) + 4 * code(second), where 0 means exact, 1 means above the exact result, and 2 means below it: " + PACKED_TERNARY_FUNCTIONS[name] + ". The sign of the packed return is not a numerical ternary.",
+        }
     if ret == "void":
         kind, sentinel = "void", None
     elif ret == "ppf_interval_status_t":
@@ -452,7 +508,27 @@ def rounding_contract(function: dict[str, Any]) -> dict[str, Any]:
     name = function["name"]
     params = function["parameters"]
     explicit = next((p["name"] for p in params if p["role"] == "rounding"), None)
+    if name == "ppf_rounding_name":
+        return {"kind": "not_applicable", "parameter": explicit,
+                "accepts_default": True,
+                "note": "the enumeration is inspected without selecting or resolving a rounding policy; PPF_RND_DEFAULT has its own literal name"}
+    if name == "ppf_print_rnd_mode":
+        return {"kind": "not_applicable", "parameter": explicit,
+                "accepts_default": False,
+                "note": "the enumeration is inspected without resolving a context; PPF_RND_DEFAULT and invalid values return NULL"}
     if explicit:
+        if name == "ppf_can_round":
+            return {"kind": "explicit", "parameter": explicit,
+                    "accepts_default": False,
+                    "note": "source_rounding and target_rounding must both be concrete modes from PPF_RNDN through PPF_RNDF; PPF_RND_DEFAULT in either parameter is rejected with return 0, without consulting the calling thread default context"}
+        if name in PRIVATE_CONTEXT_FITS_FUNCTIONS:
+            return {"kind": "explicit", "parameter": explicit,
+                    "accepts_default": True,
+                    "note": "PPF_RND_DEFAULT resolves to PPF_RNDN through a newly initialized private context, independently of the calling thread default rounding mode"}
+        if name in ROUNDING_POLICY_SETTERS:
+            return {"kind": "explicit", "parameter": explicit,
+                    "accepts_default": False,
+                    "note": "select a concrete mode from PPF_RNDN through PPF_RNDF; PPF_RND_DEFAULT is rejected rather than resolved"}
         return {"kind": "explicit", "parameter": explicit,
                 "accepts_default": True,
                 "note": "PPF_RND_DEFAULT resolves through the supplied context or the calling thread default context"}
@@ -890,6 +966,42 @@ INITIALIZATION_LIFECYCLE_FUNCTIONS = {
 }
 PREFIX_CLEANUP_FUNCTIONS = {"ppf_inits", "ppf_inits2"}
 
+# Source-backed qualifications for the injected-allocation evidence above.
+# Transactional does not mean that every output channel is a numerical object,
+# that stream I/O can be undone, or that GMP allocation is recoverable.
+TRANSACTIONAL_NOTES = {
+    "ppf_arena_alloc": "on unrecovered project-allocation failure, returns NULL without adding a new arena block or changing the existing arena allocation position; earlier arena allocations remain valid",
+    "ppf_get_str": "on unrecovered project-allocation failure, returns NULL and releases temporary project-owned storage; the source number is unchanged; recovered fallback allocation failures may still yield a valid string",
+    "ppf_out_str": "unrecovered project-allocation failure during text construction occurs before stream output; the source number is unchanged; a later stream write failure may leave a partial record and is not rolled back",
+    "ppf_fpif_export": "the complete record is staged before its first stream write; project-allocation failure leaves the stream and source number unchanged, but a later stream write failure may leave a partial record",
+    "ppf_divisor_plan_create_ex": "after initial argument validation, *out is set to NULL; project-allocation failure releases the incomplete plan and leaves *out NULL and the denominator unchanged; this does not preserve an existing pointer passed through out",
+    "ppf_get_constant_interval": "unrecovered project-allocation failure before publication preserves lower, upper, and exponent and releases temporary project-owned storage; GMP allocation while copying successful outputs is outside this recoverable allocation contract",
+    "ppf_inp_str": "unrecovered project-allocation failure preserves the numerical destination and releases temporary project-owned storage; bytes already consumed from the input stream are not restored",
+    "ppf_fpif_import": "unrecovered project-allocation failure preserves the numerical destination and releases temporary project-owned storage; bytes already consumed from the input stream are not restored",
+}
+for _name in {"ppf_precompute_pi", "ppf_precompute_log2",
+              "ppf_precompute_euler", "ppf_precompute_catalan",
+              "ppf_precompute_constant"}:
+    TRANSACTIONAL_NOTES[_name] = (
+        "unrecovered project-allocation failure releases the incomplete interval "
+        "without publishing it to the constant cache; an existing cached interval remains valid; "
+        "GMP allocation is outside this recoverable allocation contract")
+for _name in {"ppf_asprintf", "ppf_vasprintf"}:
+    TRANSACTIONAL_NOTES[_name] = (
+        "sets *text to NULL before formatting; failure releases temporary storage "
+        "and leaves *text NULL, rather than preserving its prior pointer; "
+        "%n writes already performed while formatting are not rolled back")
+for _name in {"ppf_sprintf", "ppf_vsprintf", "ppf_snprintf", "ppf_vsnprintf"}:
+    TRANSACTIONAL_NOTES[_name] = (
+        "formatting completes in temporary storage before the character buffer is copied; "
+        "unrecovered project-allocation failure leaves that buffer unchanged; "
+        "%n writes already performed while formatting are not rolled back")
+for _name in {"ppf_fprintf", "ppf_vfprintf", "ppf_printf", "ppf_vprintf"}:
+    TRANSACTIONAL_NOTES[_name] = (
+        "formatting completes in temporary storage before stream output; "
+        "unrecovered project-allocation failure during formatting leaves the stream unchanged; "
+        "%n writes already performed are not rolled back, and a later stream write failure may leave partial output")
+
 def atomicity_contract(function: dict[str, Any], test_refs: list[str]) -> dict[str, Any]:
     name = function["name"]
     args = classify_arguments(function)
@@ -925,10 +1037,30 @@ def atomicity_contract(function: dict[str, Any], test_refs: list[str]) -> dict[s
         cls = "documented_partial"
     else:
         cls = "not_yet_verified"
-    return {"classification": cls}
+    result = {"classification": cls}
+    if cls == "verified_transactional" and name in TRANSACTIONAL_NOTES:
+        result["note"] = TRANSACTIONAL_NOTES[name]
+    return result
 
 
 def practical_limit(section: str, name: str) -> dict[str, Any]:
+    if name in {"ppf_rootn_ui", "ppf_rootn_si", "ppf_root", "ppf_cbrt"}:
+        return {"classification": "implementation_bound",
+                "summary": "nontrivial exact-input root interval construction uses PPF_ROOT_ATTEMPTS refinement attempts (default 10); exact and exceptional-value cases may return earlier",
+                "source": "src/roots.c"}
+    if name in {"ppf_rec_sqrt", "ppf_rec_sqrt_threads",
+                "ppf_rec_sqrt_algorithm_threads"}:
+        return {"classification": "implementation_bound",
+                "summary": "the Newton interval branch and the root-plus-quotient fallback each have a PPF_ROOT_ATTEMPTS refinement limit (default 10 per branch), not a shared global total of 10 attempts; exact and exceptional-value cases may return earlier",
+                "source": "src/roots.c"}
+    if name in {"ppf_sqrt", "ppf_sqrt_ui"}:
+        return {"classification": "implementation_bound",
+                "summary": "square-root interval refinement is limited to 24 attempts; exact and exceptional-value cases may return earlier; ppf_sqrt_ui delegates to the same square-root operation",
+                "source": "src/arithmetic.c; src/roots.c"}
+    if name == "ppf_hypot":
+        return {"classification": "implementation_bound",
+                "summary": "the GMP integer fallback uses root interval construction with PPF_ROOT_ATTEMPTS refinement attempts (default 10); the direct-limb path calls the square-root operation with its separate 24-attempt limit; these are path-specific limits, not one global attempt budget",
+                "source": "src/roots.c; src/arithmetic.c"}
     # These control/query/cleanup operations do not execute the bounded
     # numerical backend of the family in which their header places them.
     if name in {
@@ -1214,7 +1346,7 @@ def render_markdown(data: dict[str, Any], output: Path) -> None:
         "",
         "### Return values",
         "",
-        "`ternary` records the floating-point relation to the exact result and uses `PPF_TERNARY_ERROR` for an unrecovered failure. `status` records an ordinary success or failure code. Predicates, comparisons, counts, borrowed pointers, and caller-owned pointers are classified separately.",
+        "`ternary` records the floating-point relation to the exact result and uses `PPF_TERNARY_ERROR` for an unrecovered failure. `packed_ternary` records two component ternaries as code(first) + 4 * code(second), with component codes 0 for exact, 1 for above, and 2 for below; test for `PPF_TERNARY_ERROR` before decoding. `status` records an ordinary success or failure code, whose exact convention is stated in the entry when it differs from the general family rule. Predicates, comparisons, counts, borrowed pointers, and caller-owned pointers are classified separately.",
         "",
         "### Rounding",
         "",
