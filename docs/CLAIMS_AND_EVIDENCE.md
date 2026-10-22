@@ -46,7 +46,7 @@ does not itself prove a path for every representable input.
 
 The [special-function review](BRANCH_REVIEW_0.20.0.md) states its selected
 branches, arguments, and assumptions. The [release scope](COMPLETION_SCOPE_0.20.0.md)
-and semantic ledger retain 105 bounded implementation paths and six
+and semantic ledger retain 115 bounded implementation paths and six
 compiler-conditional interfaces. A documented implementation limit is not a
 mathematical domain restriction on the underlying function.
 
