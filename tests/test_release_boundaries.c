@@ -148,13 +148,97 @@ static void certification_budget(void) {
     ppf_clear(&result); ppf_context_clear(&ctx);
 }
 
+static void extreme_exponential_gamma(void) {
+    const char *positive[] = {"0x1p55", "0x1p56", "0x1p60"};
+    const char *reflected[] = {"-72057594037927935.5", "-72057594037927936.5"};
+    for (unsigned i = 0; i < sizeof(positive)/sizeof(positive[0]); ++i) {
+        unary_case("gamma-extreme", ppf_gamma, mpfr_gamma, positive[i], 53, 0);
+        unary_case("exp-extreme", ppf_exp, mpfr_exp, positive[i], 53, 0);
+    }
+    for (unsigned i = 0; i < sizeof(reflected)/sizeof(reflected[0]); ++i)
+        unary_case("gamma-extreme-reflection", ppf_gamma, mpfr_gamma,
+                   reflected[i], 53, 0);
+    unary_case("exp-extreme-negative", ppf_exp, mpfr_exp, "-0x1p60", 53, 0);
+    unary_case("gamma-extreme-alias", ppf_gamma, mpfr_gamma, "0x1p56", 113, 1);
+    unary_case("gamma-extreme-negative-alias", ppf_gamma, mpfr_gamma,
+               reflected[1], 113, 1);
+    unary_case("exp-extreme-alias", ppf_exp, mpfr_exp, "-0x1p60", 113, 1);
+}
+
+static void scaled_exponential_resources(void) {
+    const char *signs[] = {"0x1p60", "-0x1p60"};
+    const char *binary[] = {"117", "118", "-117", "-118"};
+    const char *decimal[] = {"29", "30", "-29", "-30"};
+    for (unsigned i = 0; i < 2; ++i) {
+        unary_case("exp2-extreme", ppf_exp2, mpfr_exp2, signs[i], 53, 0);
+        unary_case("exp10-extreme", ppf_exp10, mpfr_exp10, signs[i], 53, 0);
+    }
+    for (unsigned i = 0; i < 4; ++i) {
+        unary_case("exp2m1-shortcut-boundary", ppf_exp2m1, mpfr_exp2m1,
+                   binary[i], 53, 0);
+        unary_case("exp10-shortcut-boundary", ppf_exp10, mpfr_exp10,
+                   decimal[i], 53, 0);
+        unary_case("exp10m1-shortcut-boundary", ppf_exp10m1, mpfr_exp10m1,
+                   decimal[i], 53, 0);
+    }
+    ppf_context_t ctx;
+    ppf_t x, result;
+    ppf_unary_fn rejected[] = {ppf_exp2m1, ppf_exp10m1, ppf_expm1};
+    CHECK(ppf_context_init(&ctx) == 0);
+    CHECK(ppf_init2_ctx(&x, 128, &ctx) == 0);
+    CHECK(ppf_init2_ctx(&result, 53, &ctx) == 0);
+    for (unsigned i = 0; i < sizeof(rejected)/sizeof(rejected[0]); ++i)
+        for (int sign = -1; sign <= 1; sign += 2) {
+            CHECK(ppf_set_si_2exp(&x, sign, 60, PPF_RNDN, &ctx) == 0);
+            for (unsigned mode = 0; mode < 5; ++mode) {
+                ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+                CHECK(rejected[i](&result, &x, pr[mode], &ctx) == PPF_TERNARY_ERROR);
+                CHECK(ppf_nan_p(&result) && ppf_validate(&result));
+                CHECK(ctx.flags == PPF_FLAG_ERANGE);
+                ++cases;
+            }
+        }
+    /* A compact floating input can represent an enormous integer. Admission
+       must precede fixed-point or integer materialization of that input. */
+    CHECK(ppf_set_ui_2exp(&x, 1, 100000000, PPF_RNDN, &ctx) == 0);
+    for (unsigned i = 0; i < sizeof(rejected)/sizeof(rejected[0]); ++i) {
+        ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+        CHECK(rejected[i](&result, &x, PPF_RNDN, &ctx) == PPF_TERNARY_ERROR);
+        CHECK(ppf_nan_p(&result) && ctx.flags == PPF_FLAG_ERANGE);
+        ++cases;
+    }
+    ppf_unary_fn saturated[] = {ppf_exp2, ppf_exp10};
+    for (unsigned i = 0; i < sizeof(saturated)/sizeof(saturated[0]); ++i) {
+        ppf_context_flags_clear(&ctx, PPF_FLAGS_ALL);
+        CHECK(saturated[i](&result, &x, PPF_RNDN, &ctx) == 1);
+        CHECK(ppf_inf_p(&result) && result.sign == 1);
+        CHECK(ctx.flags == (PPF_FLAG_OVERFLOW | PPF_FLAG_INEXACT));
+        ++cases;
+    }
+    ppf_clear(&x); ppf_clear(&result); ppf_context_clear(&ctx);
+}
+
 int main(int argc, char **argv) {
+    if (argc == 2 && strcmp(argv[1], "scaled") == 0) {
+        scaled_exponential_resources();
+        ppf_free_constant_caches(); mpfr_mp_memory_cleanup();
+        printf("scaled exponential resource checks passed: %lu comparisons/checks\n", cases);
+        return 0;
+    }
+    if (argc == 2 && strcmp(argv[1], "extreme") == 0) {
+        extreme_exponential_gamma();
+        ppf_free_constant_caches(); mpfr_mp_memory_cleanup();
+        printf("extreme exponential/Gamma checks passed: %lu comparisons\n", cases);
+        return 0;
+    }
     if (argc == 2 && strcmp(argv[1], "admission") == 0) {
         airy_exact_admission();
         puts("exact Airy resource-admission checks passed");
         return 0;
     }
     airy_exact_admission();
+    extreme_exponential_gamma();
+    scaled_exponential_resources();
     const unsigned precisions[] = {2, 17, 53, 113};
     const char *reflection[] = {"-0.0009765625", "-0.9990234375",
         "-1.0009765625", "-7.9990234375", "-8.0009765625"};

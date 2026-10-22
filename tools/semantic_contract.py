@@ -269,15 +269,15 @@ PRACTICAL_LIMITS = {
         "source": "src/assignment.c:PPF_TEXT_POWER_LIMIT"
     },
     "transcendental": {
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS"
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject",
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS"
     },
     "trigonometric": {
         "summary": "general trigonometric certification uses bounded escalation, bounded reduction growth, and at most 10,000,000 steps",
         "source": "src/trig_hyperbolic.c:PPF_TRIG_MAX_ATTEMPTS,PPF_TRIG_MAX_REDUCTION_EXTRA,PPF_TRIG_MAX_STEPS"
     },
     "special": {
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations",
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c"
     },
     "constants": {

@@ -1016,15 +1016,12 @@ int ppf_fits_uintmax_p(const ppf_t *op, ppf_rnd_t rnd) { return fits_unsigned_bi
 int ppf_fits_intmax_p(const ppf_t *op, ppf_rnd_t rnd) { return fits_signed_bits(op, rnd, sizeof(intmax_t)*CHAR_BIT); }
 
 static int target_increment(ppf_rnd_t rnd, int sign, mpz_srcptr q,
-                            mpz_srcptr r, unsigned long shift) {
-    mpz_t den;
-    int out;
+                            mpz_srcptr r, uint64_t shift) {
     if (mpz_sgn(r) == 0) return 0;
-    mpz_init_set_ui(den, 1);
-    mpz_mul_2exp(den, den, shift);
-    out = increment_for_fraction(rnd, sign, q, r, den);
-    mpz_clear(den);
-    return out;
+    /* r is the discarded part modulo 2^shift. Inspect its half and sticky
+       bits directly: a tiny finite input must not allocate 2^shift merely
+       to round to a fixed-width C floating type. */
+    return increment_binary_integer_round(rnd, sign, q, r, shift);
 }
 
 static long double mpz_exact_to_ld(mpz_srcptr z) {
@@ -1067,7 +1064,8 @@ static long double get_c_binary(const ppf_t *op, ppf_rnd_t rnd,
     } else {
         uint64_t sh = (uint64_t)(unit - e2);
         if (sh > ULONG_MAX) { mpz_set_ui(q,0); mpz_set(r,mag); }
-        else { mpz_fdiv_q_2exp(q, mag, (mp_bitcnt_t)sh); mpz_fdiv_r_2exp(r, mag, (mp_bitcnt_t)sh); inc = target_increment(rnd,sign,q,r,(unsigned long)sh); }
+        else { mpz_fdiv_q_2exp(q, mag, (mp_bitcnt_t)sh); mpz_fdiv_r_2exp(r, mag, (mp_bitcnt_t)sh); }
+        inc = target_increment(rnd,sign,q,r,sh);
         if (inc) mpz_add_ui(q,q,1);
     }
     if (mpz_sgn(q) == 0) out = 0.0L;
@@ -1227,8 +1225,10 @@ conversion_error:
 /* ---------- exact radix output ---------- */
 
 size_t ppf_get_str_ndigits(int base, ppf_prec_t precision) {
-    int b=base<0?-base:base;
+    int b;
     long double effective;
+    if (base < -62 || base > 62) return 0;
+    b=base<0?-base:base;
     if(b<2||b>62||precision<PPF_PREC_MIN)return 0;
     effective=(long double)(precision-((b&(b-1))==0?1:0));
     if(effective<1)effective=1;
@@ -1273,6 +1273,10 @@ static char *ppf_get_str_exact(char *buffer, ppf_exp_t *exponent, int base,
     if(ppf_inf_p(op)){const char*s=op->sign<0?"-@Inf@":"@Inf@";total=strlen(s)+1;out=buffer?buffer:ppf_owned_string_alloc_internal(ctx,total);if(out)memcpy(out,s,total);return out;}
     if(ppf_zero_p(op)){
         size_t sign_chars=op->sign<0?1u:0u;
+        if (digits > SIZE_MAX - sign_chars - 1u) {
+            ppf_raise(ctx, PPF_FLAG_ERANGE);
+            return NULL;
+        }
         *exponent=0;
         total=sign_chars+digits+1;
         out=buffer?buffer:ppf_owned_string_alloc_internal(ctx,total);
@@ -1741,7 +1745,7 @@ static int fast_text_work_precision(ppf_prec_t *out, size_t digits, int base,
 char *ppf_get_str(char *buffer, ppf_exp_t *exponent, int base,
                   size_t digits, const ppf_t *op, ppf_rnd_t rnd,
                   ppf_context_t *ctx) {
-    int b = base < 0 ? -base : base;
+    int b;
     ppf_prec_t work, next;
     ppf_exp_t base_exponent;
     ppf_context_t lo_ctx, hi_ctx;
@@ -1757,6 +1761,8 @@ char *ppf_get_str(char *buffer, ppf_exp_t *exponent, int base,
     ppf_prec_t radix_scratch_precision = 0;
 
     ctx = ppf_resolve_context(ctx);
+    if (base < -62 || base > 62) return NULL;
+    b = base < 0 ? -base : base;
     if (!op || !exponent || !ctx || b < 2 || b > 62)
         return NULL;
     if (rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;

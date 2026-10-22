@@ -27,8 +27,14 @@ REVIEWED_CHANGED_SOURCE_FILES = (
     "assignment.c",
     "conditional_formats.c",
     "io.c",
+    "limb_round.c",
     "polyphase_chudnovsky_core.c",
+    "range_flags.c",
+    "round.c",
     "special_bessel.c",
+    "special_common.c",
+    "special_gamma.c",
+    "transcendental.c",
 )
 REQUIRED_FILES = (
     "abi/0.19.0-to-0.20.0-comparison.json",
@@ -582,7 +588,7 @@ def audit_current_production_changeset(root: Path, failures: list[str]) -> tuple
     if record.get("production_source_unchanged") is not False:
         fail("current production changeset incorrectly claims unchanged source", failures)
     if record.get("numerical_formula_changes") is not False or record.get("numerical_behavior_changes") is not True:
-        fail("current changeset must distinguish domain/input behavior corrections from unchanged numerical formulas", failures)
+        fail("current changeset must distinguish numerical implementation corrections from unchanged mathematical definitions", failures)
     changed = record.get("changed_files")
     added = record.get("added_files")
     removed = record.get("removed_files")

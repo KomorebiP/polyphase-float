@@ -22,6 +22,11 @@ raises the required flags.
 subnormal value category to `ppf_t`. It rounds to the effective precision
 implied by the current exponent and `emin`, using the incoming ternary value to
 avoid double-rounding errors.
+When this step reduces the effective precision, it raises `PPF_FLAG_UNDERFLOW`
+even if the value remains exact, matching `mpfr_subnormalize`.
+`PPF_FLAG_INEXACT` is raised only when the returned ternary value is nonzero.
+This flag rule is specific to subnormal emulation; ordinary arithmetic uses
+the context's exponent range and its usual rounding rules.
 
 ## General roots
 

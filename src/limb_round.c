@@ -208,7 +208,9 @@ int ppf_round_limbs_2exp(ppf_t *rop,
     rop->kind = PPF_KIND_NAN;
     rop->sign = 1;
     rop->exponent = 0;
-    rop->used_limbs = out_limbs;
+    /* Keep a valid staging object if a carry needs the interval fallback.
+       A NaN with nonzero used_limbs fails that fallback's validation. */
+    rop->used_limbs = 0;
 
     if ((ppf_prec_t)source_bits > rop->precision) {
         discarded = source_bits - (size_t)rop->precision;
@@ -256,6 +258,7 @@ int ppf_round_limbs_2exp(ppf_t *rop,
         copy_left_shift(out, out_limbs, magnitude, used, shift);
     }
 
+    rop->used_limbs = out_limbs;
     ppf_zero_unused_bits(rop);
     if (ppf_commit_regular(rop, sign, result_exponent, ctx) != 0) {
         ppf_set_nan(rop, 1);

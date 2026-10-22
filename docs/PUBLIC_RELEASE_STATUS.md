@@ -1,30 +1,21 @@
 # Public release status
 
-The current source is Polyphase Float 0.20.0 under LGPL-3.0-or-later. It is a
-pre-1.0 candidate for external reproduction on Linux ELF LP64/GMP64.
+Polyphase Float 0.20.0 is distributed under LGPL-3.0-or-later with a bounded
+pre-1.0 contract for Linux x86-64 ELF LP64 and 64-bit GMP limbs. ABI epoch 1 and
+`libpolyphase_float.so.0` are retained. The production core is independent of
+MPFR; the adapter and differential tests use MPFR optionally.
 
-The 437-function semantic ledger now assigns explicit contracts to all 79
-previous allocation-evidence entries. The classification distinguishes
-allocation-free valid-input paths, safe initialization, prefix cleanup and
-transactional numerical outputs. GMP and libc allocation domains remain
-separate. The new tests and review are described in
-ALLOCATION_COMPLETION_0.20.0.md.
+The [release scope](COMPLETION_SCOPE_0.20.0.md) is the current reference for
+supported inputs, allocation behavior, resource limits, and review boundaries.
+The [semantic contract](PUBLIC_SEMANTIC_CONTRACT_0.20.0.md) indexes the 437 core
+functions, while the [allocation reference](ALLOCATION_COMPLETION_0.20.0.md)
+records the completed classifications and targeted lifecycle tests.
 
-The integrated PPFIF importer checks per-record payload and significand
-resource limits before allocation. Airy Ai uses exact input comparison at its
-finite-domain boundary. Floating setters validate rounding before handling
-special values. These repairs preserve the public source and binary interface.
+Use [Qualification](QUALIFICATION.md) to reproduce validation. The resulting
+receipt records actual execution against an exact source snapshot; historical
+reports do not replace it. [Claims and evidence](CLAIMS_AND_EVIDENCE.md)
+explains how to interpret tests, mathematical arguments, and benchmark results.
 
-BRANCH_REVIEW_0.20.0.md maps reviewed special-function branches to their
-mathematical arguments and assumptions. It is a bounded source review, not a
-whole-library proof. Numerical caps and certification-budget rejection remain
-published in COMPLETION_SCOPE_0.20.0.md.
-
-QUALIFICATION.md gives one offline command for fresh GCC, Clang, OpenMP,
-installed-consumer, sanitizer and timed fuzz validation. Retain its generated
-receipt and exact source snapshot. Compiler variation on one host is not
-independent external replication.
-
-This package does not claim universal correct rounding, unbounded numerical
-domains, native platform validation beyond the stated baseline, or completion
-of external mathematical review. No remote repository publication is asserted.
+The [roadmap](../ROADMAP.md) lists outstanding independent review and external
+reproduction requirements for a later 1.0 release. Source packaging and local
+qualification do not assert a remote commit, tag, or published release asset.

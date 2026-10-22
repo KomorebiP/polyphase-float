@@ -26,6 +26,9 @@ __extension__ typedef __int128 ppf_trans_i128_t;
 #ifndef PPF_TRANS_MAX_STEPS
 #define PPF_TRANS_MAX_STEPS 10000000u
 #endif
+#ifndef PPF_TRANS_MAX_ALIGNMENT_BITS
+#define PPF_TRANS_MAX_ALIGNMENT_BITS 1000000u
+#endif
 #ifndef PPF_TRANS_EXACT_POWER_FACTOR
 #define PPF_TRANS_EXACT_POWER_FACTOR 8u
 #endif
@@ -55,6 +58,20 @@ static int trans_divzero_inf(ppf_t *rop, int sign, ppf_context_t *ctx) {
     if (rop) ppf_set_inf(rop, sign);
     if (ctx) ppf_raise(ctx, PPF_FLAG_DIVBY0);
     return 0;
+}
+
+/* Exponent bounds are 64-bit even on targets whose long is narrower. */
+static int trans_cmp_exp(const ppf_t *x, ppf_exp_t bound, ppf_context_t *ctx) {
+    uint64_t magnitude = bound < 0 ? (uint64_t)(-(bound + 1)) + 1u
+                                   : (uint64_t)bound;
+    mpz_t integer;
+    int comparison;
+    mpz_init(integer);
+    mpz_import(integer, 1, 1, sizeof(magnitude), 0, 0, &magnitude);
+    if (bound < 0) mpz_neg(integer, integer);
+    comparison = ppf_cmp_z(x, integer, ctx);
+    mpz_clear(integer);
+    return comparison;
 }
 
 static int trans_overflow_positive(ppf_t *rop, ppf_rnd_t rnd,
@@ -281,14 +298,20 @@ static int iv_to_dyadic(mpz_ptr lower, mpz_ptr upper, ppf_exp_t *exponent,
     mpz_t zl, zu;
     ppf_exp_t el, eu, common;
     uint64_t dl, du;
-    if (!lower || !upper || !exponent) return -1;
+    if (!lower || !upper || !exponent || !x ||
+        !ppf_number_p(&x->lo) || !ppf_number_p(&x->hi) ||
+        ppf_cmp(&x->lo, &x->hi, NULL) > 0) return -1;
     mpz_inits(zl, zu, NULL);
     el = ppf_get_z_2exp(zl, &x->lo);
     eu = ppf_get_z_2exp(zu, &x->hi);
-    common = el < eu ? el : eu;
-    dl = (uint64_t)el - (uint64_t)common;
-    du = (uint64_t)eu - (uint64_t)common;
-    if (dl > (uint64_t)ULONG_MAX || du > (uint64_t)ULONG_MAX) {
+    /* Zero has no required binary exponent.  Aligning a finite endpoint with
+       an artificial exponent zero can request an astronomically large GMP
+       integer.  Nonfinite endpoints must never enter this representation. */
+    common = mpz_sgn(zl) == 0 ? eu : mpz_sgn(zu) == 0 ? el : el < eu ? el : eu;
+    dl = mpz_sgn(zl) == 0 ? 0 : (uint64_t)el - (uint64_t)common;
+    du = mpz_sgn(zu) == 0 ? 0 : (uint64_t)eu - (uint64_t)common;
+    if (dl > (uint64_t)ULONG_MAX || du > (uint64_t)ULONG_MAX ||
+        dl > PPF_TRANS_MAX_ALIGNMENT_BITS || du > PPF_TRANS_MAX_ALIGNMENT_BITS) {
         mpz_clears(zl, zu, NULL);
         return -1;
     }
@@ -389,6 +412,10 @@ static int exp_nonnegative_interval(ppf_iv_t *out, const ppf_iv_t *x,
     if (ppf_const_log2(&ln2.lo, PPF_RNDD, ctx) == PPF_TERNARY_ERROR ||
         ppf_const_log2(&ln2.hi, PPF_RNDU, ctx) == PPF_TERNARY_ERROR) goto done;
     if (iv_div_positive(&quotient, x, &ln2, ctx) != 0) goto done;
+    /* The reduction index must fit long. Check its floating value before
+       materializing an integer whose size could follow a huge input exponent. */
+    if (!ppf_number_p(&quotient.lo) ||
+        ppf_cmp_si(&quotient.lo, LONG_MAX, ctx) > 0) goto done;
     if (ppf_get_z(k, &quotient.lo, PPF_RNDD, ctx) == PPF_TERNARY_ERROR) goto done;
     if (!mpz_fits_slong_p(k)) goto done;
     k_long = mpz_get_si(k);
@@ -606,6 +633,18 @@ typedef struct {
     int minus_one;
 } exp_scaled_arg_t;
 
+static int iv_subtract_one_admitted(const ppf_iv_t *value) {
+    const ppf_t *endpoints[] = {&value->lo, &value->hi};
+    for (unsigned i = 0; i < 2; ++i) {
+        if (!ppf_number_p(endpoints[i])) return 0;
+        if (ppf_regular_p(endpoints[i]) &&
+            (endpoints[i]->exponent > 1 + (ppf_exp_t)PPF_TRANS_MAX_ALIGNMENT_BITS ||
+             endpoints[i]->exponent < 1 - (ppf_exp_t)PPF_TRANS_MAX_ALIGNMENT_BITS))
+            return 0;
+    }
+    return 1;
+}
+
 static int build_exp_scaled_interval(ppf_iv_t *out, ppf_prec_t work,
                                      void *opaque, ppf_context_t *ctx) {
     exp_scaled_arg_t *a = (exp_scaled_arg_t *)opaque;
@@ -630,6 +669,9 @@ static int build_exp_scaled_interval(ppf_iv_t *out, ppf_prec_t work,
         exp_interval_input(&value, &product, work, ctx) != 0)
         goto done;
     if (a->minus_one) {
+        /* Subtracting one must not expand a huge dyadic alignment before the
+           final certificate admission check. Both operands have work bits. */
+        if (!iv_subtract_one_admitted(&value)) goto done;
         if (iv_set_ui(&one, 1UL, ctx) != 0 ||
             iv_sub(out, &value, &one, ctx) != 0)
             goto done;
@@ -1017,9 +1059,16 @@ int ppf_exp(ppf_t *rop,const ppf_t *x,ppf_rnd_t rnd,ppf_context_t *ctx){
     if(ppf_nan_p(x))return trans_nan(rop,x->sign,ctx);
     if(ppf_inf_p(x)){if(x->sign>0)ppf_set_inf(rop,1);else ppf_set_zero(rop,1);return 0;}
     if(ppf_zero_p(x))return ppf_set_ui(rop,1UL,rnd,ctx);
-    /* Values whose magnitude already exceeds every supported result exponent
-       can be settled without attempting range reduction. */
-    if(x->exponent>63){return x->sign>0?trans_overflow_positive(rop,rnd,ctx):trans_underflow_positive(rop,rnd,ctx);}
+    if(rnd==PPF_RND_DEFAULT)rnd=ctx->default_rounding;
+    if(!ppf_rounding_valid(rnd))return trans_error(rop,ctx);
+    /* For t >= 0, exp(t) >= 2^t; for t <= 0, exp(t) <= 2^t.
+       These conservative comparisons prove range saturation without building
+       an interval that overflows even the widened internal exponent range.
+       emin-2 is the half-minimum-normal threshold, including nearest ties. */
+    if(x->sign>0&&trans_cmp_exp(x,ctx->emax>0?ctx->emax:0,ctx)>=0)
+        return trans_overflow_positive(rop,rnd,ctx);
+    if(x->sign<0&&trans_cmp_exp(x,ctx->emin<2?ctx->emin-2:0,ctx)<=0)
+        return trans_underflow_positive(rop,rnd,ctx);
     { int fast_ternary = 0;
       if (ppf_fast_exp_internal(rop, x, rnd, ctx, &fast_ternary))
           return fast_ternary; }
@@ -1043,7 +1092,18 @@ static int exp_scaled_constant(ppf_t *r, const ppf_t *x, int which,
         if (minus_one) { ppf_set_zero(r, x->sign); return 0; }
         return ppf_set_ui(r, 1UL, q, c);
     }
-    if (ppf_regular_p(x) && ppf_integer_p(x)) {
+    if (q == PPF_RND_DEFAULT) q = c->default_rounding;
+    if (!ppf_rounding_valid(q)) return trans_error(r, c);
+    /* Both bases are at least two, so the same conservative range bounds
+       apply as for exp. This does not apply after subtracting one. */
+    if (!minus_one) {
+        if (x->sign > 0 && trans_cmp_exp(x, c->emax > 0 ? c->emax : 0, c) >= 0)
+            return trans_overflow_positive(r, q, c);
+        if (x->sign < 0 && trans_cmp_exp(x, c->emin < 2 ? c->emin - 2 : 0, c) <= 0)
+            return trans_underflow_positive(r, q, c);
+    }
+    if (ppf_regular_p(x) && ppf_integer_p(x) &&
+        x->exponent <= (ppf_exp_t)(sizeof(long) * CHAR_BIT)) {
         mpz_t n;
         mpz_init(n);
         if (ppf_get_z(n, x, PPF_RNDZ, c) != PPF_TERNARY_ERROR &&
@@ -1052,6 +1112,20 @@ static int exp_scaled_constant(ppf_t *r, const ppf_t *x, int which,
             unsigned long u = e < 0
                 ? (unsigned long)(-(e + 1L)) + 1UL
                 : (unsigned long)e;
+            if (which == 2 && !minus_one) {
+                mpz_clear(n);
+                return ppf_set_ui_2exp(r, 1UL, (ppf_exp_t)e, q, c);
+            }
+            /* Keep the exact-power shortcut proportional to the requested
+               precision. Since log2(10) < 4, this budget also bounds decimal
+               powers. Larger cases use the certified interval evaluator. */
+            ppf_prec_t budget = r->precision > UINT64_MAX - 64u
+                ? UINT64_MAX : r->precision + 64u;
+            ppf_prec_t exponent_budget = which == 2 ? budget : budget / 4u;
+            if ((uint64_t)u > exponent_budget) {
+                mpz_clear(n);
+                goto interval_path;
+            }
             mpq_t exact;
             mpz_t power, num, den;
             int z;
@@ -1074,8 +1148,10 @@ static int exp_scaled_constant(ppf_t *r, const ppf_t *x, int which,
         }
         mpz_clear(n);
     }
+interval_path:
     { int fast_ternary = 0;
-      if (ppf_fast_exp_scaled_internal(r, x, which, minus_one, q, c,
+      if (x->exponent <= (ppf_exp_t)(sizeof(long) * CHAR_BIT) &&
+          ppf_fast_exp_scaled_internal(r, x, which, minus_one, q, c,
                                        &fast_ternary))
           return fast_ternary; }
     arg.x = x;
@@ -1098,6 +1174,7 @@ static int build_expm1_interval(ppf_iv_t *out, ppf_prec_t work,
     if (iv_init(&value, work, ctx) != 0 || iv_init(&one, work, ctx) != 0)
         goto done;
     if (exp_exact_interval(&value, arg->x, work, ctx) != 0 ||
+        !iv_subtract_one_admitted(&value) ||
         iv_set_ui(&one, 1UL, ctx) != 0 || iv_sub(out, &value, &one, ctx) != 0)
         goto done;
     rc = 0;
@@ -1117,7 +1194,8 @@ int ppf_expm1(ppf_t *r, const ppf_t *x, ppf_rnd_t q, ppf_context_t *c) {
     }
     if (ppf_zero_p(x)) { ppf_set_zero(r, x->sign); return 0; }
     { int fast_ternary = 0;
-      if (ppf_fast_exp_scaled_internal(r, x, 0, 1, q, c,
+      if (x->exponent <= (ppf_exp_t)(sizeof(long) * CHAR_BIT) &&
+          ppf_fast_exp_scaled_internal(r, x, 0, 1, q, c,
                                        &fast_ternary))
           return fast_ternary; }
     arg.x = x;

@@ -1,69 +1,56 @@
 # Roadmap
 
-## Completed public foundations
+Version 0.20.0 has a documented Linux x86-64 ELF LP64/GMP64 contract, governed ABI,
+canonical CMake installation, and reproducible local qualification procedure.
+See [Release scope](docs/COMPLETION_SCOPE_0.20.0.md) for the current supported
+behavior and [History](docs/HISTORY_INDEX.md) for earlier development reports.
 
-- [x] open-source license, governance, contribution, support, and security policy
-- [x] canonical CMake installation and downstream package targets
-- [x] shared and static libraries
-- [x] optional MPFR adapter and differential validation
-- [x] fast, hardening, extended, and smoke test tiers
-- [x] strict GCC and Clang build paths
-- [x] deterministic source archives and release audits
-- [x] retained-sample and counterbalanced benchmark evidence
-- [x] evidence-gated product-planner profiles
-- [x] optional OpenMP with a serial package path
-- [x] text parser and PPFIF fuzzing harnesses
-- [x] deterministic allocation-failure injection for the context-owned core
-- [x] transactional destination validation for the covered paths
-- [x] define the supported POSIX-thread ownership and cleanup contract
-- [x] add automatic thread-exit cleanup and concurrent cache-lifecycle tests
-- [x] close governed public text, formatting, stream, and PPFIF allocation paths
-- [x] close project-controlled certified-constant allocation and cache transactions
-- [x] close project-controlled allocation transactions for 79 transcendental and special-function endpoints
-- [x] close project-controlled allocation transactions for 56 arithmetic, fused/planned-operation, and root endpoints in 0.18.0
+## Available foundations
 
-## Next production-hardening blocks
+- Shared and static C11 libraries, with optional MPFR adapter and OpenMP.
+- Installed CMake targets and `pkg-config` metadata, including relocated consumers.
+- ABI epoch 1 with source-contract, layout, export, symbol-version, and old-binary checks.
+- A 437-function semantic ledger and complete indexed aliasing classifications.
+- Allocation, initialization, and prefix-cleanup classifications with no remaining indexed allocation-evidence gaps.
+- POSIX-thread ownership rules, thread-exit cleanup, and cache-lifecycle tests.
+- Exact, differential, randomized, resource-failure, sanitizer, and seeded fuzz test paths.
+- Deterministic source packaging and a qualification runner that binds evidence to source hashes.
+- Retained-sample benchmark tooling and evidence-gated product-planner profiles.
 
-- [x] extend allocation-failure injection to transcendental work arrays, special-function work arrays, and trigonometric worker metadata
-- [x] run ThreadSanitizer and close the supported POSIX cache-lifecycle boundary in 0.11.0
-- [x] establish ABI epoch 1 for the existing public object and context layouts
-- [x] add source-contract, layout, symbol-version, export, and old-binary checks
-- [ ] extend the governed ABI matrix beyond Linux ELF LP64/GMP64
-- [ ] make the final version 1.0 SONAME and support-window decision
-- [ ] add ARM64 and non-WSL Linux validation
-- [ ] add native Windows and macOS build validation
-- [ ] establish sustained fuzzing and permanent regression-corpus governance
-- [x] generate a complete indexed semantic, ownership, limit, and gap matrix for every core export in 0.13.0
-- [x] close the individual aliasing gaps recorded by that matrix in 0.14.0
-- [x] close the 79 indexed allocation-evidence entries through reviewed allocation-free, initializer, prefix-cleanup and transaction contracts in 0.20.0
+## Version 1.0 promotion requirements
 
-## Deep audit completed in 0.19.0
+The following remain promotion requirements rather than claims made by the
+0.20.0 version number:
 
-- [x] regressions for confirmed rounding, parsing, exceptional-value, interval, and resource defects
-- [x] relocated multiarch package consumers and explicit core/MPFR components
-- [x] allocation evidence classified by tested endpoints, with setup calls excluded
-- [x] fresh compiler, differential, sanitizer, ABI, and bounded fuzz evidence recorded
+- [ ] Make the final SONAME, package-version compatibility, and support-window decision while preserving or explicitly migrating the epoch-1 commitment.
+- [ ] Establish sustained fuzzing and permanent regression-corpus governance.
+- [ ] Document or prove every fixed iteration and argument-domain limit, with boundary evidence.
+- [ ] Connect each certified numerical path to its written enclosure or remainder argument.
+- [ ] Obtain independent review of core rounding and constant proofs and of the intended release claims.
+- [ ] Obtain at least two independent correctness reproductions of the exact candidate and declared support matrix.
 
-## Numerical validation blocks
+Local compiler and sanitizer runs contribute evidence but do not replace
+independent review or external reproduction. A 1.0 release must also have a
+frozen public contract, published limits, and successful qualification for its
+declared platforms.
 
-- [ ] expand hard-to-round and narrow-range cases
-- [x] test every governed alias pattern systematically across all six rounding modes
-- [ ] prove or document every fixed iteration and argument-domain limit
-- [ ] connect each certified path to its written enclosure or remainder proof
-- [ ] obtain independent review of core rounding and constant proofs
+## Platform and safety expansion
 
-## Performance and replication blocks
+- Extend governed ABI evidence beyond Linux x86-64 ELF LP64/GMP64.
+- Add ARM64, native Windows, macOS, big-endian, and 32-bit evidence before making corresponding support claims.
+- Expand hard-to-round, narrow-range, high-thread-count, and library-unload stress coverage.
+- Continue longer sanitizer and fuzz campaigns and retain regressions in the corpus.
 
-- [ ] complete higher-core product graphs and worker-aware scheduling
-- [ ] eliminate high-worker regressions before enabling aggressive defaults
-- [ ] improve serial logarithm, reciprocal square root, inverse-angle, hyperbolic, and special-function kernels
-- [ ] benchmark every numerical family over representative input regions
-- [ ] obtain at least two independent correctness reproductions
-- [ ] obtain an independent reproduction of the principal performance results
+These platforms are outside the current contract. The scope of a future release
+should state explicitly which platform-expansion goals it adopts.
 
-## Version 1.0 gate
+## Performance work
 
-Version 1.0 requires a frozen public contract, supported-platform evidence,
-sustained safety testing, published limits, independent review, and
-reproducible external validation. API inventory completion alone is not the
-version 1.0 gate.
+- Improve serial logarithm, reciprocal square root, inverse-angle, hyperbolic, and special-function kernels.
+- Complete higher-core product graphs and worker-aware scheduling.
+- Resolve high-worker regressions before enabling aggressive defaults.
+- Benchmark each numerical family over representative input regions.
+- Obtain independent reproduction before promoting principal performance results as externally replicated.
+
+Performance claims remain operation- and environment-specific under the
+[claims policy](docs/CLAIMS_AND_EVIDENCE.md).

@@ -61,5 +61,5 @@ jobs:
       - name: Install ABI documentation and package
         run: |
           cmake --install build --prefix "$PWD/stage/prefix"
-          test -f stage/prefix/share/doc/PolyphaseFloat/ABI_POLICY.md
+          test -f stage/prefix/share/doc/PolyphaseFloat/docs/ABI_POLICY.md
           test -f stage/prefix/share/doc/PolyphaseFloat/abi/contract-v1.json

@@ -1,20 +1,42 @@
 # Release notes
 
 
-## 0.20.0 allocation closeout and integrated resource repair
+## 0.20.0 — 2026-10-22
 
-- Integrate PPFIF payload/significand admission limits and bounded streaming.
-- Reject Airy inputs above the supported bound using exact comparison.
-- Validate floating-setter rounding modes before special-value mutation.
-- Resolve 79 allocation-evidence entries with explicit source contracts and
-  focused lifecycle and transaction tests.
-- Add reviewed numerical boundaries, deterministic retry-exhaustion tests and
-  an offline qualification runner.
-- Preserve the remote repository's private CodeQL and temporary-build fixes.
+Polyphase Float 0.20.0 improves numerical boundary handling, resource admission,
+allocation-failure cleanup, and the build-to-install experience. The supported
+baseline is Linux x86-64 (ELF, LP64, 64-bit GMP limbs), with optional OpenMP.
+The production core requires GMP and POSIX threads; MPFR remains optional.
 
-The candidate preserves ABI epoch 1 and the existing SONAME. External
-correctness replication and independent mathematical review remain open.
-See `docs/COMPLETION_SCOPE_0.20.0.md` and `docs/QUALIFICATION.md`.
+- Bound PPFIF payload and significand storage before allocation, with incremental
+  input reads and a configurable import limit.
+- Compare the finite Airy input limit exactly and reject invalid setter rounding
+  modes before changing numerical destinations.
+- Reject invalid text-output radices and overflowing zero-output lengths safely.
+  Convert extremely small values to `float`, `double`, and `long double` without
+  allocating storage proportional to the exponent gap.
+- Preserve the full GMP bit-count width when rounding large integers. Leave
+  dyadic intervals undecided when their endpoints disagree on underflow or
+  overflow flags, allowing callers to refine them.
+- Correct division carry-to-overflow fallback and exact subnormalization flags.
+- Fix cleanup after partial initialization of interval scratch objects. Require
+  finite, ordered interval endpoints and bound alignment during dyadic
+  certificate construction in transcendental and special-function evaluation.
+- Settle proven exponential and Gamma range cases before expensive construction.
+  Compute integer base-2 exponentials directly and bound other exact-power
+  shortcuts and exponential-minus-one subtraction work.
+- Complete the indexed allocation-contract classification and add targeted
+  numerical, input-boundary, and allocation-failure regressions.
+- Provide a checked introductory example, clear ownership and error-handling
+  guidance, and installed documentation with working relative paths.
+- Retain deterministic source archives and an offline qualification runner for
+  compiler, installed-consumer, sanitizer, and seeded fuzz checks.
+
+ABI epoch 1, public declarations, symbol versions, and the existing
+`libpolyphase_float.so.0` SONAME are preserved. Supported inputs and failure
+contracts are specified in [Release scope](docs/COMPLETION_SCOPE_0.20.0.md).
+See [Qualification](docs/QUALIFICATION.md) for reproducible validation and the
+[roadmap](ROADMAP.md) for the independent evidence required for a later 1.0 release.
 
 ## 0.19.0 deep audit and corrected contracts — 2026-10-09
 

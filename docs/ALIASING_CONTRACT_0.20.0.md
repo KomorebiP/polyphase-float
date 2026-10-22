@@ -2,7 +2,7 @@
 
 Release: `0.20.0`  
 Contract version: `1`  
-Contract SHA-256: `802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7`
+Contract SHA-256: `d909e0c44f392b5e1353e22cd7c2f33fb609c843e6ebcbe0fb1142c7dbf35cc9`
 
 ## Contract boundary
 

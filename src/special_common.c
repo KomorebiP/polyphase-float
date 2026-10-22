@@ -239,7 +239,7 @@ int ppf_special_iv_abs(ppf_special_iv_t *out,
     if(sl>=0) return ppf_special_iv_copy(out,x,ctx);
     if(sh<=0) return ppf_special_iv_neg(out,x,ctx);
     ppf_set_zero(&out->lo,1);
-    ppf_t a,b;
+    ppf_t a = {0}, b = {0};
     int rc=-1;
     if(ppf_init2_ctx(&a,out->hi.precision,ctx)||ppf_init2_ctx(&b,out->hi.precision,ctx)) goto done;
     if(ppf_abs(&a,&x->lo,PPF_RNDU,ctx)==PPF_TERNARY_ERROR||
@@ -323,13 +323,24 @@ int ppf_special_iv_to_dyadic(mpz_ptr lower, mpz_ptr upper,
                              ppf_exp_t *exponent,
                              const ppf_special_iv_t *x) {
     mpz_t l,u; ppf_exp_t el,eu,e; uint64_t dl,du;
-    if(!lower||!upper||!exponent) return -1;
+    if(!lower||!upper||!exponent||!x||
+       !ppf_number_p(&x->lo)||!ppf_number_p(&x->hi)||
+       ppf_cmp(&x->lo,&x->hi,NULL)>0) return -1;
     mpz_inits(l,u,NULL);
-    el=ppf_get_z_2exp(l,&x->lo); eu=ppf_get_z_2exp(u,&x->hi); e=el<eu?el:eu;
+    el=ppf_get_z_2exp(l,&x->lo); eu=ppf_get_z_2exp(u,&x->hi);
+    /* Zero has no preferred dyadic exponent. Align it with the nonzero
+       endpoint instead of expanding a finite endpoint toward exponent zero. */
+    if (mpz_sgn(l)==0) el=eu;
+    if (mpz_sgn(u)==0) eu=el;
+    e=el<eu?el:eu;
     dl=(uint64_t)el-(uint64_t)e; du=(uint64_t)eu-(uint64_t)e;
-    if(dl>ULONG_MAX||du>ULONG_MAX){mpz_clears(l,u,NULL);return -1;}
-    if (dl) mpz_mul_2exp(l, l, (mp_bitcnt_t) dl);
-    if (du) mpz_mul_2exp(u, u, (mp_bitcnt_t) du);
+    /* A dyadic certificate is a bounded construction. Extremely wide finite
+       enclosures must retry or fail instead of expanding unbounded GMP data. */
+    if(dl>ULONG_MAX||du>ULONG_MAX||dl>1000000u||du>1000000u){
+        mpz_clears(l,u,NULL);return -1;
+    }
+    if (dl && mpz_sgn(l)!=0) mpz_mul_2exp(l, l, (mp_bitcnt_t) dl);
+    if (du && mpz_sgn(u)!=0) mpz_mul_2exp(u, u, (mp_bitcnt_t) du);
     mpz_set(lower,l);mpz_set(upper,u);*exponent=e;mpz_clears(l,u,NULL);return 0;
 }
 

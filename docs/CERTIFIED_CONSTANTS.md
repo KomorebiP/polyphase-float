@@ -21,7 +21,8 @@ L2^e \le c \le U2^e.
 \]
 
 The shared evaluator rounds both endpoints. If they select the same binary
-value and prove the same ternary direction, that result is returned. Otherwise
+value, prove the same ternary direction, and agree on underflow and overflow
+flags, that result is returned. Otherwise
 the working precision grows by at least ten percent plus 64 bits and the
 constant-specific calculation is repeated.
 

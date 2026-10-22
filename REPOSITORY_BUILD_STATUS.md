@@ -1,14 +1,18 @@
-# Repository build status
+# Repository build and validation status
 
-The private repository baseline was checked at commit
-`0ec253fd7e0547aac13def718ea19b92787bf36d`. All 47 production source files
-match the frozen 0.18.0 source manifest. The current candidate therefore uses
-the newer audited 0.19.0 source plus the integrated 0.20.0 repairs.
+The 0.20.0 release preparation began from commit
+`70ce732e2244effcd7bd0d450618e5734546a2b8` of `KomorebiP/polyphase-float`.
+That identifier describes the recovered starting source; it is not the hash of
+subsequent release-preparation edits or a claim that those edits were pushed.
 
-The remote temporary-build and private CodeQL SARIF changes are preserved.
-Its export-audit fixtures are retained and adapted to the centralized
-capability helper. The original staging status is preserved unchanged under
-docs/history/REPOSITORY_BUILD_STATUS_0.18.md.
+Current build evidence belongs to the exact source snapshot recorded by
+[release qualification](docs/QUALIFICATION.md). Inspect the receipt for each
+compiler, configuration, dependency set, command, and outcome. A successful
+build on one host does not establish a hosted CI result or another platform's
+compatibility.
 
-Run docs/QUALIFICATION.md for current execution evidence. This document does
-not assert a new remote commit, hosted workflow result, tag or public release.
+The earlier repository-staging report remains in
+[the historical 0.18 report](docs/history/REPOSITORY_BUILD_STATUS_0.18.md).
+Use [Status](STATUS.md) and [Release scope](docs/COMPLETION_SCOPE_0.20.0.md)
+for the current contract; use the retained qualification receipt for execution
+results.

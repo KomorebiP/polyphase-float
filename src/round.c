@@ -7,9 +7,8 @@
 
 static int rounded_increment(ppf_rnd_t rnd, int sign,
                              mpz_srcptr quotient, mpz_srcptr remainder,
-                             unsigned shift) {
-    int cmp;
-    mpz_t half;
+                             mp_bitcnt_t shift) {
+    size_t remainder_bits;
     if (mpz_sgn(remainder) == 0) return 0;
     switch (rnd) {
         case PPF_RNDZ:
@@ -22,12 +21,12 @@ static int rounded_increment(ppf_rnd_t rnd, int sign,
         case PPF_RNDD:
             return sign < 0;
         case PPF_RNDN:
-            mpz_init_set_ui(half, 1);
-            mpz_mul_2exp(half, half, shift - 1);
-            cmp = mpz_cmp(remainder, half);
-            mpz_clear(half);
-            if (cmp > 0) return 1;
-            if (cmp < 0) return 0;
+            /* Compare with 2^(shift-1) without allocating that power.
+               Keep the full GMP bit-count width for large integer inputs. */
+            remainder_bits = mpz_sizeinbase(remainder, 2);
+            if (remainder_bits < shift) return 0;
+            if (remainder_bits > shift || mpz_popcount(remainder) > 1)
+                return 1;
             return mpz_odd_p(quotient) != 0;
         default:
             return 0;
@@ -532,6 +531,14 @@ ppf_interval_status_t ppf_set_dyadic_interval(
         goto done;
     }
     if (!ppf_same_value(&lo, &hi)) {
+        rc = PPF_INTERVAL_UNDECIDED;
+        goto done;
+    }
+    /* A shared rounded value does not settle range flags: one endpoint can
+       underflow to the minimum normal value while the other rounds there
+       without underflow.  Refine before publishing either interpretation. */
+    if ((lo_ctx.flags ^ hi_ctx.flags) &
+        (PPF_FLAG_UNDERFLOW | PPF_FLAG_OVERFLOW)) {
         rc = PPF_INTERVAL_UNDECIDED;
         goto done;
     }

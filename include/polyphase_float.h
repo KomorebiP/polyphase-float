@@ -44,13 +44,13 @@ extern "C" {
 #define PPF_ABI_TAG "polyphase-float-abi-1"
 #define PPF_ABI_INFO_VERSION 1
 #define PPF_ABI_CONTRACT_SHA256 \
-    "6025fff55e8a41fb682cadab8df813c84ce34d6dbd9c7e717fbf974f0c0a7868"
+    "fd0a0d0bb10932a2a4892a4eafa398da75c221ad58bb9a25e0a678d906eace2b"
 #define PPF_SEMANTIC_CONTRACT_VERSION 1
 #define PPF_SEMANTIC_CONTRACT_SHA256 \
-    "a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139"
+    "d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae"
 #define PPF_ALIASING_CONTRACT_VERSION 1
 #define PPF_ALIASING_CONTRACT_SHA256 \
-    "802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7"
+    "d909e0c44f392b5e1353e22cd7c2f33fb609c843e6ebcbe0fb1142c7dbf35cc9"
 
 
 #if defined(__SIZEOF_FLOAT128__) && (__SIZEOF_FLOAT128__ == 16)
@@ -566,6 +566,8 @@ PPF_API void ppf_get_q(mpq_ptr value, const ppf_t *op,
 PPF_API int ppf_get_f(mpf_ptr value, const ppf_t *op,
                       ppf_rnd_t rnd, ppf_context_t *ctx);
 PPF_API size_t ppf_get_str_ndigits(int base, ppf_prec_t precision);
+/* With buffer == NULL, release the returned allocation with ppf_free_str.
+   A caller-supplied buffer remains caller-owned and must have enough space. */
 PPF_API char *ppf_get_str(char *buffer, ppf_exp_t *exponent,
                           int base, size_t digits, const ppf_t *op,
                           ppf_rnd_t rnd, ppf_context_t *ctx);
@@ -595,6 +597,8 @@ PPF_API int ppf_snprintf(char *buffer, size_t size,
                          const char *format, ...);
 PPF_API int ppf_vsnprintf(char *buffer, size_t size,
                           const char *format, va_list ap);
+/* Successful asprintf/vasprintf output is allocated with malloc. Release it
+   with free, not ppf_free_str. Failure leaves *text == NULL. */
 PPF_API int ppf_asprintf(char **text, const char *format, ...);
 PPF_API int ppf_vasprintf(char **text, const char *format, va_list ap);
 PPF_API int ppf_fits_ulong_p(const ppf_t *op, ppf_rnd_t rnd);
@@ -1159,7 +1163,10 @@ PPF_API void ppf_set_constant_threads(unsigned long workers);
 PPF_API unsigned long ppf_get_constant_threads(void);
 PPF_API int ppf_get_last_constant_stats(ppf_constant_stats_t *out);
 
-/* Certified interval assignment. */
+/* Certified interval assignment.  A decision requires both endpoints to
+   select the same value, a proven ternary direction, and agreeing underflow
+   and overflow flags.  UNDECIDED preserves the destination, ternary output,
+   and existing context flags; callers may refine the interval and retry. */
 PPF_API ppf_interval_status_t ppf_set_dyadic_interval(
     ppf_t *rop, mpz_srcptr lower, mpz_srcptr upper,
     ppf_exp_t exponent, ppf_rnd_t rnd, int *ternary,

@@ -19,7 +19,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-DEFAULT_EPOCH = int(datetime(2026, 8, 31, tzinfo=timezone.utc).timestamp())
+DEFAULT_EPOCH = int(datetime(2026, 10, 22, tzinfo=timezone.utc).timestamp())
 EXCLUDED_PARTS = {
     ".git",
     "build",

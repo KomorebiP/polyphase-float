@@ -1,98 +1,97 @@
 # Claims and evidence policy
 
-Polyphase Float separates claims by evidence level.
+A release statement should say what was established, on which source and
+platform, and by which method. The following evidence levels answer different
+questions; one does not automatically establish the next.
 
-## Level 1: implemented
+## Implemented surface
 
-A symbol exists in the public header and shared-library export surface. The
-349-of-349 inventory count establishes direct or conditional counterparts for
-the supplied lowercase reference inventory. It does not establish full
-semantic equivalence, equal performance, or a stable ABI.
+The supplied lowercase reference inventory has 349 direct or conditional
+`ppf_*` counterparts. The core semantic ledger indexes 437 public functions,
+including compiler-conditional interfaces. An inventory count establishes
+surface coverage, not semantic equivalence with MPFR or equal maturity of all
+paths.
 
-## Level 2: tested
+## Executed tests
 
-The implementation agrees with exact checks, invariants, or an external oracle
-for the domains covered by the supplied tests. Test reports must identify the
-input classes, precision, rounding modes, resource conditions, and platform.
+Tests compare results with exact checks, invariants, or an external oracle for
+specified inputs. Reports should identify source hashes, platform, dependency
+versions, input classes, precision, rounding mode, and resource conditions.
+A function named in a test source has a direct test reference; that alone does
+not establish exhaustive branch or input coverage.
 
-Version 0.10.9 adds deterministic allocation-failure tests for a documented
-subset of context-owned operations. That evidence must not be generalized to
-GMP-internal allocation or every remaining direct process allocation.
+The current allocation ledger records 192 transactional contracts, 63 reviewed
+allocation-free contracts, 12 initialize-and-set lifecycles, two prefix-cleanup
+contracts, and three safe-zero initializer contracts. There are no remaining
+indexed allocation-evidence gaps. These classifications have different
+preconditions and failure outcomes; see
+[Allocation evidence](ALLOCATION_COMPLETION_0.20.0.md). They do not extend
+recoverable project-allocation rollback to GMP, libc, or I/O side effects.
 
-Version 0.11.0 adds a documented POSIX-thread ownership contract and a focused
-ThreadSanitizer/cache-lifecycle suite. That evidence supports the patterns in
-`THREAD_SAFETY.md`; it does not make shared mutable contexts, objects, or random
-states safe without external synchronization.
+The [thread-ownership contract](THREAD_SAFETY.md) defines the supported sharing
+and cleanup patterns. Tests for those patterns do not make concurrent mutation
+of an unprotected object, context, or random state safe.
 
-## Level 3: mathematically certified
+[Qualification](QUALIFICATION.md) produces current execution receipts. Record
+sanitizer and fuzz duration and exclusions explicitly. In particular, the
+default ASan/UBSan configuration disables LeakSanitizer. Historical test logs
+remain evidence for their recorded source and environment.
 
-A written argument establishes an enclosure, tail bound, exact transformation,
-or rounding decision. The implementation must be traceable to that argument.
-A label such as “certified” is not justified solely by a test pass.
+## Mathematical arguments
 
-## Level 4: independently reproduced
+A written argument may establish an enclosure, tail bound, exact
+transformation, or rounding decision. The implementation and its input
+assumptions must be traceable to that argument. Passing an MPFR comparison
+does not itself prove a path for every representable input.
 
-A person or system outside the original development environment rebuilds the
-specified source and reproduces the claim from retained commands and raw data.
+The [special-function review](BRANCH_REVIEW_0.20.0.md) states its selected
+branches, arguments, and assumptions. The [release scope](COMPLETION_SCOPE_0.20.0.md)
+and semantic ledger retain 105 bounded implementation paths and six
+compiler-conditional interfaces. A documented implementation limit is not a
+mathematical domain restriction on the underlying function.
 
-## Level 5: production mature
+## Compatibility evidence
 
-The project has a stable public contract, broad platform coverage, sustained
-fuzzing and sanitizer evidence, comprehensive failure injection, external
-review, and a maintained release process. The current project is not yet at
-this level.
+ABI epoch 1 governs the Linux x86-64 ELF LP64/GMP64 baseline, including public layouts,
+exports, symbol versions, and `libpolyphase_float.so.0`. Source-contract,
+runtime-layout, and old-binary execution checks establish different parts of
+that commitment. See [ABI policy](ABI_POLICY.md). Polyphase Float is not a
+binary replacement for MPFR, and the governed ABI does not imply compatibility
+on other data models or operating systems.
 
-## Current defensible statements
+## Independent reproduction and maturity
 
-- The source contains direct or conditional `ppf_*` counterparts for all 349
-  symbols in the supplied lowercase inventory.
-- The public header and validated GCC core shared-library configurations
-  contain 437 `ppf_*` functions.
-- The generated semantic ledger contains one record and curated purpose
-  for each of those 437 functions, and every name has a direct test-source
-  reference. The same ledger retains unresolved allocation, limit,
-  and conditional-build gaps explicitly. The separate aliasing contract
-  classifies all 437 functions with zero unverified entries.
-- The production core is designed not to link MPFR, and the supplied audit
-  checks imported symbols.
-- The repository contains exact, differential, randomized, range,
-  special-value, aliasing, large-precision, allocation-failure, sanitizer, and
-  bounded-fuzzing tests.
-- Context allocation failures in the covered 0.10.9 operation set raise
-  `PPF_FLAG_ALLOC` and obey the documented transactional rules.
-- The supported 0.11.0 thread-ownership and global-cache cleanup patterns pass
-  the focused race, leak, and lifecycle suite.
-- The governed 0.12.0 Linux ELF ABI has zero breaking source-contract changes
-  from 0.11.0, matching LP64/GMP64 layouts, required symbol versions, and an
-  unchanged old-binary execution test.
-- Included benchmark data shows operation-specific wins and losses on recorded
-  hosts.
+Independent reproduction rebuilds the exact source and reproduces the claim
+outside the original development environment using retained commands and data.
+Changing compilers on one host is useful local variation, not external
+replication. Review and reproduction claims must identify their source and
+scope; a report's title or a test executable's name does not establish
+independence.
 
-## Statements not supported by the current evidence alone
+A production-maturity claim additionally needs a maintained support policy,
+sustained safety testing, independent review, and validation across its declared
+support matrix. Version 0.20.0 is a bounded pre-1.0 release. The outstanding
+requirements for 1.0 are recorded in the [roadmap](../ROADMAP.md).
 
-- every function is correctly rounded for every possible input
-- every allocation in the library is controlled by the context allocator
-- the library is a drop-in binary replacement for MPFR
-- the ABI is stable on every operating system, architecture, or data model
-- the project is universally faster than MPFR
-- a multiworker result is an equal-resource comparison with a one-thread result
-- machine-specific benchmarks are independently replicated
-- literal API coverage or a direct test reference is equivalent to
-  exhaustive semantic verification or production maturity
+## Performance claims
 
-## Benchmark claim template
+Benchmark results are specific to the operation, inputs, implementation path,
+and machine. Retain wins and losses. Do not infer universal speed superiority
+from selected rows or compare worker counts as though they used equal resources.
 
-A public performance statement should name:
+A public performance statement should identify:
 
-1. operation and implementation path
-2. precision and operand class
-3. rounding mode
-4. worker count and affinity policy
-5. cold or warm cache condition
-6. timed boundary
-7. compiler and dependency builds
-8. in-process and independent-process counts, estimator, and uncertainty method
-9. whether every timing sample was retained
-10. correctness gate
-11. source, executable, environment, and run-configuration fingerprints
-12. raw-data and analysis-manifest locations
+1. operation and implementation path;
+2. precision, operand class, and rounding mode;
+3. worker count and affinity policy;
+4. cold or warm cache state and the timed boundary;
+5. compiler and dependency builds;
+6. in-process and independent-process counts, estimator, and uncertainty method;
+7. retained timing samples and correctness checks;
+8. source, executable, environment, and run-configuration fingerprints;
+9. raw-data and analysis-manifest locations;
+10. any independent reproduction and its exact scope.
+
+See [Benchmark evidence](BENCHMARK_EVIDENCE_PIPELINE.md) for the retained-sample
+workflow. Machine-specific historical reports remain historical until their
+claims are reproduced on the intended release and environment.

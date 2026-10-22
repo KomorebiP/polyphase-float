@@ -1,25 +1,26 @@
 # Status
 
-Version 0.20.0 is a pre-1.0 candidate with a reproducible qualification command.
-It integrates the PPFIF resource-admission repair, exact Airy boundary checking
-and floating-setter validation before special-value mutation.
+Polyphase Float 0.20.0 is a pre-1.0 source release for Linux x86-64 ELF LP64 with
+64-bit GMP limbs. It retains ABI epoch 1 and `libpolyphase_float.so.0`.
+The core requires GMP and POSIX threads; MPFR and OpenMP are optional.
 
-The semantic ledger indexes 437 core functions. It records 192 transactional
-contracts, 63 reviewed allocation-free contracts, 12 verified initialize-and-set
-lifecycles, two verified prefix-cleanup contracts and three existing safe-zero
-initializers. There are no remaining indexed allocation-evidence gaps.
-The 105 bounded implementation paths and six compiler-conditional interfaces
-remain explicit. Classification and finite tests do not prove every branch or
-all representable inputs.
+The public semantic ledger indexes 437 core functions. Its allocation
+classifications contain 192 transactional contracts, 63 reviewed
+allocation-free contracts, 12 initialize-and-set lifecycles, two prefix-cleanup
+contracts, and three safe-zero initializer contracts. There are no remaining
+indexed allocation-evidence gaps. The ledger also identifies 105 bounded
+implementation paths and six compiler-conditional interfaces.
 
-ABI epoch 1, public declarations, Linux ELF LP64/GMP64 layouts, symbol versions
-and SONAME libpolyphase_float.so.0 are retained. Core-only consumers can omit
-MPFR. GMP and POSIX threads remain production requirements.
+The release includes bounded PPFIF resource admission, exact Airy boundary
+checking, and floating-setter validation before special-value mutation.
+Supported inputs and failure behavior are stated in the
+[release scope](docs/COMPLETION_SCOPE_0.20.0.md).
 
-Run the command in docs/QUALIFICATION.md to produce fresh compiler, consumer,
-ASan/UBSan and timed fuzz receipts outside the source tree. The supplied
-historical and targeted evidence is identified separately. No remote tag or
-public release is claimed by this source package.
+Use [Qualification](docs/QUALIFICATION.md) to reproduce the compiler, consumer,
+sanitizer, and timed fuzz checks. A receipt records the exact source and the
+checks actually executed. Historical evidence is indexed separately in
+[History](docs/HISTORY_INDEX.md).
 
-External correctness replication and independent mathematical review remain
-open 1.0 gates. Wider platforms require their own execution evidence.
+The [roadmap](ROADMAP.md) records future platform work and the independent
+review and external reproduction required for 1.0. Release preparation and
+local validation do not assert a remote tag or public publication.

@@ -260,8 +260,11 @@ int ppf_subnormalize(ppf_t *x, int ternary,
     }
     mpz_clears(z, magnitude, quotient, remainder, rounded, NULL);
     if (rc == PPF_TERNARY_ERROR) return rc;
+    /* Like mpfr_subnormalize, entering the reduced-precision rounding stage
+       raises underflow even if this particular value is exactly representable. */
+    ppf_raise(ctx, PPF_FLAG_UNDERFLOW);
     if (result_ternary != 0) {
-        ppf_raise(ctx, PPF_FLAG_INEXACT | PPF_FLAG_UNDERFLOW);
+        ppf_raise(ctx, PPF_FLAG_INEXACT);
     }
     return result_ternary;
 }

@@ -2,7 +2,7 @@
 
 Release: `0.20.0`  
 Contract version: `1`  
-Contract SHA-256: `a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139`
+Contract SHA-256: `d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae`
 
 ## Purpose and boundary
 
@@ -18,7 +18,7 @@ An entry without a currently recorded gap is not a universal correctness proof. 
 |---|---:|
 | Public core functions | **437** |
 | Functions with a direct test reference | **437** |
-| Functions with a pre-existing documentation reference | **154** |
+| Functions with a pre-existing documentation reference | **158** |
 | Conditional functions | **6** |
 | Entries without a currently recorded gap | **326** |
 | Entries with one or more explicit gaps | **111** |

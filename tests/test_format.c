@@ -80,7 +80,7 @@ static void check_one(const char *format, ppf_t *p, mpfr_ptr m) {
                 format, na, a ? a : "(null)", nb, b ? b : "(null)");
         abort();
     }
-    ppf_free_str(a); mpfr_free_str(b);
+    free(a); mpfr_free_str(b);
 }
 
 static void test_ppf_formats(void) {
@@ -122,13 +122,13 @@ static void test_mixed_format(void) {
     nb = reference_asprintf(&b, "x=%+.6Rf z=%#Zx p=%Pu s=%s i=%d",
                             m, z, (mpfr_prec_t)100, "ok", 7);
     assert(na == nb && na >= 0 && memcmp(a, b, (size_t)na + 1u) == 0);
-    ppf_free_str(a); mpfr_free_str(b);
+    free(a); mpfr_free_str(b);
 
     a = b = NULL;
     na = ppf_asprintf(&a, "%*.*R*f", 20, 8, PPF_RNDD, &p);
     nb = reference_asprintf(&b, "%*.*R*f", 20, 8, MPFR_RNDD, m);
     assert(na == nb && memcmp(a, b, (size_t)na + 1u) == 0);
-    ppf_free_str(a); mpfr_free_str(b);
+    free(a); mpfr_free_str(b);
     mpz_clear(z); ppf_clear(&p); mpfr_clear(m);
 }
 
@@ -161,7 +161,7 @@ static void test_snprintf_and_n(void) {
     assert(na == nb && memcmp(sa, sb, (size_t)na + 1u) == 0);
     assert(ppf_get_ui(&count, PPF_RNDN, NULL) == 3u);
     assert(mpfr_get_ui(mcount, MPFR_RNDN) == 3u);
-    ppf_free_str(sa); mpfr_free_str(sb);
+    free(sa); mpfr_free_str(sb);
     ppf_clear(&p); ppf_clear(&count); mpfr_clears(m, mcount, (mpfr_ptr)0);
 }
 
@@ -176,7 +176,7 @@ static void test_flag_preservation(void) {
     assert(ppf_asprintf(&text, "%.2Rg", &x) >= 0);
     assert(strcmp(text, "1.2") == 0);
     assert(ppf_flags_test(PPF_FLAGS_ALL) == PPF_FLAG_UNDERFLOW);
-    ppf_free_str(text);
+    free(text);
     ppf_clear(&x);
 }
 
@@ -185,7 +185,7 @@ static void test_embedded_zero(void) {
     int n = ppf_asprintf(&s, "A%cB", 0);
     assert(n == 3);
     assert(s[0] == 'A' && s[1] == 0 && s[2] == 'B' && s[3] == 0);
-    ppf_free_str(s);
+    free(s);
 }
 
 
@@ -289,7 +289,7 @@ static void test_native_gmp_and_wrappers(void) {
     assert(ppf_printf("") == 0);
     assert(call_ppf_vprintf("") == 0);
 
-    ppf_free_str(a); ppf_free_str(b);
+    free(a); free(b);
     mpf_clear(f); mpq_clear(q); mpz_clear(z); ppf_clear(&p);
 }
 

@@ -145,6 +145,9 @@ bin/test_independent_special_review: tests/test_independent_special_review.c tes
 bin/test_special_interval_audit: tests/test_special_interval_audit.c $(ADAPTER_STATIC) $(CORE_STATIC) | bin
 	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< $(ADAPTER_STATIC) $(CORE_STATIC) $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
 
+bin/test_rounding_width: tests/test_rounding_width.c src/round.c src/ppf_internal.h include/polyphase_float.h $(CORE_STATIC) | bin
+	$(CC) $(CPPFLAGS) $(CFLAGS) $< $(CORE_STATIC) $(LDFLAGS) $(GMP_LIBS) -o $@
+
 bin/test_object: tests/test_object.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
 
@@ -156,6 +159,15 @@ bin/test_io_allocation_failure: tests/test_io_allocation_failure.c $(CORE_SHARED
 
 bin/test_fpif_resource_bounds: tests/test_fpif_resource_bounds.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_text_bounds: tests/test_text_bounds.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_bounded_conversion: tests/test_bounded_conversion.c $(CORE_SHARED) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
+
+bin/test_interval_allocation: tests/test_interval_allocation.c $(CORE_STATIC) | bin
+	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< $(CORE_STATIC) $(LDFLAGS) $(GMP_LIBS) -o $@
 
 bin/test_allocation_completion: tests/test_allocation_completion.c $(CORE_SHARED) | bin
 	$(CC) $(CPPFLAGS) -O2 -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(GMP_LIBS) -o $@
@@ -313,7 +325,10 @@ bin/benchmark_runtime_completion: benchmarks/benchmark_runtime_completion.c $(AD
 bin/benchmark_object: benchmarks/benchmark_object.c $(ADAPTER_SHARED) | bin
 	$(CC) $(CPPFLAGS) $(MPFR_CPPFLAGS) $(MPFR_CFLAGS) -O3 -march=native -std=c11 -Wall -Wextra -Wpedantic $< -Llib -lpolyphase_float_mpfr -lpolyphase_float -Wl,-rpath,'$$ORIGIN/../lib' $(LDFLAGS) $(MPFR_LIBS) $(GMP_LIBS) -o $@
 
-test: bin/test_allocation_completion bin/test_release_boundaries bin/test_fpif_resource_bounds bin/test_independent_special_review bin/test_api_lifecycle_audit bin/test_precision_remainder_failure bin/test_special_edge_audit bin/test_special_interval_audit bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_abi_runtime bin/test_semantic_surface bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities bin/test_utilities_remainder bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats
+test: bin/test_text_bounds bin/test_bounded_conversion bin/test_interval_allocation bin/test_allocation_completion bin/test_release_boundaries bin/test_fpif_resource_bounds bin/test_independent_special_review bin/test_api_lifecycle_audit bin/test_precision_remainder_failure bin/test_special_edge_audit bin/test_special_interval_audit bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_abi_runtime bin/test_semantic_surface bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities bin/test_utilities_remainder bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats bin/test_rounding_width
+	./bin/test_text_bounds
+	./bin/test_bounded_conversion
+	./bin/test_interval_allocation
 	./bin/test_allocation_completion
 	./bin/test_release_boundaries
 	./bin/test_fpif_resource_bounds
@@ -323,6 +338,7 @@ test: bin/test_allocation_completion bin/test_release_boundaries bin/test_fpif_r
 	./bin/test_special_edge_audit
 	./bin/test_special_interval_audit
 	./bin/test_object
+	./bin/test_rounding_width
 	./bin/test_allocation_failure
 	./bin/test_io_allocation_failure
 	./bin/test_constant_allocation_failure
@@ -404,8 +420,12 @@ benchmark: bin/benchmark_object bin/benchmark_arithmetic bin/benchmark_assignmen
 
 sanitize:
 	$(MAKE) clean
-	$(MAKE) -j1 CFLAGS='-O1 -g -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden $(OPENMP_CFLAGS) -fsanitize=address,undefined -fno-omit-frame-pointer' LDFLAGS='-pthread $(OPENMP_LDFLAGS) -fsanitize=address,undefined' all bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities_remainder bin/test_utilities bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats
+	$(MAKE) -j1 CFLAGS='-O1 -g -std=c11 -Wall -Wextra -Wpedantic -fPIC -fvisibility=hidden $(OPENMP_CFLAGS) -fsanitize=address,undefined -fno-omit-frame-pointer' LDFLAGS='-pthread $(OPENMP_LDFLAGS) -fsanitize=address,undefined' all bin/test_text_bounds bin/test_bounded_conversion bin/test_interval_allocation bin/test_object bin/test_allocation_failure bin/test_io_allocation_failure bin/test_constant_allocation_failure bin/test_transcendental_special_allocation_failure bin/test_arithmetic_root_allocation_failure bin/test_thread_safety bin/test_format_errno bin/test_product_profile bin/test_aliasing_matrix bin/test_mpfr_adapter bin/test_mpfr_type_model bin/test_exhaustive_small bin/test_arithmetic bin/test_arithmetic_variants bin/test_arithmetic_special bin/test_arithmetic_range bin/test_assignment_conversion bin/test_io bin/test_format bin/test_utilities_remainder bin/test_utilities bin/test_range_flags bin/test_roots bin/test_divisor_plan bin/test_constants bin/test_product_planner bin/test_transcendental_complete bin/test_transcendental_random bin/test_transcendental_range bin/test_transcendental_large $(addprefix bin/test_,$(TRIG_TESTS)) $(addprefix bin/test_,$(SPECIAL_TESTS)) bin/test_runtime_support bin/test_random_runtime bin/test_conditional_formats bin/test_rounding_width
+	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_text_bounds
+	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_bounded_conversion
+	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_interval_allocation
 	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_object
+	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_rounding_width
 	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_allocation_failure
 	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_io_allocation_failure
 	ASAN_OPTIONS=detect_leaks=1:abort_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./bin/test_constant_allocation_failure

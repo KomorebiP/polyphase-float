@@ -3,18 +3,30 @@
   "baseline_manifest_sha256": "561b8f906a7c8b7d9a2cf5fd4e4c1d4df67ec27a1a301557f585e81d3a94b805",
   "baseline_version": "0.19.0",
   "change_boundary": {
-    "assignment.c": "Validate rounding modes before floating special-value mutation; preserve initialized destinations on rejection.",
+    "assignment.c": "Validate setter rounding before mutation; reject invalid radix and overflowing zero-output lengths; bound fixed-width floating conversion work independently of source exponent.",
     "conditional_formats.c": "Validate optional binary128/decimal setter rounding before conversion and special-value handling.",
     "io.c": "Admit bounded PPFIF payload and limb storage before allocation and read payload incrementally.",
+    "limb_round.c": "Maintain a valid staged destination during carry-to-overflow fallback before committing finite significand metadata.",
     "polyphase_chudnovsky_core.c": "Update the internal release-version string only.",
-    "special_bessel.c": "Use exact arbitrary-precision comparison for the finite Airy input boundary."
+    "range_flags.c": "Raise underflow on exact subnormalization as required by the documented MPFR-compatible subnormalize contract.",
+    "round.c": "Preserve full GMP bit-count width and compare half-way remainders without exponent-sized allocation; defer interval finalization when endpoint range flags disagree.",
+    "special_bessel.c": "Use exact arbitrary-precision comparison for the finite Airy input boundary.",
+    "special_common.c": "Zero-initialize interval absolute-value scratch objects for partial-failure cleanup; reject nonfinite or unordered dyadic interval conversion endpoints and avoid shifting zero.",
+    "special_gamma.c": "Use a directed log-absolute-Gamma enclosure to settle proven range saturation before exponentiation; retain bounded certification for undecided cases.",
+    "transcendental.c": "Reject nonfinite or unordered dyadic endpoints, bound alignment and exponential-minus-one subtraction, prove exponential range saturation before reduction, compute integer exp2 directly, and budget exact-power shortcuts."
   },
   "changed_files": [
     "assignment.c",
     "conditional_formats.c",
     "io.c",
+    "limb_round.c",
     "polyphase_chudnovsky_core.c",
-    "special_bessel.c"
+    "range_flags.c",
+    "round.c",
+    "special_bessel.c",
+    "special_common.c",
+    "special_gamma.c",
+    "transcendental.c"
   ],
   "files": {
     "abi.c": {
@@ -34,8 +46,8 @@
       "sha256": "1de1ecfff1055a3d4177e6d593862990e3f9c0906acc624bf16dc06553cbee1e"
     },
     "assignment.c": {
-      "bytes": 71670,
-      "sha256": "8271dbccd6804c00400ac0246dd63c269758f51631b15cc6a04c5211ffbf3dd6"
+      "bytes": 71978,
+      "sha256": "513ce6893ed50f6eaeab6685b3c46f7be445374f98f372980d9865d58f2f48ae"
     },
     "conditional_formats.c": {
       "bytes": 14183,
@@ -78,8 +90,8 @@
       "sha256": "125dcb47e968d332e581f84c4e78ae370d7b2bf42a875cb8782d5d170be6f193"
     },
     "limb_round.c": {
-      "bytes": 9840,
-      "sha256": "24e3c372e792343aad514139fc533bee297ba3f0e5b26e9aed73451b5c29cc3f"
+      "bytes": 10014,
+      "sha256": "f95cb599d566fcb1eac5403a5d6828983b6dc34374b31d488c80a0eac430ad3f"
     },
     "object.c": {
       "bytes": 11186,
@@ -110,8 +122,8 @@
       "sha256": "e48e238a0b21da1cbb150bb7f1411e0337cff064111ee269ac684b29622c1b36"
     },
     "range_flags.c": {
-      "bytes": 10596,
-      "sha256": "14602702a609201c5b3a71a5fb6582b8e6d46c75fb8bd937e890c10a538cb02d"
+      "bytes": 10775,
+      "sha256": "aab78e8cc4be03afd4a1c1613777a3d3b3e5e836933f3698dfb7415de1cce9ca"
     },
     "remainder.c": {
       "bytes": 12438,
@@ -126,8 +138,8 @@
       "sha256": "48b68f81c48bfbdd8c61d748446d03a385f444dcf76a1a096fe451539553c0ac"
     },
     "round.c": {
-      "bytes": 19570,
-      "sha256": "f4715385ebc390f889bcfa5d30a98b158449da16b4135a8edc6ec5f79d614027"
+      "bytes": 20078,
+      "sha256": "fcd0687422b7db49ed755272f95567490fd04dbc5991bd3bd4b0e3729c97a0d7"
     },
     "runtime_support.c": {
       "bytes": 13298,
@@ -138,12 +150,12 @@
       "sha256": "188bfacd0c7e1c30c5f1b5680d8a90bc20cd543ae292ba89d3712221901ec1b7"
     },
     "special_common.c": {
-      "bytes": 27135,
-      "sha256": "604ffcf0e332bcbe48660c0e100f61be37519a6368359ccd0b0eaaadb55a5033"
+      "bytes": 27693,
+      "sha256": "f344a2892912fc95e0b95eea1548cf687042656596df57ee642b74719e40c7ef"
     },
     "special_gamma.c": {
-      "bytes": 30975,
-      "sha256": "fc6a3cc6c14a382a892c868038fdeac57e725b743b4afe4466a82863c0a6f5e5"
+      "bytes": 34193,
+      "sha256": "55542d5202098a2ca7b4f45f5306693350e7171a1582fa2313fcbc34822d664a"
     },
     "special_internal.h": {
       "bytes": 4959,
@@ -178,8 +190,8 @@
       "sha256": "4b3851de1a145bb685a0ea020a0237ad76517b816f156059c42a5459570ab261"
     },
     "transcendental.c": {
-      "bytes": 66566,
-      "sha256": "fcd5b99100ccd98f8e39a3a523a5c3c887039f041952b8546545848eed911898"
+      "bytes": 70569,
+      "sha256": "12d7ab8b3dc13013d5d0d11e2de8891155094338e8172de98d0f48908f27f598"
     },
     "transcendental_fast.c": {
       "bytes": 140098,

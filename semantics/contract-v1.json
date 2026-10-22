@@ -1,5 +1,5 @@
 {
-  "contract_sha256": "a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139",
+  "contract_sha256": "d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae",
   "contract_version": 1,
   "field_provenance": {
     "declaration_signature_availability": "parsed from the public header",
@@ -141,11 +141,13 @@
           "tests/test_arithmetic_special.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_conditional_formats.c",
           "tests/test_constants.c",
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
@@ -156,6 +158,7 @@
           "tests/test_range_flags.c",
           "tests/test_release_boundaries.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
@@ -280,10 +283,12 @@
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
           "tests/test_release_boundaries.c",
+          "tests/test_text_bounds.c",
           "tests/test_transcendental_special_allocation_failure.c"
         ]
       },
@@ -491,12 +496,14 @@
           "tests/test_arithmetic_special.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_conditional_formats.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
           "tests/test_divisor_plan.c",
           "tests/test_exhaustive_small.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
@@ -507,6 +514,7 @@
           "tests/test_range_flags.c",
           "tests/test_release_boundaries.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_alias.c",
@@ -518,6 +526,7 @@
           "tests/test_special_large.c",
           "tests/test_special_random.c",
           "tests/test_special_values.c",
+          "tests/test_text_bounds.c",
           "tests/test_thread_safety.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
@@ -802,8 +811,11 @@
         "tests": [
           "tests/abi_0_11_consumer.c",
           "tests/test_api_lifecycle_audit.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_precision_remainder_failure.c",
+          "tests/test_text_bounds.c",
           "tests/test_thread_safety.c"
         ]
       },
@@ -978,11 +990,14 @@
           "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_range.c",
           "tests/test_arithmetic_variants.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_constants.c",
           "tests/test_exhaustive_small.c",
+          "tests/test_interval_allocation.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
           "tests/test_range_flags.c",
+          "tests/test_rounding_width.c",
           "tests/test_semantic_contract.py",
           "tests/test_thread_safety.c",
           "tests/test_transcendental_range.c"
@@ -1318,6 +1333,7 @@
           "tests/test_range_flags.c",
           "tests/test_release_boundaries.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_constants.c",
           "tests/test_special_edge_audit.c",
@@ -1426,6 +1442,7 @@
           "tests/test_constants.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
+          "tests/test_rounding_width.c",
           "tests/test_semantic_surface.c",
           "tests/test_special_constants.c",
           "tests/test_thread_safety.c"
@@ -5313,6 +5330,7 @@
           "tests/test_arithmetic_special.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_conditional_formats.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
@@ -5329,6 +5347,7 @@
           "tests/test_range_flags.c",
           "tests/test_release_boundaries.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
@@ -5340,6 +5359,7 @@
           "tests/test_special_large.c",
           "tests/test_special_random.c",
           "tests/test_special_values.c",
+          "tests/test_text_bounds.c",
           "tests/test_thread_safety.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
@@ -5695,6 +5715,7 @@
           "tests/test_arithmetic_special.c",
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_conditional_formats.c",
           "tests/test_constant_allocation_failure.c",
           "tests/test_constants.c",
@@ -5713,6 +5734,7 @@
           "tests/test_range_flags.c",
           "tests/test_release_boundaries.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_semantic_surface.c",
@@ -5724,6 +5746,7 @@
           "tests/test_special_large.c",
           "tests/test_special_random.c",
           "tests/test_special_values.c",
+          "tests/test_text_bounds.c",
           "tests/test_thread_safety.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
@@ -7082,11 +7105,13 @@
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
           "tests/test_roots.c",
           "tests/test_semantic_surface.c",
+          "tests/test_text_bounds.c",
           "tests/test_utilities.c"
         ]
       },
@@ -7188,6 +7213,7 @@
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
@@ -7292,6 +7318,7 @@
           "tests/test_arithmetic_variants.c",
           "tests/test_assignment_conversion.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
@@ -7492,7 +7519,8 @@
           "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
           "tests/test_mpfr_adapter.c",
-          "tests/test_object.c"
+          "tests/test_object.c",
+          "tests/test_release_boundaries.c"
         ]
       },
       "explicit_gaps": [],
@@ -7583,6 +7611,7 @@
           "tests/test_aliasing_matrix.c",
           "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic.c",
+          "tests/test_interval_allocation.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c"
         ]
@@ -8915,6 +8944,7 @@
           "tests/test_constant_allocation_failure.c",
           "tests/test_divisor_plan.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_release_boundaries.c",
@@ -9045,8 +9075,11 @@
           "tests/test_allocation_completion.c",
           "tests/test_api_lifecycle_audit.c",
           "tests/test_arithmetic_root_allocation_failure.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_roots.c",
+          "tests/test_rounding_width.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_surface.c",
           "tests/test_transcendental_special_allocation_failure.c"
@@ -10450,13 +10483,16 @@
         "summary": "Assign the exact value (unsigned long) times a binary power, then round once."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/BRANCH_REVIEW_0.20.0.md"
+        ],
         "tests": [
           "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic_root_allocation_failure.c",
           "tests/test_assignment_conversion.c",
           "tests/test_io_allocation_failure.c",
+          "tests/test_release_boundaries.c",
           "tests/test_runtime_support.c",
           "tests/test_semantic_contract.py",
           "tests/test_special_interval_audit.c",
@@ -10581,6 +10617,8 @@
         "documentation": [],
         "tests": [
           "tests/test_allocation_completion.c",
+          "tests/test_bounded_conversion.c",
+          "tests/test_release_boundaries.c",
           "tests/test_semantic_surface.c"
         ]
       },
@@ -10951,6 +10989,7 @@
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
+          "tests/test_rounding_width.c",
           "tests/test_utilities_remainder.c"
         ]
       },
@@ -12751,6 +12790,7 @@
       "evidence": {
         "documentation": [],
         "tests": [
+          "tests/test_bounded_conversion.c",
           "tests/test_semantic_surface.c"
         ]
       },
@@ -12863,6 +12903,7 @@
           "tests/test_aliasing_contract.py",
           "tests/test_api_lifecycle_audit.c",
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_precision_remainder_failure.c",
           "tests/test_random_runtime.c",
           "tests/test_semantic_surface.c",
@@ -12973,6 +13014,7 @@
         "documentation": [],
         "tests": [
           "tests/test_assignment_conversion.c",
+          "tests/test_bounded_conversion.c",
           "tests/test_semantic_surface.c"
         ]
       },
@@ -14614,7 +14656,8 @@
       "evidence": {
         "documentation": [],
         "tests": [
-          "tests/test_assignment_conversion.c"
+          "tests/test_assignment_conversion.c",
+          "tests/test_text_bounds.c"
         ]
       },
       "explicit_gaps": [],
@@ -14717,7 +14760,8 @@
         "tests": [
           "tests/test_assignment_conversion.c",
           "tests/test_io_allocation_failure.c",
-          "tests/test_semantic_contract.py"
+          "tests/test_semantic_contract.py",
+          "tests/test_text_bounds.c"
         ]
       },
       "explicit_gaps": [],
@@ -14853,9 +14897,9 @@
         ],
         "tests": [
           "tests/test_assignment_conversion.c",
-          "tests/test_format.c",
           "tests/test_io_allocation_failure.c",
-          "tests/test_semantic_contract.py"
+          "tests/test_semantic_contract.py",
+          "tests/test_text_bounds.c"
         ]
       },
       "explicit_gaps": [],
@@ -17208,6 +17252,7 @@
         "tests": [
           "tests/test_allocation_failure.c",
           "tests/test_arithmetic_root_allocation_failure.c",
+          "tests/test_interval_allocation.c",
           "tests/test_io_allocation_failure.c",
           "tests/test_runtime_support.c",
           "tests/test_special_interval_audit.c",
@@ -22427,6 +22472,8 @@
         ],
         "tests": [
           "tests/test_allocation_completion.c",
+          "tests/test_bounded_conversion.c",
+          "tests/test_interval_allocation.c",
           "tests/test_utilities_remainder.c"
         ]
       },
@@ -34974,8 +35021,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the natural logarithm with certified final rounding.",
       "return_contract": {
@@ -35091,8 +35138,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the natural logarithm of an unsigned integer with certified final rounding.",
       "return_contract": {
@@ -35216,8 +35263,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-2 logarithm with certified final rounding.",
       "return_contract": {
@@ -35342,8 +35389,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-10 logarithm with certified final rounding.",
       "return_contract": {
@@ -35465,8 +35512,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the natural logarithm of 1+x with certified final rounding.",
       "return_contract": {
@@ -35588,8 +35635,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-2 logarithm of 1+x with certified final rounding.",
       "return_contract": {
@@ -35711,8 +35758,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-10 logarithm of 1+x with certified final rounding.",
       "return_contract": {
@@ -35800,10 +35847,12 @@
       },
       "evidence": {
         "documentation": [
+          "docs/BRANCH_REVIEW_0.20.0.md",
           "docs/TRANSCENDENTAL_SPECIAL_ALLOCATION_HARDENING_VALIDATION_0.17.0.md"
         ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
@@ -35839,8 +35888,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the natural exponential with certified final rounding.",
       "return_contract": {
@@ -35930,6 +35979,7 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
@@ -35965,8 +36015,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-2 exponential with certified final rounding.",
       "return_contract": {
@@ -36056,6 +36106,7 @@
         "documentation": [],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
@@ -36091,8 +36142,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the base-10 exponential with certified final rounding.",
       "return_contract": {
@@ -36179,9 +36230,12 @@
         "summary": "Compute the exp(x)-1 with certified final rounding."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.20.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
           "tests/test_transcendental_large.c",
@@ -36216,8 +36270,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the exp(x)-1 with certified final rounding.",
       "return_contract": {
@@ -36304,9 +36358,12 @@
         "summary": "Compute the 2^x-1 with certified final rounding."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.20.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
           "tests/test_transcendental_large.c",
@@ -36340,8 +36397,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the 2^x-1 with certified final rounding.",
       "return_contract": {
@@ -36428,9 +36485,12 @@
         "summary": "Compute the 10^x-1 with certified final rounding."
       },
       "evidence": {
-        "documentation": [],
+        "documentation": [
+          "docs/COMPLETION_SCOPE_0.20.0.md"
+        ],
         "tests": [
           "tests/test_aliasing_matrix.c",
+          "tests/test_release_boundaries.c",
           "tests/test_transcendental_complete.c",
           "tests/test_transcendental_full.c",
           "tests/test_transcendental_large.c",
@@ -36464,8 +36524,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the 10^x-1 with certified final rounding.",
       "return_contract": {
@@ -36593,8 +36653,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the general real power with certified final rounding.",
       "return_contract": {
@@ -36723,8 +36783,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the real power with the restricted nonnegative-base `powr` domain with certified final rounding.",
       "return_contract": {
@@ -36850,8 +36910,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with an unsigned long exponent with certified final rounding.",
       "return_contract": {
@@ -36977,8 +37037,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with a signed long exponent with certified final rounding.",
       "return_contract": {
@@ -37104,8 +37164,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with a uintmax_t exponent with certified final rounding.",
       "return_contract": {
@@ -37231,8 +37291,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with an intmax_t exponent with certified final rounding.",
       "return_contract": {
@@ -37358,8 +37418,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with a signed integer exponent using the `pown` entry with certified final rounding.",
       "return_contract": {
@@ -37485,8 +37545,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the power with a GMP integer exponent with certified final rounding.",
       "return_contract": {
@@ -37608,8 +37668,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the unsigned-long base to unsigned-long exponent with certified final rounding.",
       "return_contract": {
@@ -37735,8 +37795,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the unsigned-long base to Polyphase exponent with certified final rounding.",
       "return_contract": {
@@ -37862,8 +37922,8 @@
       },
       "practical_limits": {
         "classification": "implementation_bound",
-        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS",
-        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend"
+        "source": "src/transcendental.c:PPF_TRANS_MAX_ATTEMPTS,PPF_TRANS_MAX_STEPS,PPF_TRANS_MAX_ALIGNMENT_BITS",
+        "summary": "certification uses bounded escalation and at most 10,000,000 series or reduction steps in the general backend; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits by default, also bounding the endpoint-to-one exponent gap before exponential-minus-one subtraction; integer-power shortcuts use a precision-dependent budget; unusable certificates retry or reject"
       },
       "purpose": "Compute the compound-interest form `(1 + op)^exponent` with signed integer exponent.",
       "return_contract": {
@@ -42580,7 +42640,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the real exponential integral Ei with certified final rounding.",
       "return_contract": {
@@ -42709,7 +42769,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the real dilogarithm Li2 with certified final rounding.",
       "return_contract": {
@@ -42840,7 +42900,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Gamma function with certified final rounding.",
       "return_contract": {
@@ -42965,7 +43025,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the upper incomplete gamma function for two real arguments.",
       "return_contract": {
@@ -43096,7 +43156,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the real logarithm of Gamma where Gamma is positive.",
       "return_contract": {
@@ -43225,7 +43285,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute `log(abs(Gamma(x)))` and return the sign of Gamma separately.",
       "return_contract": {
@@ -43360,7 +43420,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the digamma function with certified final rounding.",
       "return_contract": {
@@ -43486,7 +43546,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Beta function with certified final rounding.",
       "return_contract": {
@@ -43621,7 +43681,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Riemann zeta function with certified final rounding.",
       "return_contract": {
@@ -43738,7 +43798,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Riemann zeta at an unsigned integer with certified final rounding.",
       "return_contract": {
@@ -43864,7 +43924,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the error function with certified final rounding.",
       "return_contract": {
@@ -43990,7 +44050,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the complementary error function with certified final rounding.",
       "return_contract": {
@@ -44116,7 +44176,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel J of order 0 with certified final rounding.",
       "return_contract": {
@@ -44242,7 +44302,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel J of order 1 with certified final rounding.",
       "return_contract": {
@@ -44370,7 +44430,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel J of integer order n with certified final rounding.",
       "return_contract": {
@@ -44502,7 +44562,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel Y of order 0 with certified final rounding.",
       "return_contract": {
@@ -44628,7 +44688,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel Y of order 1 with certified final rounding.",
       "return_contract": {
@@ -44753,7 +44813,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the Bessel Y of integer order n with certified final rounding.",
       "return_contract": {
@@ -44886,7 +44946,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates"
       },
       "purpose": "Compute the arithmetic-geometric mean with certified final rounding.",
       "return_contract": {
@@ -45023,7 +45083,7 @@
       "practical_limits": {
         "classification": "implementation_bound",
         "source": "src/special_common.c,src/special_gamma.c,src/special_bessel.c",
-        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; the current Airy Ai path additionally rejects finite |x| > 500"
+        "summary": "special-function certification uses bounded precision escalation; several series and recurrences are capped at 1,000,000 iterations; dyadic interval construction permits at most 1,000,000 extra endpoint-alignment bits and retries or rejects unusable certificates; the current Airy Ai path additionally rejects finite |x| > 500"
       },
       "purpose": "Compute the Airy Ai function with certified final rounding.",
       "return_contract": {
@@ -47705,7 +47765,8 @@
         ],
         "tests": [
           "tests/test_object.c",
-          "tests/test_precision_remainder_failure.c"
+          "tests/test_precision_remainder_failure.c",
+          "tests/test_rounding_width.c"
         ]
       },
       "explicit_gaps": [],
@@ -48053,8 +48114,10 @@
           "tests/test_allocation_completion.c",
           "tests/test_allocation_failure.c",
           "tests/test_api_lifecycle_audit.c",
+          "tests/test_arithmetic_range.c",
           "tests/test_exhaustive_small.c",
           "tests/test_fpif_resource_bounds.c",
+          "tests/test_interval_allocation.c",
           "tests/test_mpfr_adapter.c",
           "tests/test_object.c",
           "tests/test_precision_remainder_failure.c",
@@ -48512,7 +48575,7 @@
     },
     "function_count": 437,
     "functions_with_direct_test_reference": 437,
-    "functions_with_documentation_reference": 154,
+    "functions_with_documentation_reference": 158,
     "ownership_classes": {
       "application_owned_storage": 3,
       "borrowed_object_storage": 3,

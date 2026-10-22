@@ -5,14 +5,14 @@
   "compatible_additions": [],
   "compatible_metadata_changes": [
     {
-      "after": "\"802d83e72d9af0562f3f648191203a6c5c74fcbb91d037125f0a6f407acf02d7\"",
+      "after": "\"d909e0c44f392b5e1353e22cd7c2f33fb609c843e6ebcbe0fb1142c7dbf35cc9\"",
       "before": "\"f8e0428e22a97df6bc6972e609731d5bb8946ba8fc611c0e210cf2cc068f2abe\"",
       "category": "constants",
       "change": "changed",
       "name": "PPF_ALIASING_CONTRACT_SHA256"
     },
     {
-      "after": "\"a0802940c46ed40ea077d5dbbdfc40578b666b10f6339743317028d029274139\"",
+      "after": "\"d763657b52515686d8d778899988c5b109fd954a55522936aca329af49dbf8ae\"",
       "before": "\"2cdeccca5aab6bb0d3ee2ff5097f9116a40ec6da374b75b09da95d80443c068d\"",
       "category": "constants",
       "change": "changed",

@@ -1,164 +1,133 @@
 # Testing
 
-## Test categories
+Use a separate build directory for each configuration. The full differential
+suite requires the official GMP and MPFR development headers and libraries.
+Follow [Building](BUILDING.md#strict-full-validation) to configure it.
 
-The configured validation tree contains six CTest categories.
+## Choose the test scope
 
-### Fast
+CTest labels overlap: one test may appear under several labels. The exact
+inventory depends on enabled dependencies and build options.
 
-`fast` covers ordinary object, arithmetic, conversion, I/O, formatting, range,
-root, constant, transcendental, special-function, runtime, conditional-format,
-and planner behavior.
+| Label | Purpose |
+|---|---|
+| `fast` | Routine object, arithmetic, conversion, I/O, range, numerical, runtime, planner, and contract checks |
+| `semantic` | Generated API and aliasing contracts, direct public-surface checks, and focused lifecycle tests |
+| `hardening` | Allocation-failure injection, resource boundaries, lifecycle checks, and ABI checks |
+| `threading` | POSIX-thread ownership, context isolation, cache lifecycle, and cleanup |
+| `extended` | Randomized, exhaustive small-precision, and large-precision numerical suites |
+| `smoke` | Small benchmark and tool runs that check execution and evidence schemas |
+| `packaging` | Installed and relocated downstream consumers |
+
+For a routine local check:
 
 ```sh
 ctest --test-dir build/validation -L fast --output-on-failure
 ```
 
-### Semantic
-
-`semantic` verifies the generated all-function contract and executes the direct
-surface test that covers public names not otherwise referenced by the existing
-family suites.
-
-```sh
-ctest --test-dir build/validation -L semantic --output-on-failure
-cmake --build build/validation --target semantic-contract-audit
-make semantic-check
-make aliasing-check
-```
-
-A direct test reference is surface evidence. It does not imply exhaustive
-branch, rounding, aliasing, allocation-failure, or domain-limit coverage. See
-`PUBLIC_SEMANTIC_CONTRACT_0.18.0.md`,
-`SEMANTIC_CONTRACT_VALIDATION_0.18.0.md`, and
-`ALIASING_CONTRACT_VALIDATION_0.18.0.md`.
-
-### Hardening
-
-`hardening` contains deterministic resource-failure and lifecycle tests.
-`allocation_failure` sweeps the context-owned allocation sites reached by the
-covered arithmetic set. `io_allocation_failure` governs text and interchange
-commit boundaries. `constant_allocation_failure` governs all public certified-
-constant routes. `transcendental_special_allocation_failure` governs 79
-transcendental and special endpoints. `arithmetic_root_allocation_failure`
-governs 56 arithmetic, fused/planned-operation, and root endpoints, including
-the batch transaction. `thread_safety` validates default-context isolation,
-thread-exit cleanup, shared immutable operands and divisor plans, cache purge,
-and post-purge reconstruction.
-
-```sh
-ctest --test-dir build/validation -L hardening --output-on-failure
-```
-
-See `ALLOCATION_FAILURE_CONTRACT.md`,
-`ALLOCATION_FAILURE_VALIDATION_0.10.9.md`, and
-`THREAD_SAFETY_VALIDATION_0.11.0.md`.
-
-### Threading
-
-`threading` selects the focused POSIX-thread ownership, cleanup, and cache
-lifecycle suite. The test is marked serial at the CTest process level because
-it creates its own worker population.
-
-```sh
-ctest --test-dir build/validation -L threading --output-on-failure
-```
-
-### Extended
-
-`extended` contains randomized, exhaustive, or large-precision suites:
-
-- exhaustive small-precision arithmetic
-- randomized and large transcendental tests
-- randomized and large trigonometric and hyperbolic tests
-- randomized and large special-function tests
-
-```sh
-ctest --test-dir build/validation -L extended --output-on-failure
-```
-
-### Smoke
-
-`smoke` executes benchmark and tool paths at small sizes. It establishes that
-the executable validates a result and emits the required evidence schema. It
-is not performance evidence.
-
-```sh
-ctest --test-dir build/validation -L smoke --output-on-failure
-```
-
-## Full configured inventory
+For the complete configured suite, including slower numerical tests:
 
 ```sh
 ctest --test-dir build/validation --output-on-failure -j1
 ```
 
-The 0.18.0 configured inventory adds the 56-endpoint arithmetic, fused-operation, and root allocation matrix to the semantic, ABI, numerical, and hardening inventory. The 79-endpoint transcendental and special-function matrix remains part of the cumulative release suite.
-
-Run the exact configured count from CTest rather than relying on a historical total:
+List exactly what your build contains, or choose a focused label:
 
 ```sh
 ctest --test-dir build/validation --show-only
+ctest --test-dir build/validation -L hardening --output-on-failure
+ctest --test-dir build/validation -L extended --output-on-failure
 ```
 
-The `install_packaging` regression test builds a separate serial static
-installation under a nested library directory, moves the complete prefix,
-and compiles external CMake and `pkg-config` consumers. It checks explicit
-core consumption with MPFR discovery disabled, default package behavior, and
-the required adapter component when available. This test has the `fast` and
-`packaging` labels.
+A core-only build has fewer tests because MPFR-dependent tests are absent. A
+passing subset is evidence for that subset; use the complete qualification
+matrix below for release validation. A smoke test establishes executable and
+output-schema behavior, not performance.
 
-The ABI checks can also be run directly:
+## Allocation and boundary tests
+
+The cumulative suite includes the original core allocation-failure checks,
+text and interchange transactions, certified-constant transactions, 79
+transcendental/special endpoints, and 56 arithmetic/fused/root endpoints.
+`allocation_completion` exercises the additional allocation-free,
+initialize-and-set, prefix-cleanup, and transaction classifications.
+`api_lifecycle_audit` and `precision_remainder_failure` exercise focused
+ownership and failure cases.
+
+When the required static libraries and MPFR adapter are built,
+`release_boundaries` checks exact Airy admission, floating-setter validation,
+and forced certification-retry exhaustion. `special_interval_audit` checks
+selected interval constructions. PPFIF resource-boundary tests cover import
+admission and destination preservation on rejection.
+
+See [Allocation evidence](ALLOCATION_COMPLETION_0.20.0.md),
+[PPFIF resource limits](FPIF_RESOURCE_CONTRACT.md), and
+[Thread safety](THREAD_SAFETY.md) for the applicable contracts. Project
+allocator checks do not exercise recoverable GMP-internal allocation failure.
+
+## Contract and installed-consumer checks
 
 ```sh
+cmake --build build/validation --target semantic-contract-audit
 cmake --build build/validation --target abi-contract-audit
-make abi-check
 ```
+
+The semantic reference and direct test-source references describe coverage;
+they do not establish exhaustive input, branch, rounding, or failure coverage.
+See the [semantic contract](PUBLIC_SEMANTIC_CONTRACT_0.20.0.md) and
+[aliasing contract](ALIASING_CONTRACT_0.20.0.md).
+
+`install_packaging` creates a separate serial static installation under a
+nested library directory, moves the complete prefix, and compiles external
+CMake and `pkg-config` consumers. It checks core-only consumption with MPFR
+discovery disabled, default package behavior, and the adapter component when
+available.
+
+`tools/run_abi_binary_compat.py` builds the frozen 0.11.0 source and compiles a
+consumer against its header and shared object. It then runs that unchanged
+executable with the baseline and current libraries. This is separate from the
+source-contract, export, and runtime-layout checks; see [ABI policy](ABI_POLICY.md).
 
 ## Sanitizers and fuzzing
 
-The allocation and thread-lifecycle suites are run with AddressSanitizer,
-UndefinedBehaviorSanitizer, and leak detection. A dedicated serial build uses
-ThreadSanitizer through `PPF_ENABLE_THREAD_SANITIZER=ON` or `make tsan`.
-Two libFuzzer targets exercise the public text parser and PPFIF importer. See
-`THREAD_SAFETY_VALIDATION_0.11.0.md` and
-`PORTABILITY_AND_FUZZING_0.10.9.md`.
+[Release qualification](QUALIFICATION.md) defines the reproducible GCC, Clang,
+OpenMP, sanitizer, and fuzz matrix. From a clean source extraction:
 
-## MPFR dependency
+```sh
+python3 tools/qualify_release.py --output ../polyphase-qualification --with-sanitizers
+```
 
-Most differential tests require the optional MPFR adapter. The compatibility
-header under `compat/` permits local test builds when the shared MPFR library
-exists without its development header. Release and target-machine validation
-should use the official header because conditional features and declarations
-can vary with the installed build.
+Keep the source frozen during this run and retain the output outside it. The
+receipt records commands, source hashes, actual outcomes, and omitted scopes.
+The default fuzz campaigns run for 600 seconds per target. Extend the duration
+when collecting longer-term evidence.
 
-## Correctness interpretation
+The qualification sanitizer configuration runs the hardening tests under
+ASan and UBSan, with the Python `ctypes` export check excluded as explained in
+[Qualification](QUALIFICATION.md). **LeakSanitizer is disabled by default**;
+use `--detect-leaks 1` on a host that supports it. Allocator balance assertions
+and ASan/UBSan passes must not be described as a LeakSanitizer run.
+
+A separate serial ThreadSanitizer configuration is available:
+
+```sh
+cmake --preset tsan
+cmake --build --preset tsan -j
+ctest --preset tsan
+```
+
+ThreadSanitizer is not included in the default qualification command. Record
+its actual result separately; an unavailable runtime is not a pass.
+
+## Interpreting results
 
 A passing differential test demonstrates agreement for the exercised inputs,
-precision, rounding mode, range, and special-value cases. It is not a proof over
-every representable input.
+precisions, rounding modes, exponent ranges, and special values. Exact
+identities, invariants, aliasing tests, allocation injection, sanitizers, and
+fuzzing provide complementary evidence.
 
-The project combines:
-
-- exact identities and representation invariants
-- differential comparison with MPFR
-- signed-zero, NaN, infinity, and range cases
-- random and exhaustive small-precision tests
-- high-precision and narrow-range cases
-- aliasing tests
-- deterministic allocation-failure injection
-- sanitizer and fuzzing builds
-
-## Remaining safety work
-
-Aliasing closure is complete for contract version 1. Production maturity still requires systematic closure of the remaining allocation-atomicity,
-practical-limit, and conditional-build gaps recorded in
-the generated matrix, together with sustained fuzzing, broader platform and
-high-thread-count validation, and library-unload stress.
-
-## Binary compatibility test
-
-`tools/run_abi_binary_compat.py` builds the frozen 0.11.0 source, compiles a
-consumer against that header and shared object, and then runs the unchanged
-executable with both 0.11.0 and the current library. This checks the SONAME and
-the tested public layouts and calls.
+The current ledger has no remaining indexed allocation-evidence gaps. It
+still records bounded numerical paths and compiler-conditional interfaces.
+The [release scope](COMPLETION_SCOPE_0.20.0.md) states those limits, and the
+[roadmap](../ROADMAP.md) separates future safety and independent-review work
+from completed local checks.

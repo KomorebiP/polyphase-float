@@ -66,6 +66,58 @@ function on a nontrivial transformed interval is assumed.
 
 Primary reference: [DLMF 5.5.3–5.5.4](https://dlmf.nist.gov/5.5).
 
+## Extreme exponential and Gamma ranges
+
+An additional range check avoids exponentiating a certified logarithm whose
+result exceeds even the widened internal exponent range. For nonnegative
+`t`, `exp(t) >= 2^t`; for nonpositive `t`, `exp(t) <= 2^t`. Consequently
+`t >= max(emax,0)` proves positive overflow, and
+`t <= min(emin-2,0)` proves a positive result no greater than half the minimum
+normal value. These are sufficient bounds; inputs that do not meet them
+continue through the existing evaluator.
+
+`ppf_exp` applies these comparisons directly to its exact input. The same
+sufficient bounds apply to `exp2` and `exp10`, since both bases are at least
+two. These checks run before integer-power construction. For Gamma
+inputs with stored binary exponent at least 40, `gamma_range_preflight`
+attempts one 128-bit directed enclosure of `log|Gamma(x)|`, using the existing
+positive and reflection routines described above. It compares the lower
+endpoint to the overflow bound and the upper endpoint to the underflow
+bound. The exponent gate selects when to attempt this optimization; it is
+not itself evidence of overflow or underflow. The Gamma sign comes from
+the existing exact-input sign routine. Proven cases return the appropriate
+signed infinity or maximum finite value, or signed zero or minimum normal
+value, with the directed ternary result and range/inexact flags. Unclassified
+cases retain the ordinary precision-retry and numerical-rejection contract.
+
+This addresses the reproduced `Gamma(2^56)` failure: an intermediate
+exponential previously overflowed the internal range, and its infinite
+endpoint was then treated as a finite dyadic zero during certificate
+conversion. The resulting enormous GMP alignment request could terminate
+the process. The regression matrix includes `2^55`, `2^56`, `2^60`, negative
+half-integers on both sides of `-2^56`, both exponential input signs, and
+aliased destinations. It checks five directed/nearest rounding modes against
+MPFR; the release evidence records the actual executed results.
+
+The integer shortcut for `exp2(x)` now constructs the exact dyadic value
+directly with `ppf_set_ui_2exp`, avoiding a giant integer numerator or
+denominator. The exact-power shortcuts for `exp10`, `exp2m1`, and `exp10m1`
+are limited to a bit budget proportional to the result precision: `p+64`
+bits for binary powers and an exponent at most `floor((p+64)/4)` for decimal
+powers, since `log2(10)<4`. Larger inputs use the existing interval evaluator.
+Integer and fixed-point input materialization is attempted only after the
+input's stored exponent is at most the number of bits in `long`, and the interval range
+reduction checks its quotient against `LONG_MAX` before integer conversion.
+
+For `expm1`, `exp2m1`, and `exp10m1`, subtracting one from an intermediate
+endpoint also requires an exponent gap of at most 1,000,000 bits by default.
+This applies the construction cap before the arithmetic operation can
+expand that gap. Inputs that exceed the budget may return the documented
+NaN/ERANGE numerical rejection; the repair does not promise successful
+rounding for every such input. Tests exercise both sides of the exact-power
+shortcut budgets, both signs at `2^60`, and compact inputs whose exact integer
+values would require 100,000,001 bits to materialize.
+
 ## Real dilogarithm reductions
 
 `li2_series` in `src/special_misc.c` handles `|x| <= 1/2`. Its term recurrence
@@ -144,7 +196,14 @@ Primary references: [DLMF 9.2.3–9.2.4](https://dlmf.nist.gov/9.2) and
 ## Certification and resource failure
 
 The final conversion in `ppf_special_evaluate` is attempted only after a
-builder returns an ordered interval. The dyadic-interval routine must decide
+builder returns an ordered interval. Both the general transcendental and
+special-function interval-to-dyadic converters reject nonfinite or unordered
+endpoints, use the nonzero endpoint's exponent when the other endpoint is
+zero, and limit each nonzero endpoint's alignment shift to 1,000,000 bits by
+default. This is a bound on extra integer construction, not on requested
+floating-point precision. Rejected certificates leave the converter's output
+integers and exponent unchanged and cause the evaluator to retry or reject.
+The dyadic-interval routine must decide
 one rounded output and its ternary direction. Unresolved intervals retry
 with increased precision. The default schedule is limited to twelve
 attempts. Exhaustion returns `PPF_TERNARY_ERROR`, sets `PPF_FLAG_ERANGE`, and

@@ -213,6 +213,19 @@ static void subnormalize_tests(void) {
         for(int r=MPFR_RNDN;r<=MPFR_RNDA;++r)
             compare_subnormalize_case(y,p,emin,emax,(mpfr_rnd_t)r);
     }
+    /* Reducing effective precision raises underflow even when the value is
+       already an exact multiple of the subnormal quantum. Include the first
+       full-precision binade as a control where no underflow is expected. */
+    for (mpfr_prec_t p = 2; p <= 10; ++p) {
+        for (mpfr_exp_t e = emin; e <= emin + p; ++e) {
+            for (int sign = -1; sign <= 1; sign += 2) {
+                CHECK(mpfr_set_si_2exp(y, sign, e - 1, MPFR_RNDN) == 0);
+                for (int r = MPFR_RNDN; r <= MPFR_RNDA; ++r)
+                    compare_subnormalize_case(y, p, emin, emax,
+                                               (mpfr_rnd_t)r);
+            }
+        }
+    }
     mpfr_clear(y);gmp_randclear(rs);
 }
 

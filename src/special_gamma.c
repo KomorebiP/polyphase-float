@@ -144,6 +144,71 @@ static int build_gamma(ppf_special_iv_t*out,ppf_prec_t work,void*opaque,ppf_cont
 done:ppf_special_iv_clear(&lg);ppf_special_iv_clear(&val);ppf_special_iv_clear(&neg);return rc;
 }
 
+static int gamma_cmp_exp(const ppf_t *x, ppf_exp_t bound, ppf_context_t *ctx) {
+    uint64_t magnitude = bound < 0 ? (uint64_t)(-(bound + 1)) + 1u
+                                   : (uint64_t)bound;
+    mpz_t integer;
+    int comparison;
+    mpz_init(integer);
+    mpz_import(integer, 1, 1, sizeof(magnitude), 0, 0, &magnitude);
+    if (bound < 0) mpz_neg(integer, integer);
+    comparison = ppf_cmp_z(x, integer, ctx);
+    mpz_clear(integer);
+    return comparison;
+}
+
+/* Try one bounded log-|Gamma| enclosure before exponentiating a very large
+   argument.  The exponent gate selects an optimization, not a range proof:
+   only the directed enclosure below may establish saturation. */
+static int gamma_range_preflight(ppf_t *rop, const ppf_t *x, ppf_rnd_t rnd,
+                                  ppf_context_t *ctx, int *ternary) {
+    ppf_context_t wide;
+    ppf_special_iv_t logarithm;
+    int sign = 0, classification = 0, allocation_failed;
+    if (x->exponent < 40) return 0;
+    memset(&logarithm, 0, sizeof(logarithm));
+    if (ppf_context_clone(&wide, ctx)) return -1;
+    wide.emin = PPF_EMIN_MIN;
+    wide.emax = PPF_EMAX_MAX;
+    wide.flags = 0;
+    if (ppf_special_iv_init(&logarithm, 128, &wide) == 0 &&
+        lgamma_abs_interval(&logarithm, &sign, x, 128, &wide) == 0 &&
+        ppf_number_p(&logarithm.lo) && ppf_number_p(&logarithm.hi) &&
+        ppf_cmp(&logarithm.lo, &logarithm.hi, &wide) <= 0) {
+        /* exp(t) >= 2^t for t >= 0, and <= 2^t for t <= 0.
+           The underflow bound is at most half the minimum normal value. */
+        if (gamma_cmp_exp(&logarithm.lo, ctx->emax > 0 ? ctx->emax : 0,
+                          &wide) >= 0)
+            classification = 1;
+        else if (gamma_cmp_exp(&logarithm.hi, ctx->emin < 2 ? ctx->emin - 2 : 0,
+                               &wide) <= 0)
+            classification = -1;
+    }
+    allocation_failed = (wide.flags & PPF_FLAG_ALLOC) != 0;
+    ppf_special_iv_clear(&logarithm);
+    ppf_context_clear(&wide);
+    if (allocation_failed) { ppf_raise(ctx, PPF_FLAG_ALLOC); return -1; }
+    if (!classification) return 0;
+    if (classification > 0) {
+        int toward_finite = rnd == PPF_RNDZ ||
+            (sign > 0 ? rnd == PPF_RNDD : rnd == PPF_RNDU);
+        if (toward_finite) {
+            if (ppf_set_max_finite(rop, sign, ctx) != 0) return -1;
+            *ternary = -sign;
+        } else { ppf_set_inf(rop, sign); *ternary = sign; }
+        ppf_raise(ctx, PPF_FLAG_OVERFLOW | PPF_FLAG_INEXACT);
+    } else {
+        int away_from_zero = rnd == PPF_RNDA ||
+            (sign > 0 ? rnd == PPF_RNDU : rnd == PPF_RNDD);
+        if (away_from_zero) {
+            if (ppf_set_min_normal(rop, sign, ctx) != 0) return -1;
+            *ternary = sign;
+        } else { ppf_set_zero(rop, sign); *ternary = -sign; }
+        ppf_raise(ctx, PPF_FLAG_UNDERFLOW | PPF_FLAG_INEXACT);
+    }
+    return 1;
+}
+
 int ppf_lgamma(ppf_t *rop, int *signp, const ppf_t *x, ppf_rnd_t rnd,
                ppf_context_t *ctx) {
     lg_arg_t a = {x, 0, signp};
@@ -225,6 +290,14 @@ int ppf_gamma(ppf_t *rop, const ppf_t *x, ppf_rnd_t rnd,
         long integer;
         if (!ppf_special_get_long_if_integer(x, &integer, ctx)) return sp_error(rop, ctx);
         return ppf_fac_ui(rop, (unsigned long)(integer - 1), rnd, ctx);
+    }
+    if (rnd == PPF_RND_DEFAULT) rnd = ctx->default_rounding;
+    if (!ppf_rounding_valid(rnd)) return sp_error(rop, ctx);
+    {
+        int ternary = 0;
+        int classified = gamma_range_preflight(rop, x, rnd, ctx, &ternary);
+        if (classified > 0) return ternary;
+        if (classified < 0) return sp_error(rop, ctx);
     }
     return ppf_special_evaluate(rop, rnd, ctx, build_gamma, &a);
 }

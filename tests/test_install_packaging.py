@@ -67,6 +67,19 @@ def main() -> int:
         run([args.cmake, "--install", str(build)])
         shutil.move(str(initial_prefix), str(prefix))
 
+        # The installed reader route must retain the same relative paths as
+        # the source tree, including the first example and machine contracts.
+        documentation = prefix / "share/doc/PolyphaseFloat"
+        for relative in (
+            "README.md", "README_FIRST.txt", "docs/BUILDING.md",
+            "docs/TESTING.md", "docs/ABI_POLICY.md",
+            "docs/COMPLETION_SCOPE_0.20.0.md", "examples/basic.c",
+            "abi/contract-v1.json", "semantics/contract-v1.json",
+        ):
+            installed = documentation / relative
+            if not installed.is_file() or installed.read_bytes() != (root / relative).read_bytes():
+                raise RuntimeError(f"installed documentation missing or changed: {relative}")
+
         def consume(name: str, *, components: str = "",
                     disable_mpfr: bool = False,
                     optional_components: str = "",
@@ -147,7 +160,7 @@ def main() -> int:
                 run([str(executable)])
         else:
             print("pkg-config executable unavailable: CMake consumption tested only")
-    print("nested-libdir relocation and installed component consumption: PASS")
+    print("nested-libdir relocation, installed documentation, and component consumption: PASS")
     return 0
 
 

@@ -3,14 +3,14 @@
 ## Governed baseline
 
 Polyphase Float 0.12.0 established **C ABI epoch 1** for the supported Linux
-ELF baseline. The baseline is the public C surface of 0.11.0 plus the additive
-ABI-introspection interfaces introduced in 0.12.0. Polyphase Float 0.13.0
-retains that function and layout surface and adds two source-level constants
-that identify the generated semantic contract.
+x86-64 ELF baseline. The baseline is the public C surface of 0.11.0 plus the additive
+ABI-introspection interfaces introduced in 0.12.0. Version 0.20.0 retains
+that function and layout surface, including the source-level constants that
+identify the generated semantic contract.
 
 The compatibility commitment currently covers:
 
-- Linux or WSL on an LP64 target;
+- Linux, including Linux under WSL, on an x86-64 LP64 target;
 - 64-bit pointers and `size_t`;
 - the GMP limb model recorded by the installed contract;
 - the C calling convention used by the supported GCC and Clang builds;
@@ -18,8 +18,8 @@ The compatibility commitment currently covers:
 - the public layouts, enum values, constants, and function declarations in the
   epoch-1 contract.
 
-This is a real compatibility boundary, but it is not yet a cross-platform ABI
-promise for Windows, macOS, ARM64, big-endian systems, or 32-bit targets.
+This contract applies to the stated baseline. Windows, macOS, ARM64,
+big-endian systems, and 32-bit targets require separate ABI qualification.
 
 ## Compatibility rules for ABI epoch 1
 
@@ -44,7 +44,7 @@ requires a new ABI epoch and an explicit SONAME transition.
 ## Public structures
 
 The project has chosen to retain the existing exposed structures for ABI epoch
-1 rather than convert them to opaque handles during the 0.x series. The
+1. The
 following layouts are therefore governed:
 
 - `ppf_allocator_t`
@@ -106,14 +106,18 @@ adapter has the independent node `PPF_MPFR_0.11`.
 
 ## Shared-library version
 
-The SONAME remains `libpolyphase_float.so.0` in 0.13.0. This is intentional: an
-unchanged executable linked against the 0.11.0 shared library must be able to
-load the 0.13.0 implementation.
+The SONAME remains `libpolyphase_float.so.0` in 0.20.0. An unchanged
+executable linked against the 0.11.0 shared library must be able to load the
+compatible 0.20.0 implementation on the governed baseline. The MPFR adapter
+retains `libpolyphase_float_mpfr.so.0`.
 
 Before version 1.0, the project must decide whether to retain this SONAME or
 introduce a new major SONAME while shipping an epoch-1 compatibility library.
-That decision cannot silently invalidate the compatibility evidence established
-here.
+That decision must also cover CMake package-version compatibility and the
+support window. The current 0.x package accepts minimum-version requests from
+0.11.0 onward within that major series; exact-version requests remain exact.
+A future project-version change must not silently invalidate the compatibility
+evidence established here.
 
 ## PPFIF is separate
 
