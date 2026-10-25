@@ -49,7 +49,7 @@ jobs:
           upload-database: ${{ !github.event.repository.private }}
       - name: Retain private CodeQL SARIF for review
         if: ${{ always() && github.event.repository.private && steps.codeql.outcome == 'success' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: codeql-sarif-${{ github.sha }}
           path: ${{ runner.temp }}/codeql-results/*.sarif
