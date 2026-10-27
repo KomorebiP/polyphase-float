@@ -1,5 +1,7 @@
 # Polyphase Float
 
+> **Beta · Work in progress.** These public releases are for evaluation, research and feedback. APIs, numerical behavior and documentation may change. This is a development candidate and does not signify production readiness. Validate results for your intended use.
+
 [![CI](https://github.com/KomorebiP/polyphase-float/actions/workflows/ci.yml/badge.svg)](https://github.com/KomorebiP/polyphase-float/actions/workflows/ci.yml)
 [![ABI governance](https://github.com/KomorebiP/polyphase-float/actions/workflows/abi.yml/badge.svg)](https://github.com/KomorebiP/polyphase-float/actions/workflows/abi.yml)
 [![CodeQL](https://github.com/KomorebiP/polyphase-float/actions/workflows/codeql.yml/badge.svg)](https://github.com/KomorebiP/polyphase-float/actions/workflows/codeql.yml)
@@ -10,7 +12,7 @@ arithmetic, built on GMP. It provides arithmetic, roots, elementary and selected
 special functions, constants, conversion, formatting, and binary interchange
 through the `ppf_*` API. Precision and rounding are controlled explicitly.
 
-**Version 0.20.0 (unreleased candidate)** targets Linux x86-64 ELF with the LP64 data model and
+**Version 0.20.0 (beta, work in progress)** targets Linux x86-64 ELF with the LP64 data model and
 64-bit GMP limbs. It retains ABI epoch 1 and `libpolyphase_float.so.0`. The production core
 requires GMP and POSIX threads. OpenMP is optional; MPFR is used only by the
 optional interoperability adapter, differential tests, and matched benchmarks.
