@@ -75,3 +75,5 @@ The receipt describes local bounded execution. It does not establish
 independent external replication, universal correct rounding, performance
 improvements, coverage of omitted scopes, or correctness beyond the documented
 contracts and exercised inputs.
+
+[Documentation](README.md) · [Building](BUILDING.md) · [Testing](TESTING.md) · [Release process](RELEASE_PROCESS.md)

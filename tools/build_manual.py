@@ -64,7 +64,7 @@ def signature(declaration: str) -> str:
     return head + "(\n" + ",\n".join("    " + x for x in parts) + "\n);"
 
 
-def api_reference() -> str:
+def api_reference(*, github: bool = False) -> str:
     ledger = json.loads((ROOT / "semantics/contract-v1.json").read_text())
     functions = ledger["functions"]
     assert len(functions) == len({x["name"] for x in functions}) == 437
@@ -91,7 +91,10 @@ def api_reference() -> str:
             purpose = f["purpose"]
             if name == "ppf_get_str":
                 purpose = "Format a significand into a supplied or library-allocated buffer and return its radix exponent separately."
-            out.extend(["### " + name + " {#" + name + "}\n", purpose + "\n", "```c\n" + signature(f["declaration"]) + "\n```\n"])
+            # GitHub derives the symbol anchor from the plain heading. Pandoc
+            # needs the explicit identifier when this section joins the book.
+            heading = "### " + name + ("" if github else " {#" + name + "}")
+            out.extend([heading + "\n", purpose + "\n", "```c\n" + signature(f["declaration"]) + "\n```\n"])
             if f["domain"]["classification"] == "function_specific":
                 out.append("**Input contract.** " + f["domain"]["summary"].rstrip(".") + ".\n")
             result = f["return_contract"].get("note") or RETURNS[f["return_contract"]["kind"]]
@@ -239,9 +242,15 @@ def assemble() -> str:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, required=True)
+    destination = parser.add_mutually_exclusive_group(required=True)
+    destination.add_argument("--output", type=Path, help="Directory for the assembled book")
+    destination.add_argument("--github-reference", type=Path,
+                             help="Write the API reference with GitHub-compatible headings")
     parser.add_argument("--skip-pdf", action="store_true")
     args = parser.parse_args()
+    if args.github_reference:
+        args.github_reference.write_text(api_reference(github=True), encoding="utf-8", newline="\n")
+        return
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=True)
     environment = dict(os.environ)
     environment.setdefault("SOURCE_DATE_EPOCH", "1792627200")

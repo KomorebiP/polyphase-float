@@ -1,16 +1,16 @@
 # Building Polyphase Float
 
 Commands in this guide run from the source directory unless stated otherwise.
-Use CMake for installation and downstream package consumption.
+Use CMake for installation and use in other projects.
 
 ## Requirements
 
 The supported baseline is Linux x86-64 ELF with the LP64 data model
 (64-bit pointers and long integers) and 64-bit GMP limbs. It requires:
 
-- CMake 3.23 or newer and a build tool such as Make or Ninja;
-- a C11 compiler, with GCC and Clang covered by the qualification matrix;
-- official GMP development headers and library;
+- CMake 3.23 or newer and a build tool such as Make or Ninja.
+- a C11 compiler, with GCC and Clang covered by the qualification matrix.
+- official GMP development headers and library.
 - POSIX threads and the platform math library.
 
 OpenMP is optional. Official MPFR development files are needed for the optional
@@ -60,13 +60,13 @@ compilers or instrumentation to avoid carrying incompatible cached settings.
 | `BUILD_TESTING` | CTest default | Build validation targets |
 
 `PPF_OPENMP=AUTO` uses OpenMP when the active compiler passes the probe and
-otherwise selects the serial path. `ON` requires OpenMP; `OFF` excludes its
+otherwise selects the serial path. `ON` requires OpenMP. `OFF` excludes its
 runtime from exported dependencies. With OpenMP enabled, choose a worker count
 appropriate for the application, for example through `OMP_NUM_THREADS`.
 
 `PPF_MPFR_SUPPORT=ON` requires MPFR. `AUTO` enables it when found, and `OFF`
 builds the independent core only. A compatibility header permits some local
-validation builds with an MPFR shared library but no development header; that
+validation builds with an MPFR shared library but no development header. That
 configuration does not export an install-tree adapter. Use official headers
 for release validation and adapter installation.
 
@@ -108,7 +108,7 @@ Relative install directories support relocation of the complete prefix,
 including nested library directories such as `lib/x86_64-linux-gnu`.
 Absolute `CMAKE_INSTALL_LIBDIR` or `CMAKE_INSTALL_INCLUDEDIR` values retain
 those explicit locations. The CMake package is installed below
-`${libdir}/cmake/PolyphaseFloat`; the `pkg-config` file computes its prefix
+`${libdir}/cmake/PolyphaseFloat`. The `pkg-config` file computes its prefix
 relative to its own installed location.
 
 ### Verify the installation
@@ -149,11 +149,11 @@ cmake --build build
 
 Use `PolyphaseFloat::static` for the static library. The chosen target must
 have been enabled when Polyphase Float was built. GMP and Threads propagate
-through both targets; OpenMP propagates only when enabled in the library.
+through both targets. OpenMP propagates only when enabled in the library.
 
 `COMPONENTS core` avoids loading the optional MPFR adapter. An unqualified
 `find_package` loads the core and any installed adapter. Request
-`COMPONENTS mpfr` to require the adapter; this also loads the core and exports
+`COMPONENTS mpfr` to require the adapter. This also loads the core and exports
 `PolyphaseFloat::mpfr_shared` and/or `PolyphaseFloat::mpfr_static` according to
 the installed build. A required adapter component fails configuration if the
 adapter was not installed.
@@ -168,7 +168,7 @@ version.
 ## ABI-governed Linux build
 
 Shared release libraries on Linux use ELF symbol versioning. The default
-`PPF_ELF_SYMBOL_VERSIONING=AUTO` enables it on Linux; require it explicitly with:
+`PPF_ELF_SYMBOL_VERSIONING=AUTO` enables it on Linux. Require it explicitly with:
 
 ```sh
 cmake -S . -B build/abi \
@@ -225,11 +225,13 @@ corpora and crash output outside the source tree.
 | OpenMP configuration fails | Use `PPF_OPENMP=OFF` for a serial build, or install the compiler's matching OpenMP runtime. |
 | A downstream `find_package` fails | Set `CMAKE_PREFIX_PATH` to the installation prefix, not the source tree. Confirm that installation completed. |
 | A core consumer unexpectedly needs MPFR | Request `COMPONENTS core` explicitly. |
-| The program cannot load a shared library | Make the installed library directory available to the platform loader; CMake's build-tree runtime path does not replace an application's deployment policy. |
+| The program cannot load a shared library | Make the installed library directory available to the platform loader. CMake's build-tree runtime path does not replace an application's deployment policy. |
 | Changing compiler or sanitizer produces inconsistent results | Configure a fresh build directory. |
-| Fewer tests appear than expected | Check the CMake summary, MPFR support, and optional target settings; list tests with `ctest --show-only`. |
+| Fewer tests appear than expected | Check the CMake summary, MPFR support, and optional target settings. List tests with `ctest --show-only`. |
 
 The Makefile remains available for development and research harnesses, including
 `make test`, `make audit`, and named `bin/` targets. CMake is the canonical
 installation route. [Historical reports](HISTORY_INDEX.md) describe earlier
 harness configurations.
+
+[Documentation](README.md) · [Manual](manual/README.md) · [Testing](TESTING.md) · [Project overview](../README.md)

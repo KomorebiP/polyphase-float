@@ -2,9 +2,12 @@
 
 This is the reader's manual for the C library. It develops checked numerical
 programs, explains ownership and rounding, and provides a complete core API
-reference. The ready-to-read PDF and self-contained HTML editions accompany
-the source package. The chapter files remain available for ordinary text
+reference. Read the [PDF edition](Polyphase_Float_Manual.pdf), or download the
+[HTML edition](Polyphase_Float_Manual.html) and open the saved file in a browser. The chapter files remain available for ordinary text
 reading and contributions.
+
+The library remains **beta and work in progress**. For build commands,
+validation and release records, use the [documentation index](../README.md).
 
 ## Start here
 
@@ -58,3 +61,15 @@ Markdown editions in the chosen directory. It reads the governed API records
 and never modifies the production library. Add `--skip-pdf` when only the HTML
 and Markdown editions are needed. The source chapter files and complete
 programs remain the editable material.
+
+The API page on GitHub uses ordinary Markdown headings so that its
+alphabetical index works there. To regenerate that page without building
+the book or installing Pandoc:
+
+```sh
+python3 tools/build_manual.py --github-reference docs/manual/API_REFERENCE.md
+```
+
+The book builder retains its explicit PDF and HTML anchors.
+
+[Documentation](../README.md) · [Project overview](../../README.md)

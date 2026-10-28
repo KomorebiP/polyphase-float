@@ -24,9 +24,11 @@ for a stable release.
 
 The [User Guide and Reference](docs/manual/README.md) includes a guided
 introduction, complete checked C programs, numerical limits, troubleshooting,
-and every core API declaration. PDF and offline HTML editions are included
-with the manual. Start there for a guided introduction, or use the commands
-below for a quick build.
+and every core API declaration. [PDF](docs/manual/Polyphase_Float_Manual.pdf) and
+[offline HTML](docs/manual/Polyphase_Float_Manual.html) editions are included.
+Download the HTML file from GitHub and open the saved file in a browser.
+Start with the manual for a guided introduction, or use the commands below
+for a quick build.
 
 ## Build and run
 
@@ -44,7 +46,7 @@ cmake --build build/release -j
 ```
 
 This builds shared and static libraries and runs a small example without an
-MPFR or OpenMP runtime dependency. Read `examples/basic.c` to follow object
+MPFR or OpenMP runtime dependency. Read [the basic example](examples/basic.c) to follow object
 initialization, checked operations, output, and cleanup. The other examples
 cover arithmetic, constants, transcendental functions, and I/O.
 
@@ -136,6 +138,9 @@ and timed fuzz tests for an exact source snapshot. The report lists passes,
 failures, and checks that were not run.
 
 ## Documentation and project information
+
+The [documentation index](docs/README.md) connects the manual, examples,
+build instructions, tests and release records.
 
 | Need | Reference |
 |---|---|

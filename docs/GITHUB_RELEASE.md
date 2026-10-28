@@ -4,18 +4,21 @@
 # GitHub publication and release procedure
 
 This document covers the public repository at
-`https://github.com/KomorebiP/polyphase-float`. Polyphase Float remains a
-pre-1.0 research release.
+[KomorebiP/polyphase-float](https://github.com/KomorebiP/polyphase-float).
+Polyphase Float remains **beta and work in progress**. Follow the
+[release process](RELEASE_PROCESS.md) to prepare and qualify an exact source
+revision before publishing its artifacts.
 
-## Initial publication
+<a id="initial-publication"></a>
 
-Create an empty repository named `KomorebiP/polyphase-float` with `main` as its
-default branch. Do not initialize it with a generated README, license, or
-`.gitignore`. Commit the contents of this source tree at the repository root.
-Do not commit the enclosing archive directory, local build trees, staged
-installations, generated archives, or runner-bundle logs.
+## Prepare the checkout
 
-Before the first push, run:
+The repository is already public. Start from a checkout of its existing
+`main` branch and record `git rev-parse HEAD`. Keep local builds, staged
+installations, generated archives and runner logs outside the tracked source.
+
+The following commands provide a local build check. The complete release
+matrix is described in [Qualification](QUALIFICATION.md). From the source root:
 
 ```sh
 python3 tools/release_audit.py
@@ -33,10 +36,12 @@ python3 tools/release_audit.py --root . --library build/release/libpolyphase_flo
 
 ## Repository settings
 
-Enable GitHub Actions, the dependency graph, Dependabot alerts, CodeQL code
-scanning, and private vulnerability reporting. Protect `main` against force
-pushes and deletion. After the first workflow run establishes the exact check
-names, require the principal CI and ABI-governance checks before merging.
+Review these settings before a release. Enable GitHub Actions, the dependency
+graph, Dependabot alerts, CodeQL code scanning, and private vulnerability
+reporting. Protect `main` against force pushes and deletion. Use the check
+names from a completed workflow run to require the principal CI and
+ABI-governance checks before merging.
+These are maintainer instructions, not a record that each setting is enabled.
 
 The repository includes `.github/CODEOWNERS`, issue forms, a private-security
 contact link, pull-request guidance, CI, ABI governance, CodeQL, extended
@@ -47,12 +52,17 @@ validation, and Dependabot configuration.
 Generate deterministic project archives from the audited tag checkout:
 
 ```sh
-rm -rf dist
-SOURCE_DATE_EPOCH=1788134400 python3 tools/create_source_release.py --output-dir dist
-sha256sum -c dist/SHA256SUMS
+SOURCE_DATE_EPOCH=1792627200 \
+  python3 tools/create_source_release.py --output-dir ../polyphase-release-dist
+(cd ../polyphase-release-dist && sha256sum -c SHA256SUMS)
 ```
 
-For `v0.20.0`, attach these files to a GitHub pre-release:
+This uses the same fixed epoch, 2026-10-22 UTC, as the packager and
+[release process](RELEASE_PROCESS.md#4-package-and-verify). Choose a fresh output
+directory for a new candidate. Run the checksum check inside that directory
+because `SHA256SUMS` contains archive filenames relative to it.
+
+For a reviewed 0.20.0 release, attach these files to a GitHub prerelease:
 
 - `polyphase-float-0.20.0.zip`
 - `polyphase-float-0.20.0.tar.gz`
@@ -65,14 +75,17 @@ substitutes for the project's deterministic source archives.
 ## Tagging
 
 Create an annotated or signed tag only after the protected-branch workflows
-pass:
+pass for the exact commit being tagged. The commands below illustrate a
+versioned release. Use a new tag name if that name already exists and preserve
+all previously published tags. A successful workflow on a later commit does
+not qualify an earlier tag.
 
 ```sh
 git tag -a v0.20.0 -m "Polyphase Float 0.20.0"
 git push origin v0.20.0
 ```
 
-Create the corresponding GitHub Release and mark it as a pre-release. State the
+Create the corresponding GitHub Release and mark it as a prerelease. State the
 supported ABI boundary exactly as Linux ELF LP64/GMP64, ABI epoch 1. State that
 MPFR and OpenMP are optional for the production core, while GMP and the current
 POSIX-thread baseline are required.
@@ -84,3 +97,5 @@ run the fast and ABI checks, install into an empty prefix, and compile an
 external consumer with both the installed CMake package and `pkg-config`
 metadata. Record platform-specific limits in `STATUS.md` and `ROADMAP.md`
 rather than broadening the support claim without evidence.
+
+[Documentation](README.md) · [Release process](RELEASE_PROCESS.md) · [Qualification](QUALIFICATION.md) · [Project overview](../README.md)

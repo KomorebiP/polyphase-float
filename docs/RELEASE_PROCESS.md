@@ -1,8 +1,8 @@
 # Release process
 
 This procedure prepares a source release and its evidence. The supported
-contract is defined by [Release scope](COMPLETION_SCOPE_0.20.0.md); the current
-release is 0.20.0 with ABI epoch 1 and `libpolyphase_float.so.0`.
+contract is defined by [Release scope](COMPLETION_SCOPE_0.20.0.md). The current
+beta version is 0.20.0 with ABI epoch 1 and `libpolyphase_float.so.0`.
 
 ## 1. Prepare and freeze the source
 
@@ -10,7 +10,7 @@ Choose the release version and complete related source, documentation, and
 metadata updates before qualification. Check `CMakeLists.txt`,
 `include/polyphase_float.h`, `CITATION.cff`, release notes, and status files for
 agreement. Retain required ABI baselines, regression corpora, and historical
-evidence; exclude local builds, qualification output, and temporary files.
+evidence. Exclude local builds, qualification output, and temporary files.
 
 For any future major version, decide the ABI epoch, SONAME, package-version
 compatibility, and support policy explicitly. A project version change alone
@@ -39,7 +39,7 @@ exact exclusions, default duration, and LeakSanitizer policy.
 
 Inspect `qualification.json`, `source_snapshot.json`, and the retained logs.
 Every required scope must have a successful result before describing that
-matrix as passed. Record failed, unavailable, or unselected checks explicitly;
+matrix as passed. Record failed, unavailable, or unselected checks explicitly.
 `NOT_RUN` is not a pass. Run and record any additional ThreadSanitizer,
 LeakSanitizer, or longer fuzz campaign separately.
 
@@ -86,7 +86,7 @@ packaged source. Check that both archive formats contain the intended files.
 Keep the exact source archives, checksums, qualification receipts, and
 source snapshots together in the release record. A source archive and a
 qualification receipt answer different questions: the checksum identifies
-what was distributed; the receipt identifies what was executed.
+what was distributed. The receipt identifies what was executed.
 
 ## 5. Review the release claim
 
@@ -104,8 +104,10 @@ Retain contrary results as well as successful reproductions.
 
 Publish source and checksums together, with the applicable evidence and
 release notes. Sign tags and artifacts where supported. Never replace a tagged
-release with different bytes; issue a new version for a correction.
+release with different bytes. Issue a new version for a correction.
 
 See [GitHub release procedure](GITHUB_RELEASE.md) for repository settings,
 tagging, and release assets. Local packaging does not itself publish a tag,
 release, or hosted workflow result.
+
+[Documentation](README.md) · [Qualification](QUALIFICATION.md) · [GitHub publication](GITHUB_RELEASE.md) · [Project overview](../README.md)

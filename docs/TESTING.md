@@ -40,8 +40,8 @@ ctest --test-dir build/validation -L extended --output-on-failure
 ```
 
 A core-only build has fewer tests because MPFR-dependent tests are absent. A
-passing subset is evidence for that subset; use the complete qualification
-matrix below for release validation. A smoke test establishes executable and
+passing subset is evidence for that subset. Use the complete
+[qualification matrix](QUALIFICATION.md) for release validation. A smoke test establishes executable and
 output-schema behavior, not performance.
 
 ## Allocation and boundary tests
@@ -72,8 +72,8 @@ cmake --build build/validation --target semantic-contract-audit
 cmake --build build/validation --target abi-contract-audit
 ```
 
-The semantic reference and direct test-source references describe coverage;
-they do not establish exhaustive input, branch, rounding, or failure coverage.
+The semantic reference and direct test-source references describe coverage.
+They do not establish exhaustive input, branch, rounding, or failure coverage.
 See the [semantic contract](PUBLIC_SEMANTIC_CONTRACT_0.20.0.md) and
 [aliasing contract](ALIASING_CONTRACT_0.20.0.md).
 
@@ -86,7 +86,7 @@ available.
 `tools/run_abi_binary_compat.py` builds the frozen 0.11.0 source and compiles a
 consumer against its header and shared object. It then runs that unchanged
 executable with the baseline and current libraries. This is separate from the
-source-contract, export, and runtime-layout checks; see [ABI policy](ABI_POLICY.md).
+source-contract, export, and runtime-layout checks. See [ABI policy](ABI_POLICY.md).
 
 ## Sanitizers and fuzzing
 
@@ -104,8 +104,8 @@ when collecting longer-term evidence.
 
 The qualification sanitizer configuration runs the hardening tests under
 ASan and UBSan, with the Python `ctypes` export check excluded as explained in
-[Qualification](QUALIFICATION.md). **LeakSanitizer is disabled by default**;
-use `--detect-leaks 1` on a host that supports it. Allocator balance assertions
+[Qualification](QUALIFICATION.md). **LeakSanitizer is disabled by default**.
+Use `--detect-leaks 1` on a host that supports it. Allocator balance assertions
 and ASan/UBSan passes must not be described as a LeakSanitizer run.
 
 A separate serial ThreadSanitizer configuration is available:
@@ -117,7 +117,7 @@ ctest --preset tsan
 ```
 
 ThreadSanitizer is not included in the default qualification command. Record
-its actual result separately; an unavailable runtime is not a pass.
+its actual result separately. An unavailable runtime is not a pass.
 
 ## Interpreting results
 
@@ -131,3 +131,5 @@ still records bounded numerical paths and compiler-conditional interfaces.
 The [release scope](COMPLETION_SCOPE_0.20.0.md) states those limits, and the
 [roadmap](../ROADMAP.md) separates future safety and independent-review work
 from completed local checks.
+
+[Documentation](README.md) · [Manual](manual/README.md) · [Building](BUILDING.md) · [Qualification](QUALIFICATION.md)
