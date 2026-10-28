@@ -102,6 +102,10 @@ jobs:
             -DPPF_BUILD_BENCHMARKS=OFF \
             -DPPF_WARNINGS_AS_ERRORS=ON
           cmake --build "$RUNNER_TEMP/polyphase-core" --parallel
+      - name: Run the documented first example
+        run: |
+          "$RUNNER_TEMP/polyphase-core/example_basic" > "$RUNNER_TEMP/first-example.txt"
+          python3 -c 'import os,pathlib; actual=pathlib.Path(os.environ["RUNNER_TEMP"],"first-example.txt").read_text(); expected="x (256 bits) = 3.10000e1\ny (80 bits)  = 3.10000e1\n"; assert actual == expected, repr(actual)'
       - name: Core tests and independence audit
         run: |
           ctest --test-dir "$RUNNER_TEMP/polyphase-core" -L 'fast|hardening' --output-on-failure
