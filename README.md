@@ -1,6 +1,6 @@
 # Polyphase Float
 
-> **Beta · Work in progress.** These public releases are for evaluation, research and feedback. APIs, numerical behavior and documentation may change. This is a development candidate and does not signify production readiness. Validate results for your intended use.
+> **Beta · Work in progress.** This library is available for research, evaluation and feedback. Its APIs, numerical behavior and documentation may change. This development candidate is not ready for production. Check results for your intended use.
 
 [![CI](https://github.com/KomorebiP/polyphase-float/actions/workflows/ci.yml/badge.svg)](https://github.com/KomorebiP/polyphase-float/actions/workflows/ci.yml)
 [![ABI governance](https://github.com/KomorebiP/polyphase-float/actions/workflows/abi.yml/badge.svg)](https://github.com/KomorebiP/polyphase-float/actions/workflows/abi.yml)
@@ -13,16 +13,17 @@ special functions, constants, conversion, formatting, and binary interchange
 through the `ppf_*` API. Precision and rounding are controlled explicitly.
 
 **Version 0.20.0 (beta, work in progress)** targets Linux x86-64 ELF with the LP64 data model and
-64-bit GMP limbs. It retains ABI epoch 1 and `libpolyphase_float.so.0`. The production core
-requires GMP and POSIX threads. OpenMP is optional; MPFR is used only by the
+64-bit GMP limbs. It retains ABI epoch 1 and `libpolyphase_float.so.0`. The core library
+requires GMP and POSIX threads. OpenMP is optional. MPFR is used only by the
 optional interoperability adapter, differential tests, and matched benchmarks.
-The numerical and resource contract is documented. The remaining stable-release
-requirements are tracked in [1.0 readiness](docs/ONE_POINT_ZERO_READINESS.md).
+The documentation describes numerical and resource limits.
+[1.0 readiness](docs/ONE_POINT_ZERO_READINESS.md) tracks the work still needed
+for a stable release.
 
 ## Reader's manual
 
-The [User Guide and Reference](docs/manual/README.md) provides a continuous
-learning path, complete checked C programs, numerical limits, troubleshooting,
+The [User Guide and Reference](docs/manual/README.md) includes a guided
+introduction, complete checked C programs, numerical limits, troubleshooting,
 and every core API declaration. PDF and offline HTML editions are included
 with the manual. Start there for a guided introduction, or use the commands
 below for a quick build.
@@ -48,8 +49,8 @@ initialization, checked operations, output, and cleanup. The other examples
 cover arithmetic, constants, transcendental functions, and I/O.
 
 Set `PPF_OPENMP=AUTO` to use OpenMP when available, or `ON` to require it.
-See [Building](docs/BUILDING.md) for all options, static-only builds, package
-consumption, and troubleshooting.
+See [Building](docs/BUILDING.md) for all options, static-only builds, using the installed
+package, and troubleshooting.
 
 ## Install and use in your project
 
@@ -68,33 +69,33 @@ target_link_libraries(my_app PRIVATE PolyphaseFloat::shared)
 ```
 
 For a first application, copy `examples/basic.c` to your application directory
-as `main.c`; it includes `<polyphase_float.h>`. Configure that directory with `cmake -S . -B build -DCMAKE_PREFIX_PATH="$HOME/.local"`,
+as `main.c`. It includes `<polyphase_float.h>`. Configure that directory with `cmake -S . -B build -DCMAKE_PREFIX_PATH="$HOME/.local"`,
 then run `cmake --build build`. Use `PolyphaseFloat::static` if you prefer the
-static library. The targets propagate required dependencies.
+static library. These CMake targets include the required dependencies.
 
 The installation also supplies `polyphase-float.pc` for `pkg-config`. Request
 CMake component `mpfr` only when your application needs the installed MPFR
-adapter. [Building](docs/BUILDING.md) includes an executable installed-consumer
-check and details of shared-library discovery.
+adapter. [Building](docs/BUILDING.md) includes a runnable check that uses the installed
+library and explains how to locate shared libraries.
 
 ## Working with the API
 
 Initialize an explicit context and each floating-point object before use.
 Precision is measured in **bits**. The destination object's precision controls
-the precision of a numerical result; passing a context does not resize it.
+the precision of a numerical result. Passing a context does not resize it.
 Clear objects and other owned resources before clearing their context.
 
 Many numerical operations return a ternary value: zero for an exact result,
 negative when the stored result is below the exact value, and positive when it
 is above. **Check for `PPF_TERNARY_ERROR` before interpreting the sign.** Other
-functions return status codes, predicates, counts, or pointers; their return
-contracts are listed in the [semantic reference](docs/PUBLIC_SEMANTIC_CONTRACT_0.20.0.md).
+functions return status codes, predicates, counts, or pointers. Their return
+values are explained in the [semantic reference](docs/PUBLIC_SEMANTIC_CONTRACT_0.20.0.md).
 Context exception flags are sticky diagnostics and can remain set after a
 successful operation.
 
-Use the [aliasing contract](docs/ALIASING_CONTRACT_0.20.0.md) before reusing an
+Read the [aliasing contract](docs/ALIASING_CONTRACT_0.20.0.md) before reusing an
 input as an output. Threads may share read-only inputs, but mutable objects and
-explicit contexts need exclusive ownership or application locking; see
+explicit contexts need exclusive ownership or application locking. See
 [Thread safety](docs/THREAD_SAFETY.md).
 
 ## Numerical and resource contract
@@ -129,10 +130,10 @@ ctest --test-dir build/validation -L fast --output-on-failure
 ```
 
 [Testing](docs/TESTING.md) explains the available labels and complete test run.
-For release qualification, use [the reproducible qualification procedure](docs/QUALIFICATION.md),
-which records compiler, installed-consumer, sanitizer, and timed fuzz results
-against an exact source snapshot. Its receipt distinguishes passes, failures,
-and checks that were not run.
+Before a release, follow [the verification procedure](docs/QUALIFICATION.md).
+It records compiler checks, use of the installed library, sanitizer checks,
+and timed fuzz tests for an exact source snapshot. The report lists passes,
+failures, and checks that were not run.
 
 ## Documentation and project information
 
